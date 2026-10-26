@@ -4,7 +4,7 @@ Collaborative development repository for the Honeywell project focused on vision
 
 **Repository:** [honeywell_bmsce_flame_detection](https://github.com/Skandakm29/honeywell_bmsce_flame_detection)
 
---
+---
 
 ## Project Overview
 
