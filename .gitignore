@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Model weights and large artifacts (coordinate before committing)
+*.onnx
+*.pt
+*.pth
+*.tflite
+*.bin
+*.engine
+
+# Datasets and recordings
+data/
+datasets/
+*.mp4
+*.avi
+*.mkv
+*.mov
+
+# Generated outputs
+logs/
+*.log
+results/**/*.png
+results/**/*.jpg
+!results/.gitkeep
