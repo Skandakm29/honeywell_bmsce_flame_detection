@@ -1,0 +1,2 @@
+# Models
+Weights are intentionally excluded from Git. See ../docs/ARTIFACTS.md for storage and backup, ../configs/assets.json for original initialization hashes, and ../results/full_v1_summary.json for the selected trained ONNX checksum. Architecture: TI YOLOX-Nano-ti-lite, one flame class, 2,241,998 parameters. Exported model expects the preprocessing documented in ../docs/PROJECT_STATUS.md; retain model_contract.json alongside it.

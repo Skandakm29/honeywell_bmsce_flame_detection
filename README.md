@@ -24,27 +24,18 @@ The final technology stack and implementation details will follow the project's 
 
 ---
 
-## Repository Structure
+## Current implementation (28 October 2026)
+The full_v1 baseline completed 20 epochs on Colab T4. Selected epoch 17: AP50 62.69%, AP50:95 32.92% on a 2,000-image validation subset. This is a baseline, not production acceptance. Held-out testing and TI/video integration remain pending.
 
-The repository will evolve as development progresses. Keep the code modular and organize new components according to their functionality.
+- [Start here: teammate / AI-agent handoff](docs/PROJECT_STATUS.md)
+- [Setup and execution](docs/SETUP.md)
+- [Dataset and frozen splits](docs/DATASET.md)
+- [Model storage / backup](docs/ARTIFACTS.md)
+- [Algorithm rationale and papers](docs/ALGORITHM_DECISION_RECORD.md)
+- [Pipeline plan](docs/IMPLEMENTATION_PLAN.md)
+- [Full epoch metrics](results/full_v1_history.json)
 
-```text
-.
-├── src/              # Core implementation
-├── tests/            # Unit and integration tests
-├── models/           # Model documentation and integration
-├── configs/          # Configuration files
-├── scripts/          # Utility and execution scripts
-├── docs/             # Architecture and technical documentation
-├── results/          # Evaluation summaries and relevant outputs
-├── requirements.txt  # Python dependencies, if applicable
-├── .gitignore
-└── README.md
-```
-
-Avoid committing generated artifacts, large datasets, model weights, or environment-specific files unless explicitly agreed upon.
-
----
+Repository folders: scripts/ training/audit/extraction; tests/ focused checks; configs/ reproducible recipe and asset hashes; third_party/ pinned TI source/licence; docs/ current documentation; results/ small evidence summaries; models/ documentation only. src/ is reserved for future runtime modules. No dataset, weights or Python environment is committed.
 
 ## Development Workflow
 
@@ -166,19 +157,19 @@ Keep PRs focused and reasonably sized. Request review from the relevant teammate
 
 ```text
 Sync with main
-     ↓
+     â†“
 Create feature branch
-     ↓
+     â†“
 Implement and validate
-     ↓
+     â†“
 Commit changes
-     ↓
+     â†“
 Push branch
-     ↓
+     â†“
 Open pull request
-     ↓
+     â†“
 Review and resolve feedback
-     ↓
+     â†“
 Merge into main
 ```
 
@@ -194,5 +185,5 @@ Keep this README focused on the project overview and contribution workflow. Avoi
 
 ---
 
-**Project:** Honeywell BMSCE — Vision-Based Flame Detection and Monitoring  
+**Project:** Honeywell BMSCE — Vision-Based Flame Detection and Monitoring
 **Repository:** [GitHub](https://github.com/Skandakm29/honeywell_bmsce_flame_detection)

@@ -1,41 +1,57 @@
-# Python
+# Python and local environments
 __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
 .mypy_cache/
-.ipynb_checkpoints/
-
-# Virtual environments
-.venv/
+.venv*/
 venv/
 env/
+.ipynb_checkpoints/
+# Credentials and local configuration
 .env
-
-# IDE / OS
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+*service-account*.json
+.aws/
+.codex/
+.agents/
+# Local tools and generated material
+.cache/
+.tools/
 .vscode/
 .idea/
 .DS_Store
-
-# Model weights and large artifacts (coordinate before committing)
-*.onnx
+Thumbs.db
+reports/
+runs/
+logs/
+handoff/
+*.log
+*.tmp
+*.partial
+# Dataset contents, checkpoints, videos and archives
+data/
+datasets/
+*.zip
+*.tar
+*.gz
+*.7z
 *.pt
 *.pth
+*.onnx
 *.tflite
 *.bin
 *.engine
-
-# Datasets and recordings
-data/
-datasets/
 *.mp4
 *.avi
 *.mkv
 *.mov
-
-# Generated outputs
-logs/
-*.log
+# Keep model documentation and small reviewed result JSON tracked
+models/*
+!models/README.md
 results/**/*.png
 results/**/*.jpg
-!results/.gitkeep

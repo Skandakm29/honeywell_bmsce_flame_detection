@@ -1,0 +1,43 @@
+{
+  "completed_epochs": 20,
+  "best_epoch": 17,
+  "validation_images": 2000,
+  "AP50_95": 0.3292484891939903,
+  "AP50": 0.6268653007658298,
+  "operating_point": {
+    "confidence": 0.4,
+    "matching_iou": 0.5,
+    "TP": 804,
+    "FP": 343,
+    "FN": 634,
+    "precision": 0.7009590235396687,
+    "recall": 0.5591098748261474,
+    "F1": 0.6220502901353966,
+    "negative_image_false_positive_rate": 0.023758099352051837
+  },
+  "export": {
+    "onnx_valid": true,
+    "parity_inputs": 4,
+    "max_absolute_error": 0.0012054443359375,
+    "parity_atol": 0.002,
+    "parity_rtol": 0.001,
+    "cpu_inference_ms": 73.91258499992546,
+    "sha256": "749db8cecc21b43a8b31262d3ff5f0e2a0036f83e3b4aa73ff656e562af67458"
+  },
+  "artifacts_verified_in_drive": [
+    "best.pth",
+    "last.pth",
+    "history.json",
+    "export.json",
+    "flame.onnx",
+    "model_contract.json",
+    "operating_metrics.json",
+    "training.log",
+    "validation_examples.jpg"
+  ],
+  "run_drive_url": "https://drive.google.com/drive/folders/1c6NBxvgDwOQYrOMTDYjklne3NVDWJyOj",
+  "completed_local": "2026-10-27 23:05 IST",
+  "independent_full_validation_test_pending": true,
+  "production_ready": false,
+  "scope": "Frozen baseline experiment evidence; current project status is in docs/PROJECT_STATUS.md"
+}

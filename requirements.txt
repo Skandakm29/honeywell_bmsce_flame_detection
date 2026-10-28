@@ -1,1 +1,11 @@
-# Python dependencies — add pinned versions as they are agreed upon.
+# Install torch==2.5.1 and torchvision==0.20.1 from the appropriate official
+# CUDA index first, or select CPU wheels as documented in docs/SETUP.md.
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+loguru==0.7.3
+onnx==1.17.0
+onnxruntime==1.20.1
+pycocotools==2.0.11
+psutil==7.1.2
+
+Pillow==12.3.0

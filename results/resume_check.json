@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "maximum_parameter_difference": {
+    "model": 0.0,
+    "ema": 0.0
+  },
+  "optimizer_updates": 2,
+  "scope": "same-CPU deterministic recipe; CPU/CUDA cross-device resume may differ numerically"
+}
