@@ -41,7 +41,7 @@ Drive contains best.pth, last.pth, flame.onnx, config/history/export/model_contr
 
 ## Proposed next steps (not yet executed)
 1. Download the complete run folder; verify model hashes and readable checkpoints before cloud cleanup.
-2. Evaluate epoch 17 on all 26,765 cleaned validation images. Review about 100 misses, 100 false detections and 50 correct detections; group by flame size, lighting, occlusion, domain and label/box quality. Keep test unused.
+2. Evaluate epoch 17 on all 26,765 cleaned validation images (tooling added: scripts/evaluate.py and notebooks/colab_runbook.ipynb; not yet run on real data). Review about 100 misses, 100 false detections and 50 correct detections; group by flame size, lighting, occlusion, domain and label/box quality. Keep test unused.
 3. Correct only evidenced preprocessing/annotation problems. Version corrections; reevaluate baseline on the same corrected validation data. Check source/scene leakage without discarding difficult cases merely to inflate scores.
 4. Run one controlled improvement at a time on the lab GPU: higher resolution if small-flame misses dominate; relevant training examples/confusing negatives if domain gaps dominate. Preserve 1 TOPS/latency constraints. Separate named runs; do not resume full_v1 with changed data/recipe. Gains are hypotheses, not promises.
 5. Select operating threshold against agreed requirements, freeze model/threshold, then held-out and independent video tests. Validate temporal alarms, obstruction/tamper detection, calibration, telemetry and TI deployment. Those runtime modules are not implemented yet.

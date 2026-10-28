@@ -9,6 +9,7 @@ import numpy as np
 import torch
 from train import detections,preprocess,operating_metrics,Flames
 from audit_local import OverlapIndex,validated_boxes
+from evaluate import match,size_bucket,false_detection_kind
 
 
 class PipelineTests(unittest.TestCase):
@@ -68,6 +69,26 @@ class PipelineTests(unittest.TestCase):
             self.assertTrue(torch.equal(first[0],second[0]))
             self.assertTrue(torch.equal(first[1],second[1]))
             self.assertEqual(first[0][:,300,0].tolist(),[114,114,114])
+
+
+    def test_failure_matching_agrees_with_operating_metrics(self):
+        records=[{'boxes':[[0,0,10,10],[20,20,30,30]]},{'boxes':[]}]
+        predictions=[{'image_id':0,'bbox':[0,0,10,10],'score':.9},
+                     {'image_id':0,'bbox':[0,0,10,10],'score':.8},
+                     {'image_id':1,'bbox':[0,0,10,10],'score':.7}]
+        matched,outcomes=match(records[0]['boxes'],predictions[:2],.5)
+        self.assertEqual(matched,[True,False])
+        self.assertEqual([hit for _,hit in outcomes],[True,False])
+        self.assertEqual(false_detection_kind(predictions[1],records[0]['boxes']),'duplicate')
+        self.assertEqual(false_detection_kind(predictions[2],records[1]['boxes']),'negative_image')
+        self.assertEqual(false_detection_kind({'bbox':[50,50,5,5]},records[0]['boxes']),'background_on_flame_image')
+        expected=operating_metrics(records,predictions,thresholds=[.5])['selected']
+        self.assertEqual(expected['FN'],matched.count(False))
+
+    def test_size_buckets_cover_all_sizes(self):
+        self.assertEqual(size_bucket(0),'<8px')
+        self.assertEqual(size_bucket(16),'16-32px')
+        self.assertEqual(size_bucket(5000),'>=64px')
 
 
 if __name__=='__main__':
