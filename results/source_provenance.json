@@ -1,0 +1,10 @@
+{
+  "original_baseline_scripts_sha256": {
+    "train.py": "4fe66283e160522c14ae83c913fabf1f0b7f6b8621bc08148703b3a6a80ae73d",
+    "flame_model.py": "967846625ec4794126fbabaf8b6e38d1bf2ae1e427f892f82bbe3972074b65c1",
+    "audit_local.py": "da4673ad882a46c0e1078bf3d4896ad122301bac011af751160babcf78618496",
+    "extract_local.py": "8df571962e945a57b443788e0ca0521368c8bd5ac9b0ab7b166f16573820aa04"
+  },
+  "repository_change": "train.py now requires --config and removes pilot path/defaults; numerical training implementation unchanged",
+  "vendor_revision": "cbdd9d85def4e55e3fbbf38c155e183e90ed5cc6"
+}

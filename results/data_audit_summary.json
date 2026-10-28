@@ -1,0 +1,50 @@
+{
+  "archive": "data/raw/FASDD_CV.zip",
+  "md5": "da5e1410e13113fc9d605567aea54508",
+  "archive_bytes": 12326081298,
+  "archive_verified": true,
+  "split_policy": "original memberships; deduplicate with test > val > train priority",
+  "near_duplicate_rule": "dHash Hamming <=4 AND gray thumbnail MAE <=5/255 AND aspect ratio within 5%",
+  "source_independence": "not established; source/video provenance missing",
+  "seed": 42,
+  "splits": {
+    "test": {
+      "original": 15884,
+      "kept": 15870,
+      "flame_images": 5448,
+      "flame_boxes": 9017,
+      "duplicates_removed": {
+        "exact": 12
+      }
+    },
+    "val": {
+      "original": 31770,
+      "kept": 26765,
+      "flame_images": 8418,
+      "flame_boxes": 21055,
+      "duplicates_removed": {
+        "near": 4972,
+        "exact": 32
+      }
+    },
+    "train": {
+      "original": 47660,
+      "kept": 34618,
+      "flame_images": 11178,
+      "flame_boxes": 28719,
+      "duplicates_removed": {
+        "near": 12941,
+        "exact": 96
+      }
+    }
+  },
+  "archive_image_count": 95314,
+  "monitor_validation_images": 2000,
+  "audit_seconds": 352.45357090001926,
+  "remaining": [
+    "human label review",
+    "source/video provenance",
+    "industrial negative footage",
+    "external/video/hardware evaluation"
+  ]
+}

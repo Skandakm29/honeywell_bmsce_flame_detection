@@ -1,0 +1,12 @@
+{
+  "handoff_sha256": "102d5791c47ee842b65708b64c25149891623924f529246991f8506ce9e9961f",
+  "archive_bytes": 12326081298,
+  "archive_md5": "da5e1410e13113fc9d605567aea54508",
+  "files_sha256": {
+    "data/fasdd/train.json": "239ed522c95377ba47fd9ad65ce1a147b7cab4017475df525e3fccca995ec55c",
+    "data/fasdd/val.json": "c2adc993859d7f8bfc57935bedb4cfea0d9cdd03bf947e3561b90ed8e35cf14f",
+    "data/fasdd/validation_full.json": "f5ef5a4d5bdf53d5b4eaeaad1a64234fc11148e038b63888ddf52cfadbc06f9e",
+    "data/fasdd/test.json": "dc88040e2bbcbebe53b83d772cbb9335aa4b366083081e4bbceeed9ea1cb7d2d",
+    "models/pretrained/yolox_nano_ti_lite_coco.pth": "ccefc21e4fd743d44fc52a724afc574685494764470fb890ea8944b94e9d51d4"
+  }
+}
