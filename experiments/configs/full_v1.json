@@ -1,0 +1,19 @@
+{
+  "data": "experiments/yolox_s_lite_flame/manifests_v2",
+  "output": "runs/yolox_s_lite_flame_v1",
+  "epochs": 20,
+  "batch": 8,
+  "size": 640,
+  "threads": 4,
+  "workers": 2,
+  "checkpoint": "experiments/yolox_s_lite_flame/pretrained/yolox_s_ti_lite_coco.pth",
+  "device": "cuda",
+  "ema": true,
+  "lr": 0.0003,
+  "warmup_updates": 200,
+  "cosine": true,
+  "accumulate": 2,
+  "patience": 5,
+  "checkpoint_every": 250,
+  "log_every": 50
+}
