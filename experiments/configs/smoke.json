@@ -1,0 +1,20 @@
+{
+  "data": "experiments/manifests_v2/smoke",
+  "output": "runs/yolox_s_lite_flame_smoke",
+  "epochs": 2,
+  "batch": 4,
+  "size": 640,
+  "threads": 2,
+  "workers": 2,
+  "checkpoint": "experiments/pretrained/yolox_s_ti_lite_coco.pth",
+  "device": "auto",
+  "ema": true,
+  "lr": 0.0003,
+  "warmup_updates": 2,
+  "cosine": true,
+  "accumulate": 2,
+  "patience": 0,
+  "max_batches": 4,
+  "checkpoint_every": 2,
+  "log_every": 1
+}

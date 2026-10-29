@@ -1,0 +1,15 @@
+# Run outputs live on Google Drive (HoneywellTraining/experiments/yolox_s_lite_flame/), not in Git.
+# The root .gitignore already covers __pycache__/, runs/, logs/, reports/, *.pth, *.onnx and *.log.
+/manifests_v2/
+/pretrained/
+/smoke*/
+/checkpoints/
+/validation/
+/test/
+/exports/
+/plots/
+/reports_e20/
+/configs/run_settings.json
+/configs/*_checkpoint.json
+*.part
+.ipynb_checkpoints/

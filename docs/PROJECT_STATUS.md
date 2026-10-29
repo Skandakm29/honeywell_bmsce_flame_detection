@@ -1,5 +1,5 @@
 # Project handoff for teammates and AI agents
-Updated 28 October 2026 (Asia/Kolkata). Read this first; historical experiments are labelled below.
+Updated 29 October 2026 (Asia/Kolkata). Read this first; historical experiments are labelled below.
 
 ## Objective and constraints
 Build visible-flame localization and an eventual embedded video alarm pipeline for the Honeywell BMSCE project (six students). Smoke-only images are negatives. Use simple, reproducible changes; do not over-engineer. Deployment ceiling: 1 TOPS, not yet verified. ONNX handover; TI board/camera unavailable. SK-AM62A-LP is provisional. Numerical flame-size, miss-rate, false-alarm and alarm-delay acceptance targets remain undefined. Honeywell supplies no training data; it may provide unseen final test data.
@@ -34,6 +34,17 @@ Selected operating point (validation-derived, provisional): confidence 0.40, mat
 Recipe: configs/full_v1.json; TI source revision cbdd9d85def4e55e3fbbf38c155e183e90ed5cc6, 2,241,998 parameters, 462 pretrained tensors matched, new flame classifier. Python 3.12.13, Torch 2.5.1+cu124, Torchvision 0.20.1+cu124; other direct dependencies pinned in requirements.txt. 416 input, batch 8 / accumulation 2, AdamW LR 0.0003, weight decay 0.0005, EMA, 200-update warmup/cosine, HSV/flip augmentation disabled for final two epochs, patience 5, seed 42. Checkpoints every 250 optimizer updates and epoch boundaries. Pinned code implements TI BGR/raw 0–255/top-left letterbox preprocessing.
 
 Epoch curve plateaus near AP50:95 0.328–0.329 from epochs 12–20. More epochs alone is not the next priority. No competing architecture has been trained on the same splits. Selection reflects documented TI integration, not proven flame superiority or production readiness. Full results: ../results/full_v1_summary.json and ../results/full_v1_history.json.
+
+## YOLOX-S-ti-lite comparison (29 October, Kaggle split)
+Separate experiment; full_v1 was reused read-only and not modified. Data: Kaggle `yuulind/fasdd-cv-coco` with its own splits (63,546 train / 15,884 val / 15,882 evaluated test images), not the cleaned splits above. Code: ../experiments/ (Colab notebooks run_colab_e5.ipynb and run_colab_e5p15.ipynb). TI YOLOX-S-ti-lite, 640 input, single `flame` class, trained 5 epochs (Colab T4), then 15 more epochs from that best.pth at the same LR 3e-4 (Colab L4). On the Kaggle test split at confidence 0.40 (fixed in advance), all three models scored with the same code:
+
+| Model | AP50 | mAP50-95 | Precision | Recall | F1 | False alarms/image |
+|---|---:|---:|---:|---:|---:|---:|
+| full_v1 baseline (Nano, 416) | 0.8175 | 0.5140 | 0.7792 | 0.7811 | 0.7801 | 0.1257 |
+| S-Lite, 5 epochs | 0.8601 | 0.5568 | 0.8257 | 0.7962 | 0.8107 | 0.0955 |
+| S-Lite, 5+15 epochs | 0.8702 | 0.5734 | 0.8137 | 0.8212 | 0.8175 | 0.1068 |
+
+Indicative only: the baseline was trained on the official split, which may overlap Kaggle val/test. S-Lite costs 4× parameters and 9× GMACs (13.3 vs 1.5); AM62A/TIDL speed is NOT measured. S-Lite training plateaued from epoch 5+11. Full reports: RESULTS_e5.md and RESULTS_e20.md. Weights and run folders are on Drive under HoneywellTraining/experiments/yolox_s_lite_flame/.
 
 ## Artifact state
 Drive run folder: https://drive.google.com/drive/folders/1c6NBxvgDwOQYrOMTDYjklne3NVDWJyOj

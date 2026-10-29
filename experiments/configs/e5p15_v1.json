@@ -1,0 +1,19 @@
+{
+  "data": "experiments/manifests_v2",
+  "output": "runs/yolox_s_lite_flame_e5p15_v1",
+  "epochs": 15,
+  "batch": 16,
+  "size": 640,
+  "threads": 4,
+  "workers": 2,
+  "checkpoint": "experiments/runs/s_lite_e5_v1_best.pth",
+  "device": "cuda",
+  "ema": true,
+  "lr": 0.0003,
+  "warmup_updates": 200,
+  "cosine": true,
+  "accumulate": 1,
+  "patience": 5,
+  "checkpoint_every": 250,
+  "log_every": 50
+}
