@@ -55,3 +55,13 @@ models/*
 !models/README.md
 results/**/*.png
 results/**/*.jpg
+# Verified external artifact backup; publish only reviewed summaries, not this tree.
+/results/lab_backup_20261031/
+# Local verification scripts, session evidence and superseded Colab notebook.
+/results/test_tmp/
+/results/check_lab_models.py
+/results/verify_lab_backup.py
+/results/lab_backup_verification.json
+/results/yolov9_lab_reported_results.json
+/results/yolov9_engineering_checks.json
+/experiments/yolov9_flame/YOLOv9_Flame_Fresh_v2.ipynb

@@ -1,0 +1,6 @@
+{
+  "completed_epochs": 30,
+  "best_epoch": 20,
+  "best_monitor_AP50_95": 0.4333842780581502,
+  "complete": true
+}

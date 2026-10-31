@@ -1,0 +1,46 @@
+{
+  "coco": {
+    "AP50_95": 0.5993943656401266,
+    "AP50": 0.8840828628214045,
+    "AP75": 0.6593996607044341,
+    "AP_small": 0.33625045052786223,
+    "AP_medium": 0.5853054579411933,
+    "AP_large": 0.73786115274862,
+    "AR1": 0.4520062070494347,
+    "AR10": 0.6811571713589005,
+    "AR100": 0.706439813788517,
+    "AR_small": 0.5212553495007134,
+    "AR_medium": 0.7096108490566038,
+    "AR_large": 0.8137599093997736
+  },
+  "at_confidence_0.40": {
+    "confidence": 0.4,
+    "matching_iou": 0.5,
+    "TP": 7140,
+    "FP": 969,
+    "FN": 1882,
+    "precision": 0.8805031446540881,
+    "recall": 0.7913988029261805,
+    "F1": 0.8335765571186737
+  },
+  "images": 15884,
+  "boxes": 9022,
+  "evaluation_seconds": 194.12446780013852,
+  "definitions": {
+    "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+    "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+    "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+    "FP": "false-positive boxes, not video alarm events"
+  },
+  "split": "test",
+  "checkpoint_sha256": "48d8e654ac1e3381e122a52cdfca100d1840e8cf6db0294ac882b52ab1c4a51f",
+  "checkpoint_epoch": 20,
+  "manifest_sha256": "5c181adf2f6ae90547a603684f8f67c7457ff4c07d19be9bf3e7532b903fc137",
+  "evaluation_device": "cuda:0",
+  "gpu": "NVIDIA RTX A5000",
+  "caveats": [
+    "Kaggle test has already been examined in prior experiments; independence is not established",
+    "Cross-split duplicate policy is recorded in prepare_report.json",
+    "Different architectures/resolutions/recipes prevent attribution to architecture alone"
+  ]
+}

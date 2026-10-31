@@ -1,0 +1,18 @@
+{
+  "selected_lr": 0.0001,
+  "trials": [
+    {
+      "lr": 0.0001,
+      "monitor_AP50_95": 0.3370933745697487
+    },
+    {
+      "lr": 0.0003,
+      "monitor_AP50_95": 0.3275983106212309
+    },
+    {
+      "lr": 0.001,
+      "monitor_AP50_95": 0.28103524889242426
+    }
+  ],
+  "scope": "Short validation-only screening, not a globally optimal hyperparameter claim"
+}

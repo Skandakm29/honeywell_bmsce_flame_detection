@@ -1,0 +1,45 @@
+{
+  "config": {
+    "size": 640,
+    "epochs": 40,
+    "batch": 16,
+    "accumulate": 2,
+    "workers": 2,
+    "optimizer": "AdamW",
+    "lr": 0.0001,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 2,
+    "min_lr_ratio": 0.05,
+    "gradient_clip": 10.0,
+    "ema_decay": 0.9998,
+    "mosaic_probability": 0.5,
+    "close_mosaic_epochs": 10,
+    "patience": 10,
+    "min_epochs": 30,
+    "checkpoint_every_updates": 250,
+    "seed": 42,
+    "amp": true,
+    "amp_initial_scale": 128.0,
+    "pilot_lrs": [
+      0.0001,
+      0.0003,
+      0.001
+    ],
+    "pilot_epochs": 3,
+    "pilot_images": 8192,
+    "selection_metric": "AP50_95"
+  },
+  "manifests": {
+    "train": "86d40ad7379b5584b495424fee8ad7ce8c191a2517dda755bf1a8516c232c471",
+    "val": "eb4e7e7f50cfb762ef715cb2e1784b2eedadb77af41bf4dbf5635c4aef9d0b9c"
+  },
+  "ti_commit": "f272548ef0fe96046f1bf2c3833e040a1ecf8e44",
+  "initial_checkpoint_sha256": "7d17806cda7bb4e1c94b6838e52d66c5fa93a421d94d2ada42f23da800b84559",
+  "train_indices": null,
+  "source_sha256": {
+    "model.py": "aecae84761efa409a0312c326dc31a98ca2fc4dcaa2f36642c51c1b1e97928a2",
+    "data.py": "1abcca57c5e1435598aa8edc081ba475a48d6e16bc0e47738e28bfafbc81e20f",
+    "metrics.py": "56ce318b32b6e408e4ed6d2a46ae6cacd3c97a798c05e1d143141b94a53c0acd",
+    "train.py": "20709ef34a8ac297c10c53d6f219f71baed79e37d93a1159d2897d549aacd347"
+  }
+}

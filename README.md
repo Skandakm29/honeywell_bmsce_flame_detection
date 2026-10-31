@@ -25,6 +25,8 @@ The final technology stack and implementation details will follow the project's 
 ---
 
 ## Current implementation (28 October 2026)
+YOLOv9-S-TI-Lite: [completed lab results and reproduction](docs/RESULTS_YOLOV9.md), [alternative Colab workflow](docs/YOLOV9_COLAB.md). Reported test mAP@50:95 is59.94%; limitations and comparison protocol are documented with the results. Board validation remains pending.
+
 The full_v1 baseline completed 20 epochs on Colab T4. Selected epoch 17: AP50 62.69%, AP50:95 32.92% on a 2,000-image validation subset. This is a baseline, not production acceptance. Held-out testing and TI/video integration remain pending.
 
 - [Start here: teammate / AI-agent handoff](docs/PROJECT_STATUS.md)
