@@ -1,0 +1,9 @@
+{
+  "python": "3.11.14",
+  "torch": "2.5.1+cu124",
+  "device": "cuda",
+  "gpu": "NVIDIA RTX A5000",
+  "parameters_training_including_aux": 9743334,
+  "ti_commit": "f272548ef0fe96046f1bf2c3833e040a1ecf8e44",
+  "resume": false
+}

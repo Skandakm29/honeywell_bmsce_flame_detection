@@ -1,0 +1,14 @@
+{
+  "onnx_checker": true,
+  "parity_passed": true,
+  "parity_inputs": 3,
+  "box_max_absolute_error_pixels": 0.005859375,
+  "box_atol_pixels": 0.05,
+  "box_rtol": 0,
+  "score_max_absolute_error": 7.510185241699219e-06,
+  "score_atol": 1e-05,
+  "score_rtol": 0.001,
+  "sha256": "332cb480c4a4f3d8cdfbb3f5545a2e08211f6ae3db492d1d08d22318e2c78544",
+  "bytes": 28952675,
+  "parameters_inference": 7195619
+}

@@ -1,0 +1,1352 @@
+[
+  {
+    "epoch": 1,
+    "loss": {
+      "box": 1.827574060702732,
+      "dfl": 1.8694701477330016,
+      "cls": 5.6425563014466
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.32854982825231005,
+        "AP50": 0.6068693372316952,
+        "AP75": 0.30552175063513815,
+        "AP_small": 0.16980203849668438,
+        "AP_medium": 0.3068940701034241,
+        "AP_large": 0.524774864672287,
+        "AR1": 0.2279228855721393,
+        "AR10": 0.4886815920398009,
+        "AR100": 0.5882462686567165,
+        "AR_small": 0.46173285198555947,
+        "AR_medium": 0.6005016722408026,
+        "AR_large": 0.7258771929824561
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 546,
+        "FP": 110,
+        "FN": 1062,
+        "precision": 0.8323170731707317,
+        "recall": 0.33955223880597013,
+        "F1": 0.48233215547703173
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 27.94132379977964,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 2143.14365740004,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 2,
+    "loss": {
+      "box": 1.8169097356265644,
+      "dfl": 1.842870438206952,
+      "cls": 1.82984893762273
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.35432313760742634,
+        "AP50": 0.6535222712857438,
+        "AP75": 0.32756048246483976,
+        "AP_small": 0.17992442006919132,
+        "AP_medium": 0.3445702857618811,
+        "AP_large": 0.5543156378509998,
+        "AR1": 0.23743781094527366,
+        "AR10": 0.4953358208955224,
+        "AR100": 0.5853855721393034,
+        "AR_small": 0.4435018050541517,
+        "AR_medium": 0.6076923076923078,
+        "AR_large": 0.7285087719298246
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 685,
+        "FP": 153,
+        "FN": 923,
+        "precision": 0.8174224343675418,
+        "recall": 0.4259950248756219,
+        "F1": 0.5600981193785773
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 27.767572600161657,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1876.504537800094,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 3,
+    "loss": {
+      "box": 1.8040004557773306,
+      "dfl": 1.8272052911473184,
+      "cls": 1.6658538766017734
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.36330612984968863,
+        "AP50": 0.6511802458428274,
+        "AP75": 0.34201545629784863,
+        "AP_small": 0.19728241460157858,
+        "AP_medium": 0.3522680492829921,
+        "AP_large": 0.5493704132455859,
+        "AR1": 0.24434079601990052,
+        "AR10": 0.5087686567164179,
+        "AR100": 0.595087064676617,
+        "AR_small": 0.4653429602888087,
+        "AR_medium": 0.6162207357859533,
+        "AR_large": 0.725
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 694,
+        "FP": 185,
+        "FN": 914,
+        "precision": 0.7895335608646189,
+        "recall": 0.43159203980099503,
+        "F1": 0.5581021310816244
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 27.549892200157046,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1885.8019904999528,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 4,
+    "loss": {
+      "box": 1.7825111292175055,
+      "dfl": 1.8100820955072885,
+      "cls": 1.5929990726385233
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.387396121374003,
+        "AP50": 0.6880957819290753,
+        "AP75": 0.3565056314085213,
+        "AP_small": 0.2074101410618118,
+        "AP_medium": 0.3804346851543197,
+        "AP_large": 0.5853851976738321,
+        "AR1": 0.2500621890547264,
+        "AR10": 0.5207089552238806,
+        "AR100": 0.6017412935323383,
+        "AR_small": 0.46660649819494593,
+        "AR_medium": 0.6212374581939799,
+        "AR_large": 0.7403508771929824
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 756,
+        "FP": 180,
+        "FN": 852,
+        "precision": 0.8076923076923077,
+        "recall": 0.4701492537313433,
+        "F1": 0.5943396226415094
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 37.69549409998581,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 2057.2283807001077,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 5,
+    "loss": {
+      "box": 1.7647005430041003,
+      "dfl": 1.787532573170052,
+      "cls": 1.5537880537553137
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.40315632653228417,
+        "AP50": 0.7032866917207734,
+        "AP75": 0.3880449119522085,
+        "AP_small": 0.21726980849524366,
+        "AP_medium": 0.3886821079859953,
+        "AP_large": 0.6120410424389348,
+        "AR1": 0.2555970149253731,
+        "AR10": 0.5350124378109453,
+        "AR100": 0.6152363184079601,
+        "AR_small": 0.477797833935018,
+        "AR_medium": 0.6352842809364547,
+        "AR_large": 0.7559210526315789
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 774,
+        "FP": 165,
+        "FN": 834,
+        "precision": 0.8242811501597445,
+        "recall": 0.48134328358208955,
+        "F1": 0.607773851590106
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.957222800003365,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1957.1221729998942,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 6,
+    "loss": {
+      "box": 1.7458613705328945,
+      "dfl": 1.7696792855333585,
+      "cls": 1.515696229111152
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.413655906446593,
+        "AP50": 0.7168362905224723,
+        "AP75": 0.4070955084438472,
+        "AP_small": 0.22809099449179163,
+        "AP_medium": 0.406020691480801,
+        "AP_large": 0.6147473016419499,
+        "AR1": 0.25690298507462683,
+        "AR10": 0.5376243781094526,
+        "AR100": 0.6155472636815921,
+        "AR_small": 0.4817689530685921,
+        "AR_medium": 0.6364548494983278,
+        "AR_large": 0.7506578947368421
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 818,
+        "FP": 163,
+        "FN": 790,
+        "precision": 0.8338430173292558,
+        "recall": 0.5087064676616916,
+        "F1": 0.6319042101197374
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 27.08079639985226,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1891.9723195000552,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 7,
+    "loss": {
+      "box": 1.7410226713524604,
+      "dfl": 1.7738915665632289,
+      "cls": 1.4952592416802442
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.41941177863446516,
+        "AP50": 0.7213752352421609,
+        "AP75": 0.409416947719463,
+        "AP_small": 0.22963002184880396,
+        "AP_medium": 0.40442129843908936,
+        "AP_large": 0.6312524564326281,
+        "AR1": 0.2648009950248756,
+        "AR10": 0.5435323383084577,
+        "AR100": 0.6169154228855721,
+        "AR_small": 0.4812274368231047,
+        "AR_medium": 0.6332775919732442,
+        "AR_large": 0.7603070175438595
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 821,
+        "FP": 182,
+        "FN": 787,
+        "precision": 0.8185443668993021,
+        "recall": 0.5105721393034826,
+        "F1": 0.6288778245882803
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.92274000006728,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1873.5116067999043,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 8,
+    "loss": {
+      "box": 1.7177627359302143,
+      "dfl": 1.7614650532138072,
+      "cls": 1.455030256572807
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.41660160563674176,
+        "AP50": 0.7175339209129956,
+        "AP75": 0.4055160239789705,
+        "AP_small": 0.23142313222284672,
+        "AP_medium": 0.40410770150743736,
+        "AP_large": 0.6221081322033989,
+        "AR1": 0.262002487562189,
+        "AR10": 0.5440298507462688,
+        "AR100": 0.6168532338308459,
+        "AR_small": 0.4763537906137184,
+        "AR_medium": 0.6396321070234113,
+        "AR_large": 0.7576754385964912
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 825,
+        "FP": 185,
+        "FN": 783,
+        "precision": 0.8168316831683168,
+        "recall": 0.5130597014925373,
+        "F1": 0.6302521008403361
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.51369469985366,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1867.6474876999855,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 9,
+    "loss": {
+      "box": 1.7108578818652325,
+      "dfl": 1.7493569513282026,
+      "cls": 1.4355106103906459
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.4189890237020963,
+        "AP50": 0.7245725875936293,
+        "AP75": 0.4061377537914817,
+        "AP_small": 0.23085755052428109,
+        "AP_medium": 0.4100364049033923,
+        "AP_large": 0.6215451814852968,
+        "AR1": 0.26293532338308456,
+        "AR10": 0.5423507462686568,
+        "AR100": 0.6182213930348259,
+        "AR_small": 0.4779783393501805,
+        "AR_medium": 0.639799331103679,
+        "AR_large": 0.7603070175438597
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 850,
+        "FP": 182,
+        "FN": 758,
+        "precision": 0.8236434108527132,
+        "recall": 0.5286069651741293,
+        "F1": 0.6439393939393939
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.926452399929985,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1851.3718225001357,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 10,
+    "loss": {
+      "box": 1.6988349933278524,
+      "dfl": 1.7472214224595437,
+      "cls": 1.4082925128567616
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.42096738768555403,
+        "AP50": 0.7257259431081078,
+        "AP75": 0.41327970252356566,
+        "AP_small": 0.23136595896003762,
+        "AP_medium": 0.41161629335121064,
+        "AP_large": 0.6249315413085882,
+        "AR1": 0.2631840796019901,
+        "AR10": 0.5447139303482588,
+        "AR100": 0.6184701492537313,
+        "AR_small": 0.4833935018050542,
+        "AR_medium": 0.6364548494983278,
+        "AR_large": 0.7589912280701754
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 855,
+        "FP": 192,
+        "FN": 753,
+        "precision": 0.8166189111747851,
+        "recall": 0.5317164179104478,
+        "F1": 0.6440677966101696
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.685420100111514,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1864.1292802998796,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 11,
+    "loss": {
+      "box": 1.6846621128367514,
+      "dfl": 1.7346822018889863,
+      "cls": 1.3993810406564346
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.4244948972743254,
+        "AP50": 0.7281555586972228,
+        "AP75": 0.41890259705426425,
+        "AP_small": 0.2330569099183625,
+        "AP_medium": 0.41387909028601133,
+        "AP_large": 0.6312192310916598,
+        "AR1": 0.26225124378109455,
+        "AR10": 0.5454601990049752,
+        "AR100": 0.623320895522388,
+        "AR_small": 0.49097472924187724,
+        "AR_medium": 0.6391304347826086,
+        "AR_large": 0.7633771929824561
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 857,
+        "FP": 191,
+        "FN": 751,
+        "precision": 0.8177480916030534,
+        "recall": 0.5329601990049752,
+        "F1": 0.6453313253012049
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 27.372811400098726,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1878.5470992999617,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 12,
+    "loss": {
+      "box": 1.6694611040284446,
+      "dfl": 1.7162359255438244,
+      "cls": 1.3676525860919813
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.42571145552052764,
+        "AP50": 0.7299579910290623,
+        "AP75": 0.4178017021869582,
+        "AP_small": 0.23301366900962325,
+        "AP_medium": 0.41519968480089237,
+        "AP_large": 0.6325501570532657,
+        "AR1": 0.2632462686567164,
+        "AR10": 0.5479477611940299,
+        "AR100": 0.6225124378109453,
+        "AR_small": 0.4879061371841155,
+        "AR_medium": 0.6408026755852843,
+        "AR_large": 0.7620614035087719
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 859,
+        "FP": 199,
+        "FN": 749,
+        "precision": 0.8119092627599244,
+        "recall": 0.5342039800995025,
+        "F1": 0.6444111027756939
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.95179140008986,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1886.832397900056,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 13,
+    "loss": {
+      "box": 1.6683476300458053,
+      "dfl": 1.7183025462509762,
+      "cls": 1.362551007551129
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.42588086185230367,
+        "AP50": 0.733355579867817,
+        "AP75": 0.41127823960524684,
+        "AP_small": 0.23551376241315616,
+        "AP_medium": 0.41410498824807257,
+        "AP_large": 0.632249794177266,
+        "AR1": 0.2656094527363184,
+        "AR10": 0.545957711442786,
+        "AR100": 0.620771144278607,
+        "AR_small": 0.4862815884476534,
+        "AR_medium": 0.6394648829431437,
+        "AR_large": 0.7596491228070175
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 873,
+        "FP": 193,
+        "FN": 735,
+        "precision": 0.8189493433395872,
+        "recall": 0.542910447761194,
+        "F1": 0.6529543754674645
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.99134760000743,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1875.7753261998296,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 14,
+    "loss": {
+      "box": 1.6530680581101957,
+      "dfl": 1.7028670794474035,
+      "cls": 1.3130117624562914
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.42622988471084583,
+        "AP50": 0.7330102144493823,
+        "AP75": 0.40905574745337536,
+        "AP_small": 0.23582456928909268,
+        "AP_medium": 0.4138180739260884,
+        "AP_large": 0.6325795791400632,
+        "AR1": 0.2652363184079602,
+        "AR10": 0.5465174129353234,
+        "AR100": 0.6205845771144278,
+        "AR_small": 0.48321299638989174,
+        "AR_medium": 0.6409698996655517,
+        "AR_large": 0.7607456140350877
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 882,
+        "FP": 199,
+        "FN": 726,
+        "precision": 0.8159111933395005,
+        "recall": 0.5485074626865671,
+        "F1": 0.6560059501673485
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.808496200013906,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1836.3704742998816,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 15,
+    "loss": {
+      "box": 1.6504752479816251,
+      "dfl": 1.706687620429234,
+      "cls": 1.3114819661127957
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.4268156614071081,
+        "AP50": 0.7371459224730029,
+        "AP75": 0.4102801667761156,
+        "AP_small": 0.23919239613122548,
+        "AP_medium": 0.41404235229672803,
+        "AP_large": 0.6325079631512874,
+        "AR1": 0.26598258706467665,
+        "AR10": 0.5485696517412936,
+        "AR100": 0.6197139303482587,
+        "AR_small": 0.48140794223826705,
+        "AR_medium": 0.6391304347826088,
+        "AR_large": 0.762280701754386
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 891,
+        "FP": 207,
+        "FN": 717,
+        "precision": 0.8114754098360656,
+        "recall": 0.5541044776119403,
+        "F1": 0.6585365853658536
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 27.10963760013692,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1877.5434016999789,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 16,
+    "loss": {
+      "box": 1.627905358195545,
+      "dfl": 1.6985661519798267,
+      "cls": 1.2967824985133438
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.4292075345158331,
+        "AP50": 0.7357849341997187,
+        "AP75": 0.41277339785707473,
+        "AP_small": 0.2400205104647383,
+        "AP_medium": 0.416216572390078,
+        "AP_large": 0.6369206818164882,
+        "AR1": 0.26865671641791045,
+        "AR10": 0.5508706467661691,
+        "AR100": 0.6183457711442786,
+        "AR_small": 0.4796028880866426,
+        "AR_medium": 0.6374581939799331,
+        "AR_large": 0.7618421052631579
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 897,
+        "FP": 207,
+        "FN": 711,
+        "precision": 0.8125,
+        "recall": 0.5578358208955224,
+        "F1": 0.661504424778761
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.662785399938002,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1863.9025771999732,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 17,
+    "loss": {
+      "box": 1.626372471789399,
+      "dfl": 1.6969152511606764,
+      "cls": 1.270990293784384
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.4313976736597408,
+        "AP50": 0.7409712659769274,
+        "AP75": 0.41871214325242556,
+        "AP_small": 0.24230963740954375,
+        "AP_medium": 0.4192928642148384,
+        "AP_large": 0.6349787811145537,
+        "AR1": 0.26722636815920403,
+        "AR10": 0.5507462686567164,
+        "AR100": 0.6196517412935323,
+        "AR_small": 0.48357400722021654,
+        "AR_medium": 0.641304347826087,
+        "AR_large": 0.756578947368421
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 912,
+        "FP": 204,
+        "FN": 696,
+        "precision": 0.8172043010752689,
+        "recall": 0.5671641791044776,
+        "F1": 0.6696035242290749
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.786996300099418,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1877.5344459000044,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 18,
+    "loss": {
+      "box": 1.617269653868219,
+      "dfl": 1.6814904747772792,
+      "cls": 1.2448993260331624
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.43292494230534234,
+        "AP50": 0.7424940029418152,
+        "AP75": 0.41833748288203665,
+        "AP_small": 0.2421761773263669,
+        "AP_medium": 0.4210131291371524,
+        "AP_large": 0.6376234918895584,
+        "AR1": 0.26791044776119405,
+        "AR10": 0.5525497512437811,
+        "AR100": 0.6220771144278607,
+        "AR_small": 0.48844765342960283,
+        "AR_medium": 0.6399665551839465,
+        "AR_large": 0.7609649122807018
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 923,
+        "FP": 207,
+        "FN": 685,
+        "precision": 0.8168141592920354,
+        "recall": 0.5740049751243781,
+        "F1": 0.6742147552958363
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.861284699989483,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1837.8895866998937,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 19,
+    "loss": {
+      "box": 1.5990718787410347,
+      "dfl": 1.6770560902291074,
+      "cls": 1.2397148943424585
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.43240964885610506,
+        "AP50": 0.7424567247094158,
+        "AP75": 0.42473718562354673,
+        "AP_small": 0.239776395315612,
+        "AP_medium": 0.41868369332206734,
+        "AP_large": 0.6390603131213267,
+        "AR1": 0.2656094527363185,
+        "AR10": 0.5501865671641791,
+        "AR100": 0.6194651741293532,
+        "AR_small": 0.4889891696750902,
+        "AR_medium": 0.6341137123745819,
+        "AR_large": 0.7587719298245614
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 917,
+        "FP": 209,
+        "FN": 691,
+        "precision": 0.8143872113676732,
+        "recall": 0.570273631840796,
+        "F1": 0.6708119970738844
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.951485000085086,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1855.0645634999964,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 20,
+    "loss": {
+      "box": 1.5957216860469494,
+      "dfl": 1.6709643003023402,
+      "cls": 1.2166916614422745
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.4333842780581502,
+        "AP50": 0.7380887713308543,
+        "AP75": 0.4264328668624297,
+        "AP_small": 0.23769244432799497,
+        "AP_medium": 0.42075910942395733,
+        "AP_large": 0.6401800756151792,
+        "AR1": 0.2675995024875622,
+        "AR10": 0.5513059701492538,
+        "AR100": 0.6212064676616915,
+        "AR_small": 0.49097472924187724,
+        "AR_medium": 0.6367892976588629,
+        "AR_large": 0.7589912280701754
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 919,
+        "FP": 215,
+        "FN": 689,
+        "precision": 0.810405643738977,
+        "recall": 0.5715174129353234,
+        "F1": 0.6703136396790664
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.851504599908367,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1898.0907962999772,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 21,
+    "loss": {
+      "box": 1.5823321706368725,
+      "dfl": 1.6599220753856536,
+      "cls": 1.2137848152389819
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.4320407135715649,
+        "AP50": 0.7377805133014458,
+        "AP75": 0.4220505975747489,
+        "AP_small": 0.23733557849470502,
+        "AP_medium": 0.41923300205119945,
+        "AP_large": 0.6393977535986323,
+        "AR1": 0.26610696517412935,
+        "AR10": 0.550497512437811,
+        "AR100": 0.6190298507462686,
+        "AR_small": 0.48519855595667866,
+        "AR_medium": 0.6374581939799331,
+        "AR_large": 0.7574561403508772
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 928,
+        "FP": 224,
+        "FN": 680,
+        "precision": 0.8055555555555556,
+        "recall": 0.5771144278606966,
+        "F1": 0.6724637681159421
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.32316969987005,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1852.836842500139,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 22,
+    "loss": {
+      "box": 1.5715658457392652,
+      "dfl": 1.653503967976162,
+      "cls": 1.1823477991833187
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.4320427535084815,
+        "AP50": 0.740234064301491,
+        "AP75": 0.4208833654141467,
+        "AP_small": 0.23663893936022762,
+        "AP_medium": 0.42301038435559885,
+        "AP_large": 0.6355383966534697,
+        "AR1": 0.26548507462686566,
+        "AR10": 0.5483830845771144,
+        "AR100": 0.6193407960199006,
+        "AR_small": 0.4859205776173285,
+        "AR_medium": 0.6389632107023412,
+        "AR_large": 0.7557017543859649
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 932,
+        "FP": 231,
+        "FN": 676,
+        "precision": 0.8013757523645744,
+        "recall": 0.5796019900497512,
+        "F1": 0.6726813424756405
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.798934899969026,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1860.6755159001332,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 23,
+    "loss": {
+      "box": 1.5530347160747404,
+      "dfl": 1.6451863238788684,
+      "cls": 1.1693099988221163
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.43314174889661555,
+        "AP50": 0.7400105476627488,
+        "AP75": 0.42288843605077925,
+        "AP_small": 0.23315814849802552,
+        "AP_medium": 0.4235390430038543,
+        "AP_large": 0.6390367245841548,
+        "AR1": 0.2650497512437811,
+        "AR10": 0.5546641791044776,
+        "AR100": 0.6201492537313433,
+        "AR_small": 0.48646209386281586,
+        "AR_medium": 0.6367892976588629,
+        "AR_large": 0.7607456140350877
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 934,
+        "FP": 225,
+        "FN": 674,
+        "precision": 0.8058671268334772,
+        "recall": 0.5808457711442786,
+        "F1": 0.6750993856161908
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 27.006584600079805,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1836.1405056000222,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 24,
+    "loss": {
+      "box": 1.5499854636756556,
+      "dfl": 1.636371245286976,
+      "cls": 1.1481677022390255
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.43337210635744317,
+        "AP50": 0.7406369002186525,
+        "AP75": 0.42622078609393793,
+        "AP_small": 0.2336261242867918,
+        "AP_medium": 0.42473966845152616,
+        "AP_large": 0.6375896828318867,
+        "AR1": 0.26660447761194034,
+        "AR10": 0.5527363184079601,
+        "AR100": 0.6205845771144278,
+        "AR_small": 0.4889891696750902,
+        "AR_medium": 0.6361204013377926,
+        "AR_large": 0.7600877192982456
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 938,
+        "FP": 234,
+        "FN": 670,
+        "precision": 0.8003412969283277,
+        "recall": 0.5833333333333334,
+        "F1": 0.6748201438848921
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.948453799821436,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1883.7920823001768,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 25,
+    "loss": {
+      "box": 1.5278446388553757,
+      "dfl": 1.6252837591961191,
+      "cls": 1.1374300457199535
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.43221599045979237,
+        "AP50": 0.7385840558130407,
+        "AP75": 0.42826065473219066,
+        "AP_small": 0.23239074997971332,
+        "AP_medium": 0.4233891047700904,
+        "AP_large": 0.6360731560152839,
+        "AR1": 0.266044776119403,
+        "AR10": 0.5521144278606964,
+        "AR100": 0.6199004975124378,
+        "AR_small": 0.48718411552346563,
+        "AR_medium": 0.6374581939799331,
+        "AR_large": 0.7581140350877192
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 935,
+        "FP": 244,
+        "FN": 673,
+        "precision": 0.7930449533502969,
+        "recall": 0.5814676616915423,
+        "F1": 0.6709723717258702
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.558062099851668,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1849.8394571999088,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 26,
+    "loss": {
+      "box": 1.526692123534036,
+      "dfl": 1.6250892802997898,
+      "cls": 1.1225193448604833
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.43146799484500387,
+        "AP50": 0.7383469809267269,
+        "AP75": 0.42500254836472595,
+        "AP_small": 0.23037087943112167,
+        "AP_medium": 0.4243737940447494,
+        "AP_large": 0.635541645405879,
+        "AR1": 0.2685945273631841,
+        "AR10": 0.5512437810945273,
+        "AR100": 0.6185945273631841,
+        "AR_small": 0.4850180505415162,
+        "AR_medium": 0.6356187290969899,
+        "AR_large": 0.7585526315789474
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 941,
+        "FP": 242,
+        "FN": 667,
+        "precision": 0.7954353338968724,
+        "recall": 0.5851990049751243,
+        "F1": 0.6743102830526692
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.910945700015873,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1879.9107278999873,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 27,
+    "loss": {
+      "box": 1.518527993232702,
+      "dfl": 1.6185338631617459,
+      "cls": 1.1117383914906813
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.42946931575130454,
+        "AP50": 0.7324868012142483,
+        "AP75": 0.4152435189157649,
+        "AP_small": 0.2332573912657516,
+        "AP_medium": 0.4234477423815881,
+        "AP_large": 0.6274844563334082,
+        "AR1": 0.26853233830845774,
+        "AR10": 0.55,
+        "AR100": 0.6181592039800996,
+        "AR_small": 0.48646209386281586,
+        "AR_medium": 0.6354515050167224,
+        "AR_large": 0.7554824561403508
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 943,
+        "FP": 252,
+        "FN": 665,
+        "precision": 0.7891213389121339,
+        "recall": 0.5864427860696517,
+        "F1": 0.6728505173028897
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 27.00167979998514,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1875.162064799806,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 28,
+    "loss": {
+      "box": 1.5124929125297886,
+      "dfl": 1.609440553524463,
+      "cls": 1.0826757932597657
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.42773303544647523,
+        "AP50": 0.7343104488626697,
+        "AP75": 0.409740009285583,
+        "AP_small": 0.23490495908410555,
+        "AP_medium": 0.4220202952657895,
+        "AP_large": 0.622714283990328,
+        "AR1": 0.26784825870646767,
+        "AR10": 0.548320895522388,
+        "AR100": 0.6162935323383085,
+        "AR_small": 0.48736462093862815,
+        "AR_medium": 0.632943143812709,
+        "AR_large": 0.7510964912280703
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 948,
+        "FP": 256,
+        "FN": 660,
+        "precision": 0.7873754152823921,
+        "recall": 0.5895522388059702,
+        "F1": 0.6742532005689901
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 36.978991199983284,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 2199.1603713999502,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 29,
+    "loss": {
+      "box": 1.5056831011209122,
+      "dfl": 1.609433032324667,
+      "cls": 1.0792156866820077
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.42868893528123775,
+        "AP50": 0.7347337881235656,
+        "AP75": 0.41314803209462264,
+        "AP_small": 0.23531865609615538,
+        "AP_medium": 0.4203137576124518,
+        "AP_large": 0.6285081756980223,
+        "AR1": 0.267226368159204,
+        "AR10": 0.5481965174129353,
+        "AR100": 0.6161069651741293,
+        "AR_small": 0.4837545126353791,
+        "AR_medium": 0.6342809364548494,
+        "AR_large": 0.7530701754385966
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 951,
+        "FP": 258,
+        "FN": 657,
+        "precision": 0.7866004962779156,
+        "recall": 0.5914179104477612,
+        "F1": 0.6751863684771033
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.562928900122643,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1850.7207877999172,
+    "mosaic": 0.5
+  },
+  {
+    "epoch": 30,
+    "loss": {
+      "box": 1.4930473166365037,
+      "dfl": 1.6029923386564187,
+      "cls": 1.0632440638461143
+    },
+    "monitor_validation": {
+      "coco": {
+        "AP50_95": 0.425461591580983,
+        "AP50": 0.7329395918329691,
+        "AP75": 0.41290954975718663,
+        "AP_small": 0.23450601723392236,
+        "AP_medium": 0.4169429033517126,
+        "AP_large": 0.6221428937993323,
+        "AR1": 0.2666044776119403,
+        "AR10": 0.5437189054726368,
+        "AR100": 0.6104477611940299,
+        "AR_small": 0.4796028880866426,
+        "AR_medium": 0.6295986622073578,
+        "AR_large": 0.7442982456140351
+      },
+      "at_confidence_0.40": {
+        "confidence": 0.4,
+        "matching_iou": 0.5,
+        "TP": 961,
+        "FP": 257,
+        "FN": 647,
+        "precision": 0.7889983579638752,
+        "recall": 0.597636815920398,
+        "F1": 0.6801132342533616
+      },
+      "images": 2000,
+      "boxes": 1608,
+      "evaluation_seconds": 26.55730769992806,
+      "definitions": {
+        "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+        "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+        "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+        "FP": "false-positive boxes, not video alarm events"
+      }
+    },
+    "seconds": 1851.931146199815,
+    "mosaic": 0.5
+  }
+]

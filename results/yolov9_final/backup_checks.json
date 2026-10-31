@@ -1,0 +1,34 @@
+{
+  "archive_sha256": "fd3c14dec24f4c477d73df0eed859248340d89a9803ccb68fce60f56d91ab787",
+  "crc_passed": true,
+  "source_hashes_passed": true,
+  "selected_checkpoint_sha256": "48d8e654ac1e3381e122a52cdfca100d1840e8cf6db0294ac882b52ab1c4a51f",
+  "onnx_sha256": "332cb480c4a4f3d8cdfbb3f5545a2e08211f6ae3db492d1d08d22318e2c78544",
+  "local_checkpoint_checks": {
+    "best": {
+      "readable": true,
+      "strict_weights_loaded": true,
+      "epoch": 20,
+      "cpu_forward_shape": [
+        1,
+        84,
+        5
+      ],
+      "finite_cpu_forward": true
+    },
+    "last": {
+      "readable": true,
+      "strict_weights_loaded": true,
+      "epoch": 30,
+      "resume_state_present": true
+    },
+    "previous": {
+      "readable": true,
+      "strict_weights_loaded": true,
+      "epoch": 29,
+      "resume_state_present": true
+    }
+  },
+  "saved_onnx_checker_passed": true,
+  "scope": "Archive/source/model hashes and ZIP CRC passed; all three full-run checkpoints loaded strictly; best checkpoint finite CPU forward at64px; saved ONNX checker passed. Not a repeated full evaluation or board test."
+}
