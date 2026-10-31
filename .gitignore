@@ -57,6 +57,9 @@ results/**/*.png
 results/**/*.jpg
 # Verified external artifact backup; publish only reviewed summaries, not this tree.
 /results/lab_backup_20261031/
+/results/webcam/
+/results/camera_comparison/
+/test_clips/
 # Local verification scripts, session evidence and superseded Colab notebook.
 /results/test_tmp/
 /results/check_lab_models.py
