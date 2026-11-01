@@ -1,5 +1,7 @@
 # FASDD-CV hard-negative coverage check — 31 October 2026
 
+**Updated 1 November:** This is the historical 32-image spot check. The later full negative-pool report establishes additional examples, including welding. Read `../docs/FASDD_FULL_NEGATIVE_AUDIT_REVIEW.md` for current findings and limitations. Its 106 listed records were checked against the preserved dataset; 54 are negative training records for YOLOv9. Heaters/fire-on-screen remain unconfirmed. Do not use this older check to claim welding remains unconfirmed.
+
 Sources: original FASDD paper https://doi.org/10.1080/10095020.2024.2347922 and official record https://doi.org/10.57760/sciencedb.j00104.00103 . Read local preserved Kaggle ZIP annotations/train.json and archive member names; no dataset/training modifications.
 
 Original authors describe confusing non-fire/non-smoke images and variation in distance, indoor/outdoor scenes and daylight/night conditions. Annotation guidance addresses partial occlusion, color differences, small targets and reflections. This does not establish complete coverage of a deployment checklist or per-condition counts.

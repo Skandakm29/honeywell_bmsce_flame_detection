@@ -1,0 +1,33 @@
+{
+  "reported_confirmed_rows": 106,
+  "reported_split_counts": {
+    "train": 54,
+    "test": 34,
+    "val": 18
+  },
+  "all_ids_paths_splits_empty_flame_targets_and_hashes_verified": true,
+  "reported_label_issue_training_count": 0,
+  "pdf_sha256": "e50d17850cec8ff8d50399be168200ce7334503f6a58cb05ab7b6e95edfcfba1",
+  "condition_counts_reported": {
+    "Welding": 7,
+    "Grinding sparks": 5,
+    "Sunlight through windows": 7,
+    "Reflections on metal/glass": 7,
+    "Vehicle headlights/tail lights": 34,
+    "LED indicator lights": 9,
+    "Red/orange clothing": 37
+  },
+  "training_membership_counts": {
+    "Welding": 3,
+    "Grinding sparks": 3,
+    "Sunlight through windows": 4,
+    "Reflections on metal/glass": 4,
+    "Vehicle headlights/tail lights": 11,
+    "LED indicator lights": 4,
+    "Red/orange clothing": 25
+  },
+  "training_membership_model_scope": "YOLOv9 preserved Kaggle manifests; not independently established for Nano official training split",
+  "semantic_review_scope": "Illustrated report examples plus all7welding/all5sparks/four label-error originals; not full independent rereview of106 category assignments",
+  "full_negative_pool_execution": "reported, not independently reproduced without full-run notebook/logs/CSVs",
+  "dataset_unchanged": true
+}
