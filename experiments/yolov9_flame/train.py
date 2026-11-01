@@ -21,6 +21,21 @@ from metrics import evaluate
 from model import Detector, TI_COMMIT, load_pretrained
 
 
+def load_trained(model, checkpoint, expected_sha256, size):
+    """Load an explicitly trusted trained checkpoint, including the flame classifier."""
+    if sha256(checkpoint) != expected_sha256:
+        raise RuntimeError('Trained initialization checksum mismatch')
+    state = torch.load(checkpoint, map_location='cpu', weights_only=False)
+    if state['identity']['ti_commit'] != TI_COMMIT or state['identity']['config']['size'] != size:
+        raise RuntimeError('Trained initialization architecture/input mismatch')
+    weights = state['model']
+    if not all(torch.isfinite(v).all() for v in weights.values()):
+        raise FloatingPointError('Nonfinite trained initialization')
+    model.load_state_dict(weights, strict=True)
+    return dict(checkpoint_sha256=expected_sha256, source_epoch=state['epoch'],
+                matched_tensors=len(weights), reinitialized=[], mode='trained_weights_only')
+
+
 def atomic_json(value, path):
     path = Path(path)
     temporary = path.with_suffix('.json.tmp')
@@ -90,7 +105,9 @@ def train(config, tensorlab, checkpoint, manifests, work, *, train_indices=None,
         records = [records[i] for i in train_indices]
     validation = Flames(json.loads((manifests / 'val.json').read_text()), config['size'])
     model = Detector(tensorlab).to(device)
-    pretrained = load_pretrained(model, checkpoint)
+    trained_init = config.get('initialization') == 'trained'
+    pretrained = (load_trained(model, checkpoint, config['initial_checkpoint_sha256'], config['size'])
+                  if trained_init else load_pretrained(model, checkpoint))
     atomic_json(pretrained, work / 'pretrained_loading.json')
     ema = copy.deepcopy(model).eval()
     for p in ema.parameters():
@@ -106,7 +123,7 @@ def train(config, tensorlab, checkpoint, manifests, work, *, train_indices=None,
     batch_count = math.ceil(len(records) / config['batch'])
     updates_per_epoch = math.ceil(batch_count / config['accumulate'])
     total_updates = config['epochs'] * updates_per_epoch
-    warmup = max(1, config['warmup_epochs'] * updates_per_epoch)
+    warmup = max(1, config.get('warmup_updates', config['warmup_epochs'] * updates_per_epoch))
     start_epoch, skip_batches, updates, best, stale, history = 0, 0, 0, -1., 0, []
     resume = None
     for candidate in (work / 'last.pth', work / 'previous.pth'):
@@ -134,6 +151,16 @@ def train(config, tensorlab, checkpoint, manifests, work, *, train_indices=None,
         torch.set_rng_state(resume['rng_torch'])
         if device.type == 'cuda':
             torch.cuda.set_rng_state_all(resume['rng_cuda'])
+    elif trained_init:
+        # The unchanged starting model is a real candidate, not just a reference number.
+        baseline, _ = evaluate(ema, validation, config['batch'], config['workers'])
+        best = baseline['coco']['AP50_95']
+        if best is None:
+            raise RuntimeError('No flame annotations in monitor validation')
+        atomic_json(baseline, work / 'initial_monitor_metrics.json')
+        baseline_state = dict(model=ema.state_dict(), epoch=0, metrics=baseline, identity=identity)
+        save(baseline_state, work/'initial.pth')
+        save(baseline_state, work/'best.pth')
     environment = {'python': platform.python_version(), 'torch': torch.__version__,
                    'device': str(device), 'gpu': torch.cuda.get_device_name() if device.type == 'cuda' else None,
                    'parameters_training_including_aux': sum(p.numel() for p in model.parameters()),
@@ -150,9 +177,13 @@ def train(config, tensorlab, checkpoint, manifests, work, *, train_indices=None,
                   optimizer=optimizer.state_dict(), scaler=scaler.state_dict(), epoch=epoch,
                   next_batch=next_batch, updates=updates, best=best, stale=stale, history=history,
                   running_loss_sums=sums if next_batch else {}, running_loss_batches=seen if next_batch else 0,
+                  elapsed_training_seconds=previous_seconds + time.monotonic()-training_started,
                   rng_python=random.getstate(), rng_numpy=np.random.get_state(), rng_torch=torch.get_rng_state(),
                   rng_cuda=torch.cuda.get_rng_state_all() if device.type == 'cuda' else []), work / 'last.pth')
 
+    budget_hit = False
+    previous_seconds = resume.get('elapsed_training_seconds', sum(row['seconds'] for row in history)) if resume else 0.
+    training_started = time.monotonic()
     for epoch in range(start_epoch, config['epochs']):
         mosaic = config['mosaic_probability'] if epoch < config['epochs']-config['close_mosaic_epochs'] else 0.
         dataset = Flames(records, config['size'], augment=True, seed=config['seed'], mosaic=mosaic)
@@ -199,6 +230,10 @@ def train(config, tensorlab, checkpoint, manifests, work, *, train_indices=None,
                     scaler.update()
                     optimizer.zero_grad(set_to_none=True)
                     print('AMP overflow: skipped optimizer update', flush=True)
+                    if previous_seconds + time.monotonic()-training_started >= config.get('max_training_seconds', float('inf')):
+                        snapshot(epoch, batch_index+1)
+                        budget_hit = True
+                        break
                     continue
                 scaler.step(optimizer)
                 scaler.update()
@@ -208,11 +243,18 @@ def train(config, tensorlab, checkpoint, manifests, work, *, train_indices=None,
                 update_ema(ema, model, decay_value)
                 if updates % config['checkpoint_every_updates'] == 0:
                     snapshot(epoch, batch_index+1)
+                if previous_seconds + time.monotonic()-training_started >= config.get('max_training_seconds', float('inf')):
+                    snapshot(epoch, batch_index+1)
+                    budget_hit = True
+                    print('Training time budget reached; saved checkpoint, retaining best validated weights.', flush=True)
+                    break
             if (batch_index+1) % 20 == 0:
                 print(json.dumps(dict(epoch=epoch+1, batch=batch_index+1, total_batches=batch_count,
                                       loss=loss.item(), lr=optimizer.param_groups[0]['lr'],
                                       elapsed_seconds=time.perf_counter()-started,
                                       processed_batches=seen)), flush=True)
+        if budget_hit:
+            break
         skip_batches = 0
         metrics, _ = evaluate(ema, validation, config['batch'], config['workers'])
         score = metrics['coco']['AP50_95']
@@ -234,6 +276,7 @@ def train(config, tensorlab, checkpoint, manifests, work, *, train_indices=None,
     best_state = torch.load(work / 'best.pth', map_location='cpu', weights_only=False)
     atomic_json(dict(completed_epochs=len(history), best_epoch=best_state['epoch'],
                      best_monitor_AP50_95=best_state['metrics']['coco']['AP50_95'],
+                     stop_reason='time_budget' if budget_hit else 'epoch_or_patience_limit',
                      complete=True), work / 'training_summary.json')
     return best_state['metrics']['coco']['AP50_95']
 
