@@ -220,6 +220,15 @@ Later field tests (9 Nov, Measured, same temporal layer for both models):
 - a stricter false-alarm limit than last time
 - re-test on the same field clips with the same alarm rule
 
+**Planned, not started: higher-resolution processing.** The mentor approved it as long as it stays compatible with the AM62A and latency is acceptable. Two options:
+1. **Higher input size** (e.g. 960 or 1280 instead of 640): more pixels on every flame, but more compute.
+2. **Two-stage "zoom":**
+   - a cheap step on the full-resolution frame finds candidate spots (bright, warm, compact, flickering or moving)
+   - YOLO then runs on full-resolution crops around them, as well as the normal full-frame pass
+   - about 3× more pixels on small flames, so roughly 3× the candle range (**Estimate**)
+
+Both need the board's latency numbers first. Test on the 9 Nov daylight 1/3/4 m clip, plus no-flame clips to check false alarms.
+
 ### Earlier proposed steps
 
 1. **Small-flame dataset:**
