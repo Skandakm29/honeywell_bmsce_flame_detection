@@ -1,10 +1,10 @@
-"""Hard-negative mining with V9 and the review hand-off.
+"""Hard-negative mining with V9 and the review hand-off (no Claude on the lab PC).
 
 run       V9 (score floor .20) on every candidate negative + FASDD train no-box images; CLIP P(fire) on hits.
           Writes outbox/step2_review.zip (contact sheets + review_index.csv) for review on the laptop.
 finalize  Reads inbox/review_answers.csv (id,verdict: fire|not_fire|unsure) and writes mine/decisions.json.
 
-Rules (labels come from script + CLIP + AI visual review, never called human-verified):
+Rules (labels come from script + CLIP + Claude visual review, never called human-verified):
   wild images (D-Fire negatives, Open Images) with a V9 hit:
       CLIP P(fire) of every hit crop < .15 and max score < .50  -> hard negative (auto)
       any crop P(fire) >= .85                                    -> dropped (probably real fire)
