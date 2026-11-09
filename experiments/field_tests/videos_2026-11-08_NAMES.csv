@@ -1,0 +1,27 @@
+new_name,expected,description,original_name
+fire_bonfire_people_dancing.mp4,fire,"bonfire behind people moving in front, night, portrait",03c31e5e-e8bd-4c65-a420-69f26a2e0fb8.mp4
+fire_bonfire_night_far_1.mp4,fire,"bonfire about 10 m, night, 2 s",40c7ef65-599c-4330-8566-39f7778bea1d.mp4
+fire_bonfire_night_far_2.mp4,fire,"bonfire about 10 m, night, 2 s",b9c811e1-d4fa-462a-8c31-b12f73630dea.mp4
+fire_bonfire_night_close.mp4,fire,"bonfire close, night, 2 s",d229222c-f4bf-4552-9082-f158205ce31d.mp4
+nofire_diwali_string_lights_orange.mov,no fire,"orange LED string lights on trees, night",IMG_7617.MOV
+fire_candle_outdoor_night_hand_occlusion.mov,fire,"lit candle outdoors at night, street lamp behind, hand partly covers flame",IMG_7618.MOV
+nofire_candle_unlit_outdoor_night_streetlamp.mov,no fire,"UNLIT candle outdoors at night, bright street lamp",IMG_7619.MOV
+fire_candle_corridor_near_to_far.mov,fire,"lit candle in corridor, ceiling lights, gets smaller in frame",IMG_7620.MOV
+nofire_candle_unlit_corridor.mov,no fire,"candle just blown out (smoke, no flame), corridor lights",IMG_7621.MOV
+fire_candle_darkroom_wall_far.mov,fire,"small candle flame in holder on wall, dark room, portrait",IMG_7622.MOV
+nofire_candle_unlit_white_tiles.mov,no fire,"UNLIT candle in cup on white tiled wall, portrait",IMG_7623.MOV
+fire_candle_white_tiles_topview.mov,fire,"lit candle in cup on white tile floor, seen from above",IMG_7624.MOV
+fire_diya_kitchen_counter_far.mp4,fire,"small diya on kitchen counter, cluttered scene",WhatsApp Video 2026-11-07 at 8.38.38 PM.mp4
+fire_diya_steel_bowl_close.mp4,fire,"diya in steel bowl, close, glare and reflection",WhatsApp Video 2026-11-07 at 8.38.43 PM.mp4
+nofire_torch_kitchen_diya_unlit.mp4,no fire,"bright phone torch, UNLIT diya, kitchen counter",WhatsApp Video 2026-11-07 at 8.38.48 PM.mp4
+nofire_torch_steel_bowl_close.mp4,no fire,"bright phone torch next to steel bowl, no flame",WhatsApp Video 2026-11-07 at 8.38.52 PM.mp4
+fire_diya_kitchen_with_torch.mp4,fire,"LIT diya next to bright phone torch, kitchen counter",WhatsApp Video 2026-11-07 at 8.38.53 PM.mp4
+fire_diya_steel_bowl_with_torch_close.mp4,fire,"lit diya in steel bowl next to phone torch, dim, close",WhatsApp Video 2026-11-07 at 8.38.54 PM.mp4
+fire_lighter_hand_kitchen_mid.mp4,fire,"lighter held out at doorway, mid distance",WhatsApp Video 2026-11-07 at 8.38.55 PM.mp4
+fire_lighter_hands_near_railing.mp4,fire,"lighter held in both hands, near, railing",WhatsApp Video 2026-11-07 at 8.38.56 PM (1).mp4
+fire_lighter_hand_kitchen_far.mp4,fire,"lighter held out, far, tiny flame",WhatsApp Video 2026-11-07 at 8.38.56 PM.mp4
+fire_lighter_hand_close_with_pan.mp4,fire,lighter close; camera pans away at the end,WhatsApp Video 2026-11-07 at 8.38.57 PM.mp4
+fire_lighter_far_to_close.mp4,fire,lighter moving from far to close,WhatsApp Video 2026-11-07 at 8.38.58 PM.mp4
+mixed_diya_steel_bowl_blown_out.mp4,"fire, then no fire","lit diya in steel bowl, blown out midway",WhatsApp Video 2026-11-07 at 8.39.07 PM.mp4
+fire_paper_burning_kitchen_floor.mp4,fire,"paper sheet set on fire, then burning on the floor",WhatsApp Video 2026-11-07 at 8.39.29 PM.mp4
+nofire_torch_steel_bowl_still.jpeg,no fire,"still photo: phone torch next to bowl, no flame",WhatsApp Image 2026-11-07 at 8.38.55 PM.jpeg

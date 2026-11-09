@@ -1,0 +1,64 @@
+{
+  "base": {
+    "initialization": "trained",
+    "initial_checkpoint_sha256": "d046dab613faa72ec650d37dc40d0740ff50ac09df4eb97919d10cfd532b721d",
+    "size": 640,
+    "epochs": 8,
+    "min_epochs": 8,
+    "patience": 99,
+    "batch": 16,
+    "accumulate": 2,
+    "workers": 12,
+    "optimizer": "AdamW",
+    "lr": 0.00003,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 0,
+    "warmup_updates": 300,
+    "min_lr_ratio": 0.1,
+    "gradient_clip": 10.0,
+    "ema_decay": 0.9998,
+    "mosaic_probability": 0.5,
+    "close_mosaic_epochs": 2,
+    "checkpoint_every_updates": 250,
+    "seed": 42,
+    "amp": true,
+    "amp_initial_scale": 128.0,
+    "max_training_seconds": 36000
+  },
+  "variants": {
+    "a_data": null,
+    "b_zoom": {
+      "zoom_p": 0.3, "zoom_min": 0.5, "min_box_px": 6,
+      "paste_p": 0.0, "paste_max": 1, "paste_min_px": 8, "paste_max_px": 32,
+      "resample_p": 0.1, "blur_p": 0.1, "noise_p": 0.1, "jpeg_p": 0.15
+    },
+    "c_zoom_paste": {
+      "zoom_p": 0.3, "zoom_min": 0.5, "min_box_px": 6,
+      "paste_p": 0.15, "paste_max": 2, "paste_min_px": 8, "paste_max_px": 32,
+      "resample_p": 0.1, "blur_p": 0.1, "noise_p": 0.1, "jpeg_p": 0.15
+    }
+  },
+  "recordings": {
+    "lr": 0.00002,
+    "epochs": 4,
+    "min_epochs": 4,
+    "warmup_updates": 200,
+    "close_mosaic_epochs": 1,
+    "repeat": 5,
+    "sample_every_s": 0.5,
+    "negative_every_s": 1.0,
+    "train_places": "every place except test_places",
+    "test_places": ["corridor"]
+  },
+  "operating_rule_grid": {
+    "base_threshold": 0.40,
+    "small_side_px": [12, 16, 24, 32],
+    "small_threshold": [0.15, 0.20, 0.25, 0.30, 0.35]
+  },
+  "selection": {
+    "ap50_floor_pts": 1.0,
+    "recall_floor_pts": 1.0,
+    "nuisance_max_ratio": 1.5,
+    "adopt_small_recall_gain_pts": 1.0
+  }
+}

@@ -1,0 +1,22 @@
+{
+ "IMG_7936.MOV": {
+  "frames": 1316,
+  "seconds": 44.2,
+  "frames_with_box": {
+   "V10 + box": 0.0,
+   "V12": 0.011
+  },
+  "first_box_s": {
+   "V10 + box": null,
+   "V12": 7.960264350453173
+  },
+  "alarm_share": {
+   "V10 + box": 0.0,
+   "V12": 0.0
+  },
+  "first_alarm_s": {
+   "V10 + box": null,
+   "V12": null
+  }
+ }
+}

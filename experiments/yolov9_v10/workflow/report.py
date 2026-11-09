@@ -87,7 +87,7 @@ def main():
                 lines.append(f'| {key} | {f["mean_confidence_change"]:+.3f} | {pct(f["fraction_dropping_below_040"])} | '
                              f'{t.get("mean_confidence_change", 0):+.3f} | {pct(t.get("fraction_dropping_below_040"))} |')
             lines.append('')
-    lines += ['Caveats: hn_val categories come from source labels and CLIP; mining reviews were CLIP + AI visual review, '
+    lines += ['Caveats: hn_val categories come from source labels and CLIP; mining reviews were CLIP + Claude visual review, '
               'not human. Event metrics depend on the recorded clips. FASDD test is not used here.']
     report = work / 'REPORT.md'
     report.write_text('\n'.join(lines))
