@@ -204,7 +204,23 @@ Only the **fire** class is scored; smoke is ignored.
 
 ---
 
-## 11. Next steps (proposed, not started)
+## 11. Direction and next steps
+
+**Current direction (9 Nov):** we're leaning towards **V12** as the main model, because it performs better on our own small-flame videos; more tests will follow.
+
+Later field tests (9 Nov, Measured, same temporal layer for both models):
+- **Fire hoop at night:** flame detected in 75% (V12) vs 68% of frames.
+- **Dussehra effigy burning:** no false alarm on the lit-up effigies before the fire (both models). The fire was first detected at 9.1 s (V12) vs 9.8 s.
+
+**Planned for the end of this week:** fine-tune again **starting from V12**, adding more images and frames of **small flames in bright, well-lit and daylight rooms**. These are under-represented today (our training videos were mostly dim rooms). The team is recording such videos now.
+
+**Rules for that run:**
+- train/test split by location
+- matching no-flame clips in the same bright rooms
+- a stricter false-alarm limit than last time
+- re-test on the same field clips with the same alarm rule
+
+### Earlier proposed steps
 
 1. **Small-flame dataset:**
    - candles, diyas and lighters at taped 1/2/3/5 m, phone on a stand
