@@ -1,0 +1,5 @@
+kagglehub==0.3.13
+open_clip_torch==2.29.0
+scikit-learn==1.5.2
+pandas==2.2.3
+pyyaml==6.0.2

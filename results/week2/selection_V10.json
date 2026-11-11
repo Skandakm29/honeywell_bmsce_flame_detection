@@ -1,0 +1,364 @@
+{
+ "rule": "Checkpoint selection with the rule frozen before training (FASDD test never used).\n\nCandidates: V9 (initial.pth, epoch 0) and every epoch_XX.pth.\nEligible: full-val AP50 >= V9 - .01, recall@.40 >= V9 - .01, and box recall@.40 (IoU .50) on the fixed\n564-image small-flame val slice >= V9 - .01 (unrounded V9 values from this same evaluation).\nReal-nuisance score: on hn_val WITHOUT synthetic screens, the share of images flagged at .40 within each scene\n(near-duplicate group / clip), averaged with equal weight per scene. Lower is better.\nSwitch from V9 only if the best eligible epoch scores <= 0.90 x V9's score (V9 kept if its score is already 0);\nties broken by higher AP50:95. Scenes improved/worsened and synthetic screens are reported separately.\nThe selected model is exported to ONNX with parity checks.",
+ "floors": {
+  "AP50": 0.7360251715667337,
+  "recall": 0.5774181702059715,
+  "small_recall": 0.4748790322580645
+ },
+ "candidates": [
+  {
+   "checkpoint": "initial.pth",
+   "epoch": 0,
+   "sha256": "8c930885915504b2c6a4bed8835b7c1cbffae3891e987a13bf614b9d1e7a24dd",
+   "AP50": 0.7460251715667338,
+   "AP50_95": 0.44294617335947706,
+   "precision": 0.8063561643835616,
+   "recall": 0.5874181702059715,
+   "small_recall": 0.4848790322580645,
+   "small_tp": 481,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.014128904249871992,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 69,
+    "flag_040": 43,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 144,
+     "flag_040": 123
+    }
+   },
+   "eligible": true,
+   "scenes_improved": 0,
+   "scenes_worsened": 0
+  },
+  {
+   "checkpoint": "epoch_01.pth",
+   "epoch": 1,
+   "sha256": "ab6e265f3880de0852432c30566e90baf0e8334c972b026fa5d82fb7a1d0515d",
+   "AP50": 0.7378089734954352,
+   "AP50_95": 0.43408313977462903,
+   "precision": 0.8213738659125722,
+   "recall": 0.5565224333386556,
+   "small_recall": 0.4375,
+   "small_tp": 434,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.007856502816180236,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 35,
+    "flag_040": 20,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 94,
+     "flag_040": 65
+    }
+   },
+   "eligible": false,
+   "scenes_improved": 11,
+   "scenes_worsened": 1
+  },
+  {
+   "checkpoint": "epoch_02.pth",
+   "epoch": 2,
+   "sha256": "6b9ae1c277e02f68af19d9339508e25f675858892ef39fa0f08be6398d5698b1",
+   "AP50": 0.7371870634204208,
+   "AP50_95": 0.4327944505479983,
+   "precision": 0.8224552309142319,
+   "recall": 0.5573207727925914,
+   "small_recall": 0.4465725806451613,
+   "small_tp": 443,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.005504352278545827,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 26,
+    "flag_040": 17,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 76,
+     "flag_040": 52
+    }
+   },
+   "eligible": false,
+   "scenes_improved": 15,
+   "scenes_worsened": 2
+  },
+  {
+   "checkpoint": "epoch_03.pth",
+   "epoch": 3,
+   "sha256": "0652de7f6529b2ff7352f2f113025fa22a142a328b5cc980fd60b989e5f8d616",
+   "AP50": 0.7400060652764789,
+   "AP50_95": 0.43717177917682304,
+   "precision": 0.8228712754681428,
+   "recall": 0.5577997764649529,
+   "small_recall": 0.4737903225806452,
+   "small_tp": 470,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.006256400409626216,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 34,
+    "flag_040": 22,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 57,
+     "flag_040": 43
+    }
+   },
+   "eligible": false,
+   "scenes_improved": 14,
+   "scenes_worsened": 1
+  },
+  {
+   "checkpoint": "epoch_04.pth",
+   "epoch": 4,
+   "sha256": "42564f1ed07ace0e83bc20b258493400df0a7fa3ce5d990cf51c0f5547a626e4",
+   "AP50": 0.7433143135683882,
+   "AP50_95": 0.4393771964770025,
+   "precision": 0.8176057931658747,
+   "recall": 0.5768800894140188,
+   "small_recall": 0.4657258064516129,
+   "small_tp": 462,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.004544290834613415,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 31,
+    "flag_040": 18,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 46,
+     "flag_040": 38
+    }
+   },
+   "eligible": false,
+   "scenes_improved": 16,
+   "scenes_worsened": 1
+  },
+  {
+   "checkpoint": "epoch_05.pth",
+   "epoch": 5,
+   "sha256": "65ba0221bf321cf5da0d1014ec5790b5d46b23546401d5a875dbc503bf6f6d8a",
+   "AP50": 0.744708878661849,
+   "AP50_95": 0.43908579457639657,
+   "precision": 0.8157042332179157,
+   "recall": 0.5830273032093246,
+   "small_recall": 0.48689516129032256,
+   "small_tp": 483,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.005888376856118792,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 32,
+    "flag_040": 20,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 51,
+     "flag_040": 35
+    }
+   },
+   "eligible": true,
+   "scenes_improved": 15,
+   "scenes_worsened": 2
+  },
+  {
+   "checkpoint": "epoch_06.pth",
+   "epoch": 6,
+   "sha256": "d046dab613faa72ec650d37dc40d0740ff50ac09df4eb97919d10cfd532b721d",
+   "AP50": 0.7446837917869317,
+   "AP50_95": 0.4395123143315729,
+   "precision": 0.8112688456036096,
+   "recall": 0.5885358454414817,
+   "small_recall": 0.4879032258064516,
+   "small_tp": 484,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.0038082437275985667,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 29,
+    "flag_040": 13,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 42,
+     "flag_040": 35
+    }
+   },
+   "eligible": true,
+   "scenes_improved": 17,
+   "scenes_worsened": 1
+  },
+  {
+   "checkpoint": "epoch_07.pth",
+   "epoch": 7,
+   "sha256": "7c77e5ec27ec7ae3a07d9e8a5a4c41ead1f8c08525ecbbaf0e652803b7e5e38b",
+   "AP50": 0.7452152530991327,
+   "AP50_95": 0.4393551022344249,
+   "precision": 0.8102085620197585,
+   "recall": 0.589254350950024,
+   "small_recall": 0.48588709677419356,
+   "small_tp": 482,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.004480286738351254,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 28,
+    "flag_040": 14,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 43,
+     "flag_040": 35
+    }
+   },
+   "eligible": true,
+   "scenes_improved": 16,
+   "scenes_worsened": 1
+  },
+  {
+   "checkpoint": "epoch_08.pth",
+   "epoch": 8,
+   "sha256": "ed60b693752834ddf14d4c2e4528ee8d13616fc27681a445b58b7e2578778c7f",
+   "AP50": 0.7462365453747853,
+   "AP50_95": 0.4402564722311316,
+   "precision": 0.8096275321280767,
+   "recall": 0.5934855500558838,
+   "small_recall": 0.4959677419354839,
+   "small_tp": 492,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.00582437275985663,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 29,
+    "flag_040": 16,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 39,
+     "flag_040": 32
+    }
+   },
+   "eligible": true,
+   "scenes_improved": 14,
+   "scenes_worsened": 1
+  },
+  {
+   "checkpoint": "epoch_09.pth",
+   "epoch": 9,
+   "sha256": "b0e9f4920fea792c205532050d9a3940a3bc77d8a91cf4ae0e38c998b5f28eca",
+   "AP50": 0.7460380140958502,
+   "AP50_95": 0.4403040295815404,
+   "precision": 0.8068697342838627,
+   "recall": 0.5963595720900526,
+   "small_recall": 0.5020161290322581,
+   "small_tp": 498,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.0058403737839221705,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 29,
+    "flag_040": 17,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 36,
+     "flag_040": 30
+    }
+   },
+   "eligible": true,
+   "scenes_improved": 15,
+   "scenes_worsened": 2
+  },
+  {
+   "checkpoint": "epoch_10.pth",
+   "epoch": 10,
+   "sha256": "367f5b421e1e696438909f519b80577ccf7a03b6c7395e46390b519a54f1a32c",
+   "AP50": 0.7451427417880985,
+   "AP50_95": 0.4394801162752122,
+   "precision": 0.8033719931271478,
+   "recall": 0.5972377454893821,
+   "small_recall": 0.49798387096774194,
+   "small_tp": 494,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.005168330773169483,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 28,
+    "flag_040": 16,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 34,
+     "flag_040": 29
+    }
+   },
+   "eligible": true,
+   "scenes_improved": 16,
+   "scenes_worsened": 2
+  }
+ ],
+ "best_eligible": {
+  "checkpoint": "epoch_06.pth",
+  "epoch": 6,
+  "sha256": "d046dab613faa72ec650d37dc40d0740ff50ac09df4eb97919d10cfd532b721d",
+  "AP50": 0.7446837917869317,
+  "AP50_95": 0.4395123143315729,
+  "precision": 0.8112688456036096,
+  "recall": 0.5885358454414817,
+  "small_recall": 0.4879032258064516,
+  "small_tp": 484,
+  "small_boxes": 992,
+  "nuisance": {
+   "score": 0.0038082437275985667,
+   "scenes": 1488,
+   "images": 1895,
+   "flag_020": 29,
+   "flag_040": 13,
+   "synthetic_screens": {
+    "images": 183,
+    "flag_020": 42,
+    "flag_040": 35
+   }
+  },
+  "eligible": true,
+  "scenes_improved": 17,
+  "scenes_worsened": 1
+ },
+ "selected": {
+  "checkpoint": "epoch_06.pth",
+  "epoch": 6,
+  "sha256": "d046dab613faa72ec650d37dc40d0740ff50ac09df4eb97919d10cfd532b721d",
+  "AP50": 0.7446837917869317,
+  "AP50_95": 0.4395123143315729,
+  "precision": 0.8112688456036096,
+  "recall": 0.5885358454414817,
+  "small_recall": 0.4879032258064516,
+  "small_tp": 484,
+  "small_boxes": 992,
+  "nuisance": {
+   "score": 0.0038082437275985667,
+   "scenes": 1488,
+   "images": 1895,
+   "flag_020": 29,
+   "flag_040": 13,
+   "synthetic_screens": {
+    "images": 183,
+    "flag_020": 42,
+    "flag_040": 35
+   }
+  },
+  "eligible": true,
+  "scenes_improved": 17,
+  "scenes_worsened": 1
+ },
+ "v9_retained": false,
+ "reason": "best eligible epoch cuts the real-nuisance score by >= 10%",
+ "warnings": []
+}

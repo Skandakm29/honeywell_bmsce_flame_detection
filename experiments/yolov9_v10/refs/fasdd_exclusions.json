@@ -1,0 +1,9 @@
+{
+ "train_images": [
+  "neitherFireNorSmoke_CV017367.jpg",
+  "smoke_CV000598.jpg",
+  "smoke_CV008306.jpg",
+  "smoke_CV008168.jpg"
+ ],
+ "source": "HANDOVER_TASK2.md Part 1: 2 unboxed train flames + unboxed copies of 2 byte-identical label-conflict pairs. Removal only; val/test untouched."
+}

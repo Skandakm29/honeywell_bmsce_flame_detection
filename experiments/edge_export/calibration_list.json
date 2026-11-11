@@ -1,0 +1,612 @@
+[
+ {
+  "file": "small_flame__bothFireAndSmoke_CV017814.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV010315.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "720",
+  "H": "1280"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV019856.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "640",
+  "H": "352"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV003466.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "288"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV004844.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "960",
+  "H": "540"
+ },
+ {
+  "file": "small_flame__fire_CV008021.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "576",
+  "H": "1024"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV006536.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "550",
+  "H": "365"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV018745.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "960",
+  "H": "540"
+ },
+ {
+  "file": "small_flame__fire_CV008697.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "720",
+  "H": "1280"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV004234.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "960",
+  "H": "540"
+ },
+ {
+  "file": "small_flame__fire_CV007747.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1280",
+  "H": "720"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV015072.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1280",
+  "H": "720"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV002729.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "960",
+  "H": "540"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV005817.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "800",
+  "H": "600"
+ },
+ {
+  "file": "small_flame__fire_CV000038.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1280",
+  "H": "720"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV020027.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV004705.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "404"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV015615.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "900",
+  "H": "505"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV006254.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "960",
+  "H": "540"
+ },
+ {
+  "file": "small_flame__fire_CV008296.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "720",
+  "H": "1280"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV020081.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV004288.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "530",
+  "H": "300"
+ },
+ {
+  "file": "small_flame__fire_CV008447.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1280",
+  "H": "720"
+ },
+ {
+  "file": "small_flame__bothFireAndSmoke_CV008492.jpg",
+  "group": "small_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "640",
+  "H": "360"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV008240.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "512",
+  "H": "362"
+ },
+ {
+  "file": "medium_flame__fire_CV005639.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "667"
+ },
+ {
+  "file": "medium_flame__fire_CV005377.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "373"
+ },
+ {
+  "file": "medium_flame__fire_CV002069.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "390",
+  "H": "280"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV002521.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "310",
+  "H": "162"
+ },
+ {
+  "file": "medium_flame__fire_CV001671.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "375"
+ },
+ {
+  "file": "medium_flame__fire_CV002200.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "224",
+  "H": "224"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV015341.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1280",
+  "H": "720"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV002179.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "736",
+  "H": "664"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV008179.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "720",
+  "H": "400"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV002101.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "713"
+ },
+ {
+  "file": "medium_flame__fire_CV000218.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1280",
+  "H": "720"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV004884.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "600",
+  "H": "480"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV010794.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "333"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV015875.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "960",
+  "H": "720"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV005253.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "780",
+  "H": "461"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV019648.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "512",
+  "H": "384"
+ },
+ {
+  "file": "medium_flame__bothFireAndSmoke_CV004381.jpg",
+  "group": "medium_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "224",
+  "H": "224"
+ },
+ {
+  "file": "large_flame__fire_CV005425.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "540",
+  "H": "960"
+ },
+ {
+  "file": "large_flame__bothFireAndSmoke_CV013201.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "854",
+  "H": "480"
+ },
+ {
+  "file": "large_flame__fire_CV005033.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "392"
+ },
+ {
+  "file": "large_flame__fire_CV010190.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1280",
+  "H": "720"
+ },
+ {
+  "file": "large_flame__bothFireAndSmoke_CV007944.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "333"
+ },
+ {
+  "file": "large_flame__bothFireAndSmoke_CV004878.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "960",
+  "H": "540"
+ },
+ {
+  "file": "large_flame__fire_CV005841.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "225",
+  "H": "225"
+ },
+ {
+  "file": "large_flame__fire_CV005437.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "276",
+  "H": "183"
+ },
+ {
+  "file": "large_flame__fire_CV008966.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "800",
+  "H": "600"
+ },
+ {
+  "file": "large_flame__bothFireAndSmoke_CV008232.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "375"
+ },
+ {
+  "file": "large_flame__bothFireAndSmoke_CV016838.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "1040",
+  "H": "584"
+ },
+ {
+  "file": "large_flame__bothFireAndSmoke_CV004640.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "276",
+  "H": "182"
+ },
+ {
+  "file": "large_flame__fire_CV004555.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "540",
+  "H": "960"
+ },
+ {
+  "file": "large_flame__fire_CV011141.jpg",
+  "group": "large_flame",
+  "source": "FASDD-CV v2 train",
+  "W": "4288",
+  "H": "2848"
+ },
+ {
+  "file": "smoke_only__smoke_CV001363.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "375"
+ },
+ {
+  "file": "smoke_only__smoke_CV015763.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "smoke_only__smoke_CV001300.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "600",
+  "H": "391"
+ },
+ {
+  "file": "smoke_only__smoke_CV016850.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "smoke_only__smoke_CV004392.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "640",
+  "H": "352"
+ },
+ {
+  "file": "smoke_only__smoke_CV013780.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "smoke_only__smoke_CV018058.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "smoke_only__smoke_CV015100.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "smoke_only__smoke_CV010070.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "smoke_only__smoke_CV019962.jpg",
+  "group": "smoke_only",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV015107.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "640",
+  "H": "479"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV022574.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "660",
+  "H": "440"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV028616.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "400",
+  "H": "400"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV021955.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "1237",
+  "H": "717"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV017459.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "1000",
+  "H": "666"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV014401.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "300",
+  "H": "300"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV012203.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "800",
+  "H": "531"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV039033.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "1920",
+  "H": "1080"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV009223.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "649"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV034199.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "500",
+  "H": "332"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV038267.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "554",
+  "H": "377"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV012016.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "997",
+  "H": "569"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV004350.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "650",
+  "H": "856"
+ },
+ {
+  "file": "no_fire__neitherFireNorSmoke_CV028065.jpg",
+  "group": "no_fire",
+  "source": "FASDD-CV v2 train",
+  "W": "800",
+  "H": "800"
+ },
+ {
+  "file": "own_small_flame__ut_farflame_01_f01383.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_flame_occlusion_f00613.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_flame_occlusion_f00341.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_farflame_01_f01674.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_farflame_02_f01459.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_farflame_01_f01237.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_diya_01_f00836.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_diya_01_f01292.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_flame_occlusion_f00477.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ },
+ {
+  "file": "own_small_flame__ut_farflame_02_f00998.png",
+  "group": "own_small_flame",
+  "source": "own phone clip (train split)"
+ }
+]

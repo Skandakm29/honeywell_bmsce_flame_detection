@@ -1,0 +1,208 @@
+{
+ "final_checkpoint": "D:\\Honeywell-V10-work\\select_v12_rec\\best.pth",
+ "selected": "after recordings",
+ "adopted": true,
+ "reason": "adopted: best eligible checkpoint beats V10 small-flame recall by >= 1 point",
+ "fasdd_test_v12": {
+  "coco": {
+   "AP50_95": 0.601067810885618,
+   "AP50": 0.8911153976289979,
+   "AP75": 0.6623079362983759,
+   "AP_small": 0.3368649464861789,
+   "AP_medium": 0.585018825731337,
+   "AP_large": 0.7407033926632276,
+   "AR1": 0.44967856351141655,
+   "AR10": 0.6761582797605852,
+   "AR100": 0.7036798935934383,
+   "AR_small": 0.5241559676652402,
+   "AR_medium": 0.7048349056603773,
+   "AR_large": 0.8095979614949037
+  },
+  "at_confidence_0.40": {
+   "confidence": 0.4,
+   "matching_iou": 0.5,
+   "TP": 7217,
+   "FP": 871,
+   "FN": 1805,
+   "precision": 0.8923095944609297,
+   "recall": 0.7999334958989137,
+   "F1": 0.8436002337814142
+  },
+  "images": 15884,
+  "boxes": 9022,
+  "evaluation_seconds": 75.3297502999776,
+  "definitions": {
+   "AP": "COCO bbox AP, IoU .50:.95, score floor .001, NMS .65, maxDets 100",
+   "precision_recall_F1": "score-ordered one-to-one box matching, IoU .50, confidence .40",
+   "area_groups": "COCO original-image area thresholds; absent groups reported as null",
+   "FP": "false-positive boxes, not video alarm events"
+  },
+  "segments": {
+   "flame_size_small": {
+    "confidence": 0.4,
+    "matching_iou": 0.5,
+    "TP": 193,
+    "FP": 34,
+    "FN": 172,
+    "precision": 0.8502202643171806,
+    "recall": 0.5287671232876713,
+    "F1": 0.6520270270270271,
+    "images": 263,
+    "images_with_detection_040": 196,
+    "image_detection_rate_040": 0.7452471482889734
+   },
+   "flame_size_medium": {
+    "confidence": 0.4,
+    "matching_iou": 0.5,
+    "TP": 1668,
+    "FP": 149,
+    "FN": 461,
+    "precision": 0.9179966978536048,
+    "recall": 0.7834664161578205,
+    "F1": 0.8454130765331982,
+    "images": 1211,
+    "images_with_detection_040": 1183,
+    "image_detection_rate_040": 0.976878612716763
+   },
+   "flame_size_large": {
+    "confidence": 0.4,
+    "matching_iou": 0.5,
+    "TP": 5356,
+    "FP": 521,
+    "FN": 1172,
+    "precision": 0.9113493278883784,
+    "recall": 0.8204656862745098,
+    "F1": 0.8635227730753727,
+    "images": 3975,
+    "images_with_detection_040": 3968,
+    "image_detection_rate_040": 0.9982389937106918
+   },
+   "negatives_smoke": {
+    "confidence": 0.4,
+    "matching_iou": 0.5,
+    "TP": 0,
+    "FP": 9,
+    "FN": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "F1": 0.0,
+    "images": 3902,
+    "images_with_detection_040": 9,
+    "image_detection_rate_040": 0.0023065094823167607
+   },
+   "negatives_none": {
+    "confidence": 0.4,
+    "matching_iou": 0.5,
+    "TP": 0,
+    "FP": 158,
+    "FN": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "F1": 0.0,
+    "images": 6533,
+    "images_with_detection_040": 137,
+    "image_detection_rate_040": 0.020970457676412063
+   }
+  }
+ },
+ "fasdd_test_v12_rule": {
+  "at_040": {
+   "side": 0,
+   "threshold": 1.0,
+   "precision": 0.8923095944609297,
+   "recall": 0.7999334958989137,
+   "FP": 871,
+   "small_recall": 0.5287671232876713,
+   "small_boxes": 365
+  },
+  "chosen": {
+   "side": 0,
+   "threshold": 0.4,
+   "precision": 0.8923095944609297,
+   "recall": 0.7999334958989137,
+   "FP": 871,
+   "small_recall": 0.5287671232876713,
+   "small_boxes": 365
+  }
+ },
+ "fasdd_test_v10_rule": {
+  "at_040": {
+   "side": 0,
+   "threshold": 1.0,
+   "precision": 0.9033523086654016,
+   "recall": 0.7915096430946575,
+   "FP": 764,
+   "small_recall": 0.5260273972602739,
+   "small_boxes": 365
+  },
+  "chosen": {
+   "side": 16,
+   "threshold": 0.25,
+   "precision": 0.8996245306633291,
+   "recall": 0.7967191310130791,
+   "FP": 802,
+   "small_recall": 0.5945205479452055,
+   "small_boxes": 365
+  }
+ },
+ "distance_test": {
+  "v10": {
+   "corridor_diya_10m": {
+    "flame": "diya",
+    "distance_m": 10.0,
+    "frames": 42,
+    "hit_040": 0,
+    "hit_rule": 0,
+    "rate_040": 0.0,
+    "rate_rule": 0.0
+   },
+   "corridor_diya_1m": {
+    "flame": "diya",
+    "distance_m": 1.0,
+    "frames": 43,
+    "hit_040": 22,
+    "hit_rule": 22,
+    "rate_040": 0.5116279069767442,
+    "rate_rule": 0.5116279069767442
+   },
+   "corridor_diya_4m": {
+    "flame": "diya",
+    "distance_m": 4.0,
+    "frames": 42,
+    "hit_040": 0,
+    "hit_rule": 0,
+    "rate_040": 0.0,
+    "rate_rule": 0.0
+   }
+  },
+  "v12": {
+   "corridor_diya_10m": {
+    "flame": "diya",
+    "distance_m": 10.0,
+    "frames": 42,
+    "hit_040": 0,
+    "hit_rule": 0,
+    "rate_040": 0.0,
+    "rate_rule": 0.0
+   },
+   "corridor_diya_1m": {
+    "flame": "diya",
+    "distance_m": 1.0,
+    "frames": 43,
+    "hit_040": 30,
+    "hit_rule": 30,
+    "rate_040": 0.6976744186046512,
+    "rate_rule": 0.6976744186046512
+   },
+   "corridor_diya_4m": {
+    "flame": "diya",
+    "distance_m": 4.0,
+    "frames": 42,
+    "hit_040": 0,
+    "hit_rule": 0,
+    "rate_040": 0.0,
+    "rate_rule": 0.0
+   }
+  }
+ }
+}

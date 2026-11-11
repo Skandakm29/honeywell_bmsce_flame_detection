@@ -1,0 +1,6 @@
+clip,category,location,daynight,fire_start_s,fire_end_s,split
+screen_laptop_01.mp4,screen_fire_video,lab_room,day,,,
+heater_01.mp4,heater,hostel_room,night,,,
+candle_01.mp4,candle,lab_room,day,5,60,
+match_strike_01.mp4,match_lighter,corridor,night,12,20,
+candle_lamp_01.mp4,flame_plus_nuisance,lab_room,night,0,60,
