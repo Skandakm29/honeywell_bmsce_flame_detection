@@ -20,6 +20,9 @@ camera.json schema (schema=1):
   pose {height_m,tilt_deg,roll_deg}   extrinsics (optional if homography given)
   homography 3x3              floor metres -> undistorted pixels (optional; wins over pose)
   max_range_m                 optional, default 200
+  extrinsics {R 3x3, C [x,y,z]}  rigid pose (R floor->camera, C camera centre in floor frame);
+                              wins over homography/pose; H is derived from it. Written by
+                              `calibrate.py floor` (solvePnP), so every height uses one model.
   contact_height_m            height above the floor of the box-bottom contact point (default 0)
 
 In homography mode the camera centre / heading / height are recovered by decomposing
@@ -78,14 +81,22 @@ def fit_homography(pixels, floor_xy):
 
 class Camera:
     def __init__(self, image_size, K, dist=None, pose=None, homography=None, max_range_m=200.0,
-                 contact_height_m=0.0):
+                 contact_height_m=0.0, extrinsics=None):
         self.image_size = (int(image_size[0]), int(image_size[1]))
         self.K = np.asarray(K, np.float64).reshape(3, 3)
         self.dist = np.zeros(5) if dist is None else np.asarray(dist, np.float64).ravel()
         self.pose = dict(pose) if pose else None
         self.max_range_m = float(max_range_m)
         self.contact_height_m = float(contact_height_m)
-        if homography is not None:
+        if extrinsics is not None:
+            self.R = np.asarray(extrinsics["R"], np.float64).reshape(3, 3)
+            self.C = np.asarray(extrinsics["C"], np.float64).ravel()
+            if self.C[2] <= 0:
+                raise ValueError("extrinsics put the camera below the floor")
+            t = -self.R @ self.C
+            self.H = self.K @ np.stack([self.R[:, 0], self.R[:, 1], t], axis=1)
+            self.source = "extrinsics"
+        elif homography is not None:
             self.H = np.asarray(homography, np.float64).reshape(3, 3)
             self.source = "homography"
         elif self.pose:
@@ -99,7 +110,7 @@ class Camera:
         if self.source == "pose":
             self.R = rotation_from_pose(self.pose["tilt_deg"], self.pose.get("roll_deg", 0.0))
             self.C = np.array([0.0, 0.0, float(self.pose["height_m"])])
-        else:
+        elif self.source == "homography":
             self.R, self.C = self._decompose()
         axis = self.R[2]  # optical axis in floor frame
         self.camera_xy_m = (float(self.C[0]), float(self.C[1]))
@@ -129,7 +140,7 @@ class Camera:
                 raise ValueError("camera.json needs K or hfov_deg")
             K = intrinsics_from_hfov(w, h, d["hfov_deg"])
         return cls((w, h), K, d.get("dist"), d.get("pose"), d.get("homography"),
-                   d.get("max_range_m", 200.0), d.get("contact_height_m", 0.0))
+                   d.get("max_range_m", 200.0), d.get("contact_height_m", 0.0), d.get("extrinsics"))
 
     def to_dict(self):
         d = {"schema": SCHEMA, "image_size": list(self.image_size), "K": self.K.tolist(),
@@ -139,6 +150,8 @@ class Camera:
             d["pose"] = self.pose
         if self.source == "homography":
             d["homography"] = self.H.tolist()
+        if self.source == "extrinsics":
+            d["extrinsics"] = {"R": self.R.tolist(), "C": self.C.tolist()}
         return d
 
     @classmethod
@@ -158,7 +171,8 @@ class Camera:
         S = np.diag([sx, sy, 1.0])
         hom = S @ self.H if self.source == "homography" else None
         return Camera((w, h), S @ self.K, self.dist, self.pose, hom, self.max_range_m,
-                      self.contact_height_m)
+                      self.contact_height_m,
+                      {"R": self.R, "C": self.C} if self.source == "extrinsics" else None)
 
     # ---- pixel helpers --------------------------------------------------
     def undistort_points(self, px):

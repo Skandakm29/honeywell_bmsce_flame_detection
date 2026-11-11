@@ -21,7 +21,9 @@ import cv2
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from geometry import Camera, fit_homography, intrinsics_from_hfov  # noqa: E402
+from geometry import Camera, intrinsics_from_hfov  # noqa: E402
+
+STALE_FLOOR = ("homography", "extrinsics", "floor_rms_m", "floor_loo_rms_m")
 
 
 def _load(path):
@@ -71,10 +73,12 @@ def cmd_intrinsics(args):
         elif size != (gray.shape[1], gray.shape[0]):
             print(f"skip {name}: size differs", file=sys.stderr)
             continue
-        ok, corners = cv2.findChessboardCorners(gray, pattern)
+        ok, corners = cv2.findChessboardCornersSB(gray, pattern)
         if not ok:
-            continue
-        corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), crit)
+            ok, corners = cv2.findChessboardCorners(gray, pattern)
+            if not ok:
+                continue
+            corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), crit)
         obj.append(objp)
         img.append(corners)
         names.append(name)
@@ -86,6 +90,12 @@ def cmd_intrinsics(args):
         proj, _ = cv2.projectPoints(o, r, t, K, dist)
         per.append(float(np.sqrt(np.mean(np.sum((proj - c) ** 2, axis=2)))))
     d = _load(args.out)
+    changed = d.get("image_size") != list(size) or "K" not in d or \
+        not np.allclose(np.asarray(d["K"]), K, rtol=1e-9)
+    if changed and any(k in d for k in STALE_FLOOR):
+        for k in STALE_FLOOR:
+            d.pop(k, None)
+        print("note: K/image size changed -> old floor calibration dropped; redo `floor`")
     d.update({"image_size": list(size), "K": K.tolist(), "dist": dist.ravel().tolist(),
               "intrinsics_rms_px": float(rms), "intrinsics_views": len(obj)})
     d.pop("hfov_deg", None)
@@ -136,6 +146,8 @@ def _click_points(image):
 
 
 def _camera_for_floor(d, size_arg, hfov):
+    if "K" not in d and "hfov_deg" in d and "image_size" in d and not (hfov and size_arg):
+        d["K"] = intrinsics_from_hfov(*d["image_size"], d["hfov_deg"]).tolist()
     if "K" not in d:
         if not (hfov and size_arg):
             sys.exit("no K in camera file: run `intrinsics` first or pass --hfov-deg and --size WxH")
@@ -144,24 +156,78 @@ def _camera_for_floor(d, size_arg, hfov):
     return d
 
 
+def _fit_extrinsics(pts, K, dist):
+    """(u,v,x,y) rows -> (R floor->cam, C) by planar PnP on raw pixels (IPPE + LM refine)."""
+    obj = np.c_[pts[:, 2:], np.zeros(len(pts))].astype(np.float64)
+    img = pts[:, :2].astype(np.float64).reshape(-1, 1, 2)
+    dist = np.asarray(dist if dist is not None else np.zeros(5), np.float64)
+    cands = []  # planar PnP has a 2-fold ambiguity: keep finite solutions with the camera above the floor
+    try:
+        _, rs, ts, errs = cv2.solvePnPGeneric(obj, img, K, dist, flags=cv2.SOLVEPNP_IPPE)
+        cands = list(zip(rs, ts, np.ravel(errs)))
+    except cv2.error:
+        pass
+    if not any(np.all(np.isfinite(r)) and np.all(np.isfinite(t)) for r, t, _ in cands):
+        # IPPE can return NaN on (near-)exact data; planar DLT-initialised iterative solve
+        ok, r, t = cv2.solvePnP(obj, img, K, dist, flags=cv2.SOLVEPNP_ITERATIVE)
+        cands = [(r, t, 0.0)] if ok else []
+    good = []
+    for r, t, e in cands:
+        if np.all(np.isfinite(r)) and np.all(np.isfinite(t)):
+            Rm, _ = cv2.Rodrigues(r)
+            if (-Rm.T @ t.ravel())[2] > 0:
+                good.append((e, r, t))
+    if not good:
+        raise ValueError("no valid camera pose (collinear points, or floor frame not "
+                         "right-handed: X right, Y forward, Z up)")
+    _, rvec, tvec = min(good, key=lambda g: g[0])
+    R, _ = cv2.Rodrigues(rvec)
+    C = -R.T @ tvec.ravel()
+    r2, t2 = cv2.solvePnPRefineLM(obj, img, K, dist, rvec.copy(), tvec.copy())
+    if np.all(np.isfinite(r2)) and np.all(np.isfinite(t2)):  # LM can NaN/flip on odd data
+        R2, _ = cv2.Rodrigues(r2)
+        C2 = -R2.T @ t2.ravel()
+        if C2[2] > 0:
+            R, C = R2, C2
+    return {"R": R, "C": C}
+
+
+def _floor_err(d, ext, pts):
+    cam = Camera.from_dict({**{k: v for k, v in d.items() if k not in STALE_FLOOR},
+                            "extrinsics": ext})
+    est = cam.pixel_to_floor(pts[:, :2], 0.0)
+    return np.hypot(*(est - pts[:, 2:]).T), cam
+
+
 def cmd_floor(args):
     d = _camera_for_floor(_load(args.out), args.size, args.hfov_deg)
     pts = _click_points(args.image) if args.interactive else _read_points(args.points)
     if pts.ndim != 2 or pts.shape[1] != 4 or len(pts) < 4:
         sys.exit("need >=4 rows of u,v,x_m,y_m")
-    d.pop("pose", None) if args.drop_pose else None
-    tmp = Camera(d["image_size"], d["K"], d.get("dist"), pose={"height_m": 1, "tilt_deg": 0})
-    und = tmp.undistort_points(pts[:, :2])
-    H = fit_homography(und, pts[:, 2:])
-    d["homography"] = H.tolist()
-    cam = Camera.from_dict(d)  # also validates decomposition
-    est = cam.pixel_to_floor(pts[:, :2], 0.0)
-    err = np.hypot(*(est - pts[:, 2:]).T)
-    for (u, v, x, y), e in zip(pts, err):
-        print(f"  px({u:.0f},{v:.0f}) -> floor({x:.3f},{y:.3f}) m   error {e * 100:.2f} cm")
-    print(f"reprojection error: RMS {np.sqrt(np.mean(err ** 2)) * 100:.2f} cm, max {err.max() * 100:.2f} cm")
+    K = np.asarray(d["K"], np.float64)
+    ext = _fit_extrinsics(pts, K, d.get("dist"))
+    err, cam = _floor_err(d, ext, pts)
+    n = len(pts)
+    loo = None
+    if n >= 5:
+        loo = np.array([_floor_err(d, _fit_extrinsics(np.delete(pts, i, 0), K, d.get("dist")),
+                                   pts[i:i + 1])[0][0] for i in range(n)])
+    for i, ((u, v, x, y), e) in enumerate(zip(pts, err)):
+        extra = f"   leave-one-out {loo[i] * 100:.2f} cm" if loo is not None else ""
+        print(f"  px({u:.0f},{v:.0f}) -> floor({x:.3f},{y:.3f}) m   in-sample {e * 100:.2f} cm{extra}")
+    print(f"in-sample error: RMS {np.sqrt(np.mean(err ** 2)) * 100:.2f} cm, max {err.max() * 100:.2f} cm")
+    if loo is not None:
+        print(f"leave-one-out error: RMS {np.sqrt(np.mean(loo ** 2)) * 100:.2f} cm, "
+              f"max {loo.max() * 100:.2f} cm  (honest estimate)")
+        d["floor_loo_rms_m"] = float(np.sqrt(np.mean(loo ** 2)))
+    else:
+        print("WARNING: with 4 points the in-sample error is ~0 and says nothing; use 6+ points "
+              "spread across near and far")
+        d.pop("floor_loo_rms_m", None)
     print(f"recovered camera: foot=({cam.camera_xy_m[0]:.3f},{cam.camera_xy_m[1]:.3f}) m "
           f"height={cam.height_m:.3f} m tilt={cam.tilt_deg:.1f} deg heading={cam.heading_deg:.1f} deg")
+    d["extrinsics"] = {"R": ext["R"].tolist(), "C": ext["C"].tolist()}
+    d.pop("homography", None)
     d["floor_rms_m"] = float(np.sqrt(np.mean(err ** 2)))
     _save(args.out, d)
     print(f"-> {args.out}")
@@ -177,7 +243,8 @@ def cmd_pose(args):
         d["image_size"] = _parse_size(args.size)
         d["K"] = intrinsics_from_hfov(*d["image_size"], args.hfov_deg).tolist()
     d["pose"] = {"height_m": args.height, "tilt_deg": args.tilt, "roll_deg": args.roll}
-    d.pop("homography", None)  # a homography would override the pose
+    for k in STALE_FLOOR:  # floor calibration would override the pose
+        d.pop(k, None)
     Camera.from_dict(d)
     _save(args.out, d)
     print(f"pose height={args.height} m tilt={args.tilt} deg roll={args.roll} deg -> {args.out}")
@@ -208,7 +275,6 @@ def build_parser():
     p.add_argument("--image", help="frame to click on (with --interactive)")
     p.add_argument("--hfov-deg", type=float)
     p.add_argument("--size", help="WxH if camera file has no K")
-    p.add_argument("--drop-pose", action="store_true")
     p.set_defaults(fn=cmd_floor)
 
     p = sub.add_parser("pose")

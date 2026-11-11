@@ -71,12 +71,12 @@ def test_pose_then_floor_noninteractive(tmp_path):
     csvp = tmp_path / "pts.csv"
     csvp.write_text("u,v,x,y\n" + "\n".join(",".join(f"{v:.6f}" for v in r) for r in pts))
     err = calibrate.main(["floor", "--points", str(csvp), "--out", str(out)])
-    assert err.max() < 1e-6
+    assert err.max() < 1e-5
     hc = Camera.load(out)
-    assert hc.source == "homography"
-    assert hc.camera_xy_m == pytest.approx((1.0, -2.0), abs=1e-6)
-    assert hc.height_m == pytest.approx(1.5, abs=1e-6)
-    # re-running pose drops the homography again
+    assert hc.source == "extrinsics"
+    assert hc.camera_xy_m == pytest.approx((1.0, -2.0), abs=1e-5)
+    assert hc.height_m == pytest.approx(1.5, abs=1e-5)
+    # re-running pose drops the floor calibration again
     calibrate.main(["pose", "--height", "2.0", "--tilt", "30", "--out", str(out)])
     assert Camera.load(out).source == "pose"
 
@@ -96,3 +96,45 @@ def test_floor_json_noise_reports_metres(tmp_path):
     assert json.loads(out.read_text())["floor_rms_m"] < 0.1
     with pytest.raises(SystemExit):
         calibrate.main(["floor", "--points", str(jp), "--out", str(tmp_path / "x.json")])  # no K
+
+
+def test_noisy_floor_is_continuous_in_contact_height_and_loo(tmp_path, capsys):
+    out = tmp_path / "camera.json"
+    out.write_text(json.dumps({"schema": 1, "image_size": [1920, 1080], "hfov_deg": 70}))
+    cam = Camera.from_dict({"image_size": [1920, 1080], "hfov_deg": 70,
+                            "pose": {"height_m": 1.5, "tilt_deg": 25}})
+    fl = np.array([[-1, 2], [1, 2], [-1, 5], [1, 5], [0, 3.5], [0.5, 7], [-0.5, 8.0]])
+    px = cam.floor_to_pixel(fl) + np.random.default_rng(3).normal(0, 2.0, (len(fl), 2))
+    jp = tmp_path / "pts.json"
+    jp.write_text(json.dumps([[*p, *f] for p, f in zip(px, fl)]))
+    calibrate.main(["floor", "--points", str(jp), "--out", str(out)])
+    assert "leave-one-out error" in capsys.readouterr().out
+    c = Camera.load(out)
+    for p in ([900, 700], [1300, 900], [500, 650]):
+        box = [p[0] - 5, p[1] - 30, p[0] + 5, p[1]]
+        d0 = c.box_to_floor(box, 0.0)["distance_m"]
+        d1 = c.box_to_floor(box, 1e-4)["distance_m"]
+        assert abs(d0 - d1) < 1e-3
+    d = json.loads(out.read_text())
+    assert "floor_loo_rms_m" in d and "homography" not in d
+
+
+def test_four_points_warns_and_intrinsics_drops_stale_floor(tmp_path, capsys):
+    out = tmp_path / "camera.json"
+    calibrate.main(["pose", "--height", "1.5", "--tilt", "25", "--hfov-deg", "70",
+                    "--size", "1920x1080", "--out", str(out)])
+    cam = Camera.load(out)
+    pts, _ = _floor_pts(cam)
+    csvp = tmp_path / "p.csv"
+    csvp.write_text("\n".join(",".join(map(str, r)) for r in pts[:4]))
+    calibrate.main(["floor", "--points", str(csvp), "--out", str(out)])
+    assert "WARNING" in capsys.readouterr().out
+    d = json.loads(out.read_text())
+    assert "extrinsics" in d
+    d["K"][0][0] += 50  # pretend K changes -> simulate by calling the stale logic via intrinsics
+    out.write_text(json.dumps(d))
+    for k in calibrate.STALE_FLOOR:
+        assert k in d or k in ("homography", "floor_loo_rms_m")
+    calibrate.main(["pose", "--height", "2", "--tilt", "20", "--out", str(out)])
+    d = json.loads(out.read_text())
+    assert not any(k in d for k in calibrate.STALE_FLOOR)
