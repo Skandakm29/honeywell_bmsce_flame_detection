@@ -1,93 +1,99 @@
 # Week 3 brief: Spatial Calibration (for the next agent)
 
-**Written:** 11 Nov 2026. **Owner:** Utkrisht (our team). **W4 obstruction detection** is handled by teammates in parallel.
+**Written:** 11 Nov 2026. W3 is **independent** work; W4 (obstruction detection) is done separately by teammates.
 
-## 1. The milestone (from the project plan)
+**Everything needed is on GitHub, on the lab PC, or in the starter zip `W3_starter_V12.zip`.** No other machine is assumed.
+
+## 1. The milestone
 
 | Week | Milestone | Deliverable |
 |---|---|---|
 | **W3** | **Spatial Calibration:** range rings, ground-plane geometry and system calibration | Codebase expansion and integration with the existing system setup |
-| W4 | Obstruction Detection: blind-zone mapping and occlusion monitoring | Software update integrated into the master code branch |
 
 **Mentor, 9 Nov:**
-- W3 and W4 are **combined** and reviewed together at the end of W4.
+- W3 and W4 are reviewed together at the end of W4.
 - A midweek check-in is possible on Thursday or Friday.
-- The team has exams from **20 Nov**.
+- Exams start on **20 Nov**.
+- Higher-resolution processing is allowed if it stays AM62A-compatible and latency is acceptable.
 
-## 2. What W3 means for a camera flame detector (our interpretation; confirm with the mentor)
-- **System calibration:** know the camera's geometry.
-  - **Intrinsics:** focal length, principal point and lens distortion, from a checkerboard.
-  - **Extrinsics:** mounting height, tilt and roll relative to the floor.
-- **Ground-plane geometry:** map every image pixel on the floor to a real (x, y) position in metres. This uses a homography from 4 or more known floor points, or the intrinsics plus height and tilt.
-- **Range rings:** draw distance circles on the floor in the image (e.g. 1, 2, 5, 10 m from the camera). They show coverage and how far a detection is.
-- **How it links to the flame detector:**
-  1. **Distance to a detected flame:** the bottom of the flame box touches the floor, so the ground plane gives its distance.
-  2. **Expected flame size per distance:** this gives a coverage map of where a candle-sized or bigger fire can be detected.
-  3. **For W4:** blind-zone area in m² on the floor, not just % of image.
+## 2. What W3 means (our interpretation; confirm with the mentor)
+1. **System calibration:**
+   - camera **intrinsics** (focal length, principal point, lens distortion), from a checkerboard
+   - **extrinsics** (mounting height, tilt, roll), from a few known floor points
+2. **Ground-plane geometry:** map any floor pixel to a real (x, y) position in metres, using a homography or intrinsics + height + tilt.
+3. **Range rings:** draw distance circles on the floor in the image (e.g. 1/2/5/10 m), live on video and optionally as a top-down map.
+4. **Integration with the flame detector:**
+   - each detection and alarm gets a **distance in metres**, using the bottom centre of the box, which touches the floor
+   - the rings can show **where a flame of a given size is detectable**
 
-## 3. Facts from weeks 1–2 that matter for W3 (Measured)
+## 3. Facts from weeks 1–2 that matter (Measured)
 - **Detection needs pixels:** a flame must be about 20–30 px tall at the 640-px model input.
   - A candle (about 3 cm) is reliable up to about **1 m** with a 1080p phone.
-  - Larger flames scale roughly linearly with size.
-  - The range rings should show this "detectable range per flame size".
-- The model sees frames letterboxed to 640 (top-left placed, pad 114). Map all pixel coordinates back to the **original frame** before any geometry.
-- **Final week-2 system:** V12 + threshold 0.40 + temporal alarm layer (2 s window, 30% hit ratio, 3 s off).
-- **Hardware:** TI SK-AM62A-LP with a MIPI camera. The board camera model and lens are **not known yet**. Calibration has to be redone for the real camera, so the code must take any intrinsics.
-- **Higher resolution and a two-stage zoom** are approved by the mentor if latency is acceptable. They're not part of W3, but the geometry code should work at any resolution.
+  - Detectable range grows roughly linearly with flame size.
+- Frames are **letterboxed to 640** (aspect kept, image at the top-left, pad 114). Boxes are returned in **original-frame pixels**, so geometry works in original pixels.
+- **Current system:** V12 + threshold **0.40** + temporal alarm layer (track by location, 2 s window, 30% hit ratio, 3 s off).
+- **Hardware:** TI SK-AM62A-LP with a MIPI camera. The board camera model and lens are **not known yet**, so all geometry must load intrinsics from a file and work at any resolution.
 
-## 4. Open questions to settle early (ask the mentor or team)
-1. **Which camera:** the AM62A board camera (model, lens, resolution) or a phone for now?
-2. **Mounting:** wall or ceiling, typical height and tilt. Is the floor assumed flat?
-3. **Range rings:** fixed distances (1/2/5/10 m)? Drawn on the live video, or as a top-down map?
-4. **Accuracy target:** e.g. distance error under 10% at 5 m?
-5. **Calibration process on site:** a checkerboard once? Marking 4 floor points? Automatic?
-6. **Integration:** where does it plug in (the live viewer `scripts/live_flame.py`, the board pipeline)? Which output format (JSON per detection with distance in metres)?
+## 4. Open questions to settle first
+1. Which camera: the AM62A board camera (model, lens, resolution) or a phone for now?
+2. Mounting: wall or ceiling, typical height and tilt? Is the floor assumed flat?
+3. Ring distances, and output as a video overlay, a top-down map, or both?
+4. Accuracy target (e.g. under 10% distance error at 5 m)?
+5. On-site calibration process: checkerboard once, marked floor points, or automatic?
+6. Integration point and output format (e.g. JSON per detection with `distance_m`)?
 
-## 5. Suggested plan (to discuss, not decided)
-1. **Calibration tool:**
-   - checkerboard intrinsics (OpenCV `calibrateCamera`) → saved in a `camera.json`
-   - floor homography from 4+ clicked or marked points → saved alongside
-2. **Geometry module:** pixel ↔ floor (x, y) metres; distance and bearing for a box's bottom centre; undistortion.
-3. **Range rings overlay:** project circles from the floor into the image and draw them on video; optional top-down map.
-4. **Detector integration:** add `distance_m` to each detection and alarm event; colour the rings by detectability for a given flame size.
+## 5. Suggested plan (to discuss)
+1. **Calibration tool:** checkerboard intrinsics (OpenCV `calibrateCamera`) + floor homography from 4+ points, saved to `camera.json`.
+2. **Geometry module:** pixel ↔ floor metres, distance and bearing of a box, undistortion.
+3. **Range-ring overlay:** project floor circles into the image and draw them on video; optional top-down view.
+4. **Detector integration:** add `distance_m` to detections and alarm events.
 5. **Validation:**
-   - Test: tape marks at 1/2/3/5 m, phone on a stand at a known height; compare estimated vs measured distance.
-   - Reuse the planned bright-room flame recordings at taped distances. They serve both W3 and the next fine-tune.
+   - tape marks at 1/2/3/5 m, camera on a stand at a known height
+   - compare estimated vs measured distance
+   - the zip's tiled-floor video is a first test: the tiles form a grid
 
-## 6. Where everything is
+## 6. GitHub
+- **Repo:** https://github.com/Skandakm29/honeywell_bmsce_flame_detection
+- **Latest code branch:** `feature/week2-final`
+  - Create the W3 branch from it, e.g. `feature/w3-spatial-calibration`.
+  - Don't merge into `main` without the team.
 
-**Docs (read first):**
-- `E:\Projects\honeywell\investigation_week2\CLAUDE.md`: running notes, rules (never edit originals; label Measured / Estimate / Hypothesis; short, plain answers)
-- `E:\Projects\honeywell\investigation_week2\WEEK2_SUMMARY.md`: full week-2 write-up and file map
-- `E:\Projects\honeywell\HANDOVER.md`, `PROJECT_CONTEXT.md`: original project background
+**Read these on that branch:**
+- `docs/W3_BRIEF.md`: this file
+- `docs/WEEK2_SUMMARY.md`: full week-2 write-up (system, data, models, metrics, limitations)
+- `docs/WEEK2_CODE_INDEX.md`: what's in each folder
 
-**GitHub:**
-- Repo: https://github.com/Skandakm29/honeywell_bmsce_flame_detection
-- Branch: `feature/week2-final` (week-2 code; index in `docs/WEEK2_CODE_INDEX.md`). For W3, create a **new branch from it**, e.g. `feature/w3-spatial-calibration`.
-- W4 teammates will work on their own branch; agree on a shared detection output format.
-- Local clone: `E:\Projects\honeywell\honeywell_bmsce_flame_detection`. It's on `feature/yolov9-flame-colab` with uncommitted doc edits; don't touch those. Use a separate worktree.
+**Code on that branch:**
+- `scripts/live_flame.py`: live and video viewer for the ONNX model (`prepare` = letterbox; `decode` = boxes in original pixels, NMS 0.65)
+- `experiments/temporal_final/temporal_final.py`: alarm layer (`gate`, `track`, `raw_flags`, `alarm`)
+- `experiments/field_tests/compare_v10box_v12.py`: runs models on a video with the alarm layer and writes side-by-side grids. Paths are hard-coded at the top; set `ROOT` and `MODELS` for the new machine.
+- `experiments/edge_export/`: board export script (`export_raw.py --ckpt <pth> --name <tag>`) and board README
+- `experiments/yolov9_v10/`: model definition (`workflow/model.py`) and TI tensorlab layers, needed to load `.pth` weights
+- `experiments/yolov9_v12/`: V12 training package (how V12 was made)
+- `results/week2/`: reports, the locked alarm rule (`rule.json`), test numbers
 
-**Models:**
-- **V12 (main):** `investigation_week2\lab_backup_2026-11-07\work\select_v12_rec\best.pth` (SHA 4395912b); ONNX in the same folder `export\flame.onnx`
-- Board ONNX files (V10 and V12, raw head, 640 and 416): `investigation_week2\edge_export\`
-- Board handoff zips: `V12_board_handoff.zip`, `V10_final_rule_for_board.zip`
+**Not in git (policy: no weights, ONNX, videos or data):** these come from the zip or the lab PC.
 
-**Code to reuse:**
-- Live viewer pre- and post-processing: `honeywell_bmsce_flame_detection\scripts\live_flame.py` (`prepare`, `decode`)
-- Video runner with the alarm layer and grids: `testing\compare_v10box_v12.py`
-- Alarm layer: `investigation_week2\temporal_final\temporal_final.py` (gate, tracker, alarm)
-- Rules: `edge_export\rule_v12.json`, `week2_final\rule.json`
+## 7. Starter zip: `W3_starter_V12.zip`
 
-**Test videos:**
-- `testing\videos_2026-11-09\IMG_7936.MOV`: candle at roughly 1/3/4 m on a tiled floor, fixed camera. The tiles are a usable grid to try a homography.
-- `testing\videos_2026-11-08\`, `testing\samples\`
-- Side-by-side videos: `testing\PPT_grids_V10box_vs_V12\`
+| File | What |
+|---|---|
+| `models/v12_best.pth` | V12 weights (SHA256 starts `4395912b`) |
+| `models/flame_v12_full.onnx` | V12, full graph with decode: input `images` [1,3,640,640] RGB 0–1; output `detections` [1,8400,5] = x1,y1,x2,y2 (input pixels) + probability, pre-NMS. Works with `scripts/live_flame.py`. |
+| `models/flame_v12_raw_640.onnx`, `_416.onnx` | Board versions without the decode head (see `README_V12.md`) |
+| `README_V12.md`, `FINAL_RULE_V12.md`, `rule_v12.json` | Outputs, decode, preprocessing, accuracy, and the alarm rule for V12 |
+| `videos/tiled_floor_candle_1m_3m_4m.MOV` | Fixed camera at floor level, candle on a tiled floor at about 1/3/4 m (1080p). Use it to try a homography from the tile grid. |
+| `W3_BRIEF.md` | This brief |
 
-**Lab PC:**
-- RTX PRO 4000 Blackwell; `D:\Honeywell-V10-work`, venv `D:\Honeywell-V10\.venv`
-- Its own Claude agent runs zipped packages delivered through Google Drive.
-- W3 geometry work should run fine on the laptop CPU.
+## 8. Lab PC (for heavy runs)
+- **GPU:** RTX PRO 4000 Blackwell, 24 GB. Windows.
+- **Run by** its own Claude agent from zip packages (delivered through Google Drive).
+- **Work folder:** `D:\Honeywell-V10-work`; Python venv: `D:\Honeywell-V10\.venv`; code: `D:\Honeywell-V10`, `D:\Honeywell-V12`
+- **V12 weights:** `D:\Honeywell-V10-work\select_v12_rec\best.pth` (+ `export\flame.onnx`)
+- **V10 weights:** `D:\Honeywell-V10-work\FROZEN_V10\selected.pth`
+- **Datasets:** FASDD-CV v2 (Kaggle `yuulind/fasdd-cv-coco`, version 2) and the training lists in `D:\Honeywell-V10-work\manifests_v10` / `_v11` / `_v12`
+- W3 geometry work doesn't need a GPU.
 
-## 7. Other ongoing items (not W3, don't drop)
-- End-of-week fine-tune from V12 with small flames in **bright rooms**; the team is recording.
-- Electronics teammate: int8 accuracy and frames per second for V12 (640 vs 416). These numbers decide the higher-resolution options.
+## 9. Other ongoing items (not W3)
+- End-of-week fine-tune from V12 with small flames in **bright rooms** (the team is recording).
+- Electronics teammate: int8 accuracy and frames per second for V12 at 640 vs 416. These decide the higher-resolution options.
