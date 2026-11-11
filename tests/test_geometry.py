@@ -107,3 +107,53 @@ def test_sign_normalised_homography_flips_negative_scale():
     px = c.floor_to_pixel(fl)
     H = fit_homography(px, fl)
     assert (np.c_[fl, np.ones(4)] @ H.T)[:, 2].min() > 0
+
+
+def _shifted_frame_camera(c, theta_deg=33.0, shift=(2.0, -1.0)):
+    th = math.radians(theta_deg)
+    Rz = np.array([[math.cos(th), -math.sin(th)], [math.sin(th), math.cos(th)]])
+    fl = np.array([[-1, 2], [1, 2], [-1, 5], [1, 5], [0, 3.5], [0.5, 7]])
+    fl2 = fl @ Rz.T + np.array(shift)
+    px = c.undistort_points(c.floor_to_pixel(fl))
+    return Camera(c.image_size, c.K, c.dist, homography=fit_homography(px, fl2)), shift
+
+
+def test_homography_origin_recovered_distance_bearing_unchanged():
+    c = cam(tilt=25, roll=3, h=1.5, dist=DIST)
+    hc, shift = _shifted_frame_camera(c)
+    assert hc.height_m == pytest.approx(1.5, abs=1e-6)
+    assert hc.tilt_deg == pytest.approx(25, abs=1e-4)  # iterative undistort limits precision
+    assert hc.camera_xy_m == pytest.approx(shift, abs=1e-6)
+    assert abs(hc.heading_deg) > 1  # frame was rotated, heading reflects that
+    for xy in ([0.5, 3.0], [-0.7, 4.4], [1.2, 6.0]):
+        px = c.floor_to_pixel([xy])[0]
+        box = [px[0] - 4, px[1] - 20, px[0] + 4, px[1]]
+        a, b = c.box_to_floor(box), hc.box_to_floor(box)
+        assert b["distance_m"] == pytest.approx(a["distance_m"], abs=1e-5)
+        assert b["bearing_deg"] == pytest.approx(a["bearing_deg"], abs=1e-4)
+
+
+def test_contact_height_plane_intersection():
+    c = cam(tilt=25, roll=2, h=1.5, dist=DIST)
+    hc, _ = _shifted_frame_camera(c)
+    pt = np.array([0.4, 3.0])
+    px = c.floor_to_pixel([pt], height_m=0.1)[0]
+    assert c.pixel_to_floor([px], 0.1)[0] == pytest.approx(pt, abs=1e-6)
+    low = cam(tilt=25, roll=2, h=1.4, dist=DIST)  # pose lowered by the contact height
+    assert low.pixel_to_floor([px], 0.0)[0] == pytest.approx(pt, abs=1e-6)
+    box = [px[0] - 3, px[1] - 12, px[0] + 3, px[1]]
+    a, b = c.box_to_floor(box, 0.1), hc.box_to_floor(box, 0.1)
+    assert a["distance_m"] == pytest.approx(math.hypot(*pt), abs=1e-6)
+    assert b["distance_m"] == pytest.approx(a["distance_m"], abs=1e-5)
+    assert a["contact_height_m"] == 0.1
+    assert c.box_to_floor(box, 0.0)["distance_m"] != pytest.approx(a["distance_m"], abs=1e-3)
+    assert np.isnan(c.pixel_to_floor([px], 1.5)).all()  # plane at camera height
+    c.contact_height_m = 0.1
+    assert Camera.from_dict(c.to_dict()).contact_height_m == 0.1
+    assert c.box_to_floor(box)["distance_m"] == pytest.approx(a["distance_m"])
+
+
+def test_with_resolution_rejects_crop():
+    with pytest.raises(ValueError):
+        cam().with_resolution(1280, 960)
+    cam().with_resolution(1280, 720)
