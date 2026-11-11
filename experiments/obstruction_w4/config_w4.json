@@ -1,0 +1,65 @@
+{
+  "classes": ["flame", "obstruction"],
+  "start": {
+    "note": "Default = final V12 (select_v12_rec/best.pth, rec epoch 4 from b_zoom). For V10 set W4_START_CHECKPOINT to FROZEN_V10/selected.pth AND W4_START_SHA256 to d046dab613faa72ec650d37dc40d0740ff50ac09df4eb97919d10cfd532b721d.",
+    "checkpoint": "select_v12_rec/best.pth",
+    "sha256": "4395912bf62190537e78d13df0a86c4d9ce9b85725352ab3e09fe530e0a36d87"
+  },
+  "source_manifests": "manifests_v12",
+  "base": {
+    "initialization": "trained",
+    "size": 640,
+    "epochs": 10,
+    "min_epochs": 10,
+    "patience": 99,
+    "batch": 16,
+    "accumulate": 2,
+    "workers": 12,
+    "optimizer": "AdamW",
+    "lr": 0.00005,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 0,
+    "warmup_updates": 300,
+    "min_lr_ratio": 0.1,
+    "gradient_clip": 10.0,
+    "ema_decay": 0.9998,
+    "mosaic_probability": 0.5,
+    "close_mosaic_epochs": 2,
+    "checkpoint_every_updates": 250,
+    "seed": 42,
+    "amp": true,
+    "amp_initial_scale": 128.0,
+    "max_training_seconds": 43200
+  },
+  "base_changes_from_v12": "lr 3e-5 -> 5e-5 and 8 -> 10 epochs, because the obstruction classifier starts from zero; everything else is V12's.",
+  "augment": {
+    "note": "V12 b_zoom, the variant the final V12 was trained with (no paste, so no flame bank needed)",
+    "zoom_p": 0.3, "zoom_min": 0.5, "min_box_px": 6,
+    "paste_p": 0.0, "paste_max": 1, "paste_min_px": 8, "paste_max_px": 32,
+    "resample_p": 0.1, "blur_p": 0.1, "noise_p": 0.1, "jpeg_p": 0.15
+  },
+  "occluder": {
+    "p": 0.2,
+    "min_fraction": 0.03,
+    "hide_if_covered": 0.5,
+    "shapes": {"edge": 0.6, "floating": 0.25, "full": 0.15},
+    "kinds": {"cardboard": 2, "metal": 2, "plain": 2, "cloth": 1.5, "skin": 1.5, "dark": 1, "blurred_scene": 2}
+  },
+  "validation": {
+    "synthetic_images": 1000,
+    "seed": 4242,
+    "source": "validation_full images that are NOT in the 2,000-image monitor set; donors from the same pool"
+  },
+  "selection": {
+    "flame_ap50_floor_pts": 1.0,
+    "flame_recall_floor_pts": 1.0,
+    "flame_hn_fp_max_ratio": 1.5,
+    "obstruction_false_rate_clean_max": 0.02,
+    "obstruction_false_rate_hn_max": 0.02,
+    "tie_pts": 0.5
+  },
+  "operating": {
+    "flame_threshold": 0.40,
+    "obstruction_threshold": 0.40
+  }
+}
