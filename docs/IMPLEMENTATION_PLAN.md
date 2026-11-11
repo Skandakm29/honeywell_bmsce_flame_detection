@@ -8,7 +8,7 @@ Immediate: verify local backup, review full validation failures, then run one ev
 | Week 1 | Data, baseline detector, reproducible training/export | Baseline complete; improvement/evaluation pending |
 | Week 2 | Video inference and temporal alarm logic | Planned |
 | Week 3 | Scene calibration / physical scene information | Planned; camera required |
-| Week 4 | Obstruction / scene-health detection | Planned |
+| Week 4 | Obstruction / scene-health detection: `obstruction` as a second class in the same YOLOv9 ([WEEK4_OBSTRUCTION.md](WEEK4_OBSTRUCTION.md)) | Code ready; lab training and real-camera test pending |
 | Week 5 | Tamper detection | Planned |
 | Week 6 | Relay/Ethernet/operator telemetry integration | Planned; interfaces unresolved |
 | Week 7 | Electronics / packaging / power | Planned |
