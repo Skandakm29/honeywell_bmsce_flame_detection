@@ -177,14 +177,14 @@ class Camera:
     # ---- pixel helpers --------------------------------------------------
     def undistort_points(self, px):
         p = np.asarray(px, np.float64).reshape(-1, 1, 2)
-        if not np.any(self.dist):
+        if not np.any(self.dist) or len(p) == 0:
             return p.reshape(-1, 2).copy()
         return cv2.undistortPoints(p, self.K, self.dist, P=self.K).reshape(-1, 2)
 
     def distort_points(self, upx):
         """Undistorted pixels -> raw (distorted) pixels."""
         u = np.asarray(upx, np.float64).reshape(-1, 2)
-        if not np.any(self.dist):
+        if not np.any(self.dist) or len(u) == 0:
             return u.copy()
         n = (u - self.K[:2, 2]) / np.array([self.K[0, 0], self.K[1, 1]])
         pts = np.c_[n, np.ones(len(n))]
