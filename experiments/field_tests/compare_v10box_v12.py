@@ -38,6 +38,7 @@ CLIPS = {
 }
 PANELS = ('V10 + box', 'V12')
 SEPARATE = False   # --separate: also write one video per model
+CAMERA, CONTACT = None, None   # --camera camera.json / --contact-height-m (spatial calibration, optional)
 COLOURS = {'V10': (0, 220, 0), 'V10 + box': (0, 200, 255), 'V12': (255, 160, 0)}
 
 
@@ -112,6 +113,14 @@ def render(folder, out):
         fps = cap.get(cv2.CAP_PROP_FPS)
         W, H = cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
         to640 = 640 / max(W, H)
+        gcam = ov = None
+        if CAMERA is not None:   # distance_m/bearing_deg/x_m/y_m per box + range rings (rings built once per clip)
+            sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
+            from geometry.overlay import RingOverlay, fit_to_frame
+            gcam = fit_to_frame(CAMERA, int(W), int(H))
+            ov = RingOverlay(gcam, int(W), int(H))
+            (out / 'geo').mkdir(exist_ok=True)
+        geo_files, first_geo = {}, {p: None for p in PANELS}
         st = {'V10 + box': week2_states(logs['V10'], to640, RULE['small_box']['threshold']),
               'V12': week2_states(logs['V12'], to640, None)}
         stats = {p: 0 for p in PANELS}
@@ -124,15 +133,19 @@ def render(folder, out):
             if not ok:
                 break
             t = index / fps
+            if ov is not None:
+                ov.apply(frame)
             boxes = {p: st[p][0][index] for p in PANELS}
             panels = []
             scale_down = 640 / max(frame.shape[:2])          # keep the grid a sensible size
             for p in PANELS:
                 panel = cv2.resize(frame, (round(frame.shape[1] * scale_down), round(frame.shape[0] * scale_down)))
-                for x1, y1, x2, y2, s in boxes[p]:
+                geo = [gcam.box_to_floor(b[:4], CONTACT) for b in boxes[p]] if gcam else []
+                for i, (x1, y1, x2, y2, s) in enumerate(boxes[p]):
                     q = [int(v * scale_down) for v in (x1, y1, x2, y2)]
                     cv2.rectangle(panel, (q[0], q[1]), (q[2], q[3]), COLOURS[p], 2)
-                    cv2.putText(panel, f'{s:.2f}', (q[0], max(12, q[1] - 4)), 0, .45, COLOURS[p], 1)
+                    d = geo[i]['distance_m'] if geo else None
+                    cv2.putText(panel, f'{s:.2f}' + (f' {d:.1f}m' if d is not None else ''), (q[0], max(12, q[1] - 4)), 0, .45, COLOURS[p], 1)
                 if boxes[p]:
                     stats[p] += 1
                     first[p] = t if first[p] is None else first[p]
@@ -142,6 +155,14 @@ def render(folder, out):
                 _, warning, alarm = st[p]
                 state, col = ('ALARM', (0, 0, 255)) if alarm[index] else (('WARNING', (0, 200, 255)) if warning[index] else ('clear', (160, 160, 160)))
                 cv2.putText(bar, state, (panel.shape[1] - 95, 20), 0, .6, col, 2)
+                if gcam:
+                    if p not in geo_files:
+                        geo_files[p] = open(out / 'geo' / f"{video.stem}_{p.replace(' + ', '_').replace(' ', '')}.jsonl", 'w')
+                    geo_files[p].write(json.dumps(dict(frame=index, t=round(t, 3), alarm=bool(alarm[index]),
+                                                       dets=[dict(box=[round(float(v), 1) for v in b[:4]], score=round(float(b[4]), 4), **g)
+                                                             for b, g in zip(boxes[p], geo)])) + '\n')
+                    if alarm[index] and first_alarm[p] is None:
+                        first_geo[p] = geo
                 if alarm[index]:
                     alarm_frames[p] += 1
                     first_alarm[p] = t if first_alarm[p] is None else first_alarm[p]
@@ -170,12 +191,15 @@ def render(folder, out):
                     singles[p].write(np.vstack([pan, f2]))
             index += 1
         writer.release()
+        for f in geo_files.values():
+            f.close()
         for s in singles.values():
             s.release()
         summary[clip] = dict(frames=index, seconds=round(index / fps, 1),
                              frames_with_box={p: round(stats[p] / max(index, 1), 3) for p in PANELS},
                              first_box_s={p: first[p] for p in PANELS},
-                             alarm_share={p: round(alarm_frames[p] / max(index, 1), 3) for p in PANELS}, first_alarm_s=first_alarm)
+                             alarm_share={p: round(alarm_frames[p] / max(index, 1), 3) for p in PANELS}, first_alarm_s=first_alarm,
+                             **(dict(first_alarm_geo=first_geo) if gcam else {}))
         print(clip, summary[clip], flush=True)
     (out / ('summary.json' if len(CLIPS) > 1 else f'summary_{Path(next(iter(CLIPS))).stem}.json')).write_text(json.dumps(summary, indent=1))
 
@@ -188,8 +212,14 @@ if __name__ == '__main__':
     p.add_argument('--clip', help='run only this file (inside --videos) with --caption')
     p.add_argument('--caption', default='')
     p.add_argument('--separate', action='store_true')
+    p.add_argument('--camera', help='camera.json: add distance_m/bearing_deg/x_m/y_m to each box and alarm, draw rings')
+    p.add_argument('--contact-height-m', type=float, help='override camera.json contact_height_m')
     a = p.parse_args()
     SEPARATE = a.separate
+    if a.camera:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
+        from geometry import Camera
+        CAMERA, CONTACT = Camera.load(a.camera), a.contact_height_m
     if a.clip:
         CLIPS.clear()
         CLIPS[a.clip] = a.caption or a.clip

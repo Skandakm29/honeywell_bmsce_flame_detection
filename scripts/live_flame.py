@@ -4,6 +4,7 @@ import csv
 import hashlib
 import json
 import platform
+import sys
 import threading
 import time
 from datetime import datetime
@@ -133,6 +134,10 @@ def main():
     parser.add_argument('--backend', choices=['auto', 'dshow', 'msmf'], default='auto')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--headless', action='store_true', help='Process a saved video without a display')
+    parser.add_argument('--camera', type=Path, help='camera.json: add distance_m/bearing_deg/x_m/y_m per detection '
+                        '(frames.csv column detections_geo) and draw range rings')
+    parser.add_argument('--contact-height-m', type=float, help='override camera.json contact_height_m')
+    parser.add_argument('--max-frames', type=int, default=0, help='stop after N frames (0 = no limit)')
     args = parser.parse_args()
     if not 0 < args.confidence < 1:
         parser.error('--confidence must be between 0 and 1')
@@ -143,6 +148,12 @@ def main():
     options.intra_op_num_threads = 4
     session = ort.InferenceSession(str(args.model), sess_options=options,
                                    providers=['CPUExecutionProvider'])
+    geo_cam = overlay = None
+    if args.camera:
+        sys.path.insert(0, str(ROOT / 'src'))
+        from geometry import Camera
+        from geometry.overlay import RingOverlay, fit_to_frame
+        geo_cam = Camera.load(args.camera)
     size = 416 if args.arch == 'nano' else 640
     if session.get_inputs()[0].shape != [1, 3, size, size]:
         raise ValueError(f'{args.arch} requires our fixed {size}x{size} flame export.')
@@ -180,7 +191,8 @@ def main():
     try:
         with (output / 'frames.csv').open('w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
-            writer.writerow(['time_local', 'camera_sequence', 'processing_ms', 'detections_xyxy_score', 'video_seconds'])
+            writer.writerow(['time_local', 'camera_sequence', 'processing_ms', 'detections_xyxy_score', 'video_seconds']
+                            + (['detections_geo'] if geo_cam else []))
             while True:
                 item = camera.next(sequence)
                 if item is None:
@@ -191,16 +203,29 @@ def main():
                 raw = session.run(None, {session.get_inputs()[0].name: tensor})[0]
                 boxes = decode(raw, frame, scale, args.confidence, args.arch)
                 milliseconds = (time.perf_counter() - started) * 1000
+                geo = []
+                if geo_cam is not None:
+                    if overlay is None:
+                        fh, fw = frame.shape[:2]
+                        geo_cam = fit_to_frame(geo_cam, fw, fh)
+                        overlay = RingOverlay(geo_cam, fw, fh)
+                    geo = [geo_cam.box_to_floor(b, args.contact_height_m) for b in boxes]
                 writer.writerow([datetime.now().isoformat(), sequence, round(milliseconds, 2),
                                  json.dumps(boxes.tolist()),
-                                 (sequence-1)/camera.fps if is_video and camera.fps > 0 else ''])
+                                 (sequence-1)/camera.fps if is_video and camera.fps > 0 else '']
+                                + ([json.dumps(geo)] if geo_cam is not None else []))
                 file.flush()
+                if args.max_frames and sequence >= args.max_frames:
+                    break
                 if args.headless:
                     continue
-                for x1, y1, x2, y2, score in boxes:
+                if overlay is not None:
+                    overlay.apply(frame)
+                for i, (x1, y1, x2, y2, score) in enumerate(boxes):
                     a, b = (int(x1), int(y1)), (int(x2), int(y2))
                     cv2.rectangle(frame, a, b, (0, 0, 255), 2)
-                    cv2.putText(frame, f'flame {score:.2f}', (a[0], max(22, a[1]-6)),
+                    dist = f" {geo[i]['distance_m']:.1f} m" if geo and geo[i]['distance_m'] is not None else ''
+                    cv2.putText(frame, f'flame {score:.2f}{dist}', (a[0], max(22, a[1]-6)),
                                 cv2.FONT_HERSHEY_SIMPLEX, .65, (0, 0, 255), 2)
                 title = f'CPU | processed {1000/max(milliseconds, .001):.1f} FPS | conf {args.confidence:.2f}'
                 cv2.putText(frame, title, (10, 25), cv2.FONT_HERSHEY_SIMPLEX, .55, (0, 255, 255), 2)
