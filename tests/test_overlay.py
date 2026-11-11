@@ -85,9 +85,35 @@ def test_draw_and_map_smoke():
     img = np.zeros((1080, 1920, 3), np.uint8)
     out = overlay.draw_rings(img.copy(), c, band_m=2.0)
     assert out.any()
+    ov = overlay.RingOverlay(c, 1920, 1080, band_m=2.0)
+    cached = ov.apply(img.copy())
+    assert np.array_equal(cached, out)
+    assert out.any()
     small = overlay.draw_rings(np.zeros((360, 640, 3), np.uint8), c)  # auto-rescales camera
     assert small.any()
     m = overlay.topdown_map(c, band_m=2.0, points_xy=[[0.0, 3.0]])
     assert m.ndim == 3 and m.any()
     mask = overlay.floor_mask(c, 3.0)
     assert mask.shape == (1080, 1920) and mask[-1, 960] and not mask[0, 960]
+
+
+def test_labels_do_not_collide():
+    c = cam(tilt=5.0, h=0.5)
+    ov = overlay.RingOverlay(c, 1920, 1080, radii=(1, 2, 3, 5, 10, 20))
+    ys = sorted(y for _, y in ov.label_pos)
+    assert len(ys) >= 1
+    assert all(b - a >= 18 for a, b in zip(ys, ys[1:]))
+
+
+def test_per_pixel_band_matches_straight_ahead_and_is_close_to_circle():
+    c = cam(tilt=15.0, h=1.0)
+    m = overlay.detectability_mask(c, 0.3, 25, 640, 0.0)
+    d = overlay.detectable_distance(c, 0.3, 25, 640, 0.0)
+    v_in = c.floor_to_pixel([[0, d - 0.1]])[0]
+    v_out = c.floor_to_pixel([[0, d + 0.1]])[0]
+    assert m[int(v_in[1]), int(v_in[0])] and not m[int(v_out[1]), int(v_out[0])]
+    # pinhole size scales with depth along the optical axis, so off-axis points at the same radial
+    # distance look slightly *larger*: the per-pixel band is a bit bigger than the circle, not smaller
+    assert 0.9 < m.sum() / overlay.floor_mask(c, d).sum() < 1.15
+    with pytest.raises(ValueError):
+        overlay.RingOverlay(c, 1920, 1080).apply(np.zeros((360, 640, 3), np.uint8))

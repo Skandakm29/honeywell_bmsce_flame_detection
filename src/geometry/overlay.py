@@ -136,32 +136,72 @@ def floor_mask(cam: Camera, max_dist_m: float, stride: int = 8):
     return cv2.resize(m.astype(np.uint8), (w, h), interpolation=cv2.INTER_NEAREST).astype(bool)
 
 
-def draw_rings(img, cam: Camera, radii=DEFAULT_RINGS, color=(0, 255, 255), thickness=2,
-               labels=True, band_m=None, band_color=(0, 200, 0), band_alpha=0.25):
-    """Draw range rings (and an optional shaded 'detectable' region) in place on img."""
-    h, w = img.shape[:2]
-    cam = fit_to_frame(cam, w, h)
-    if band_m:
-        m = floor_mask(cam, band_m)
-        tint = np.zeros_like(img)
-        tint[:] = band_color
-        img[m] = (img[m] * (1 - band_alpha) + tint[m] * band_alpha).astype(img.dtype)
-    for r in radii:
-        runs = ring_polylines(cam, r)
-        for run in runs:
-            cv2.polylines(img, [np.round(run).astype(np.int32)], False, color, thickness, cv2.LINE_AA)
-        if labels:
+def detectability_mask(cam: Camera, flame_height_m: float, min_px: float = 25.0,
+                       model_size: int = 640, contact_height_m=None, stride: int = 8):
+    """Per-pixel detectability: treating each pixel as the flame base (on the plane
+    z=contact_height_m), is the flame top >= min_px away at the model input (letterbox
+    scale r = model_size / max(W,H))? Returns a full-resolution boolean mask."""
+    w, h = cam.image_size
+    hc = cam.contact_height_m if contact_height_m is None else float(contact_height_m)
+    r = model_size / max(w, h)
+    us, vs = np.meshgrid(np.arange(0, w, stride) + stride / 2, np.arange(0, h, stride) + stride / 2)
+    g = np.stack([us, vs], -1).reshape(-1, 2)
+    xy = cam.pixel_to_floor(g, hc)
+    top = cam.floor_to_pixel(xy, hc + flame_height_m)  # NaN in -> NaN out
+    px = r * np.hypot(top[:, 0] - g[:, 0], top[:, 1] - g[:, 1])
+    m = (np.isfinite(px) & (px >= min_px)).reshape(us.shape)
+    return cv2.resize(m.astype(np.uint8), (w, h), interpolation=cv2.INTER_NEAREST).astype(bool)
+
+
+class RingOverlay:
+    """Rings + optional detectable band, rendered once for (camera, frame size, radii, band);
+    apply() is then a cheap per-frame blend + copy of the line pixels."""
+
+    def __init__(self, cam: Camera, w: int, h: int, radii=DEFAULT_RINGS, band_m=None,
+                 band_mask=None, color=(0, 255, 255), thickness=2, labels=True,
+                 band_color=(0, 200, 0), band_alpha=0.25, min_label_gap_px=18):
+        cam = fit_to_frame(cam, w, h)
+        layer = np.zeros((h, w, 3), np.uint8)
+        self.band = band_mask if band_mask is not None else (floor_mask(cam, band_m) if band_m else None)
+        if self.band is not None:
+            self._keep = 1.0 - band_alpha
+            self._add = (np.array(band_color, np.float32) * band_alpha)
+            cnts, _ = cv2.findContours(self.band.astype(np.uint8), cv2.RETR_EXTERNAL,
+                                       cv2.CHAIN_APPROX_SIMPLE)
+            cv2.polylines(layer, cnts, True, band_color, thickness + 1, cv2.LINE_AA)
+        self.label_pos = []
+        for r in sorted(radii):  # near to far
+            runs = ring_polylines(cam, r)
+            for run in runs:
+                cv2.polylines(layer, [np.round(run).astype(np.int32)], False, color, thickness,
+                              cv2.LINE_AA)
+            if not labels:
+                continue
             p = _label_pos(runs, w, h)
-            if p is not None:
-                txt = f"{r:g} m"
-                org = (int(p[0]) + 4, int(p[1]) - 4)
-                cv2.putText(img, txt, org, cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 4, cv2.LINE_AA)
-                cv2.putText(img, txt, org, cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2, cv2.LINE_AA)
-    if band_m:
-        for run in ring_polylines(cam, band_m):
-            cv2.polylines(img, [np.round(run).astype(np.int32)], False, band_color, thickness + 1,
-                          cv2.LINE_AA)
-    return img
+            if p is None or any(abs(p[1] - y) < min_label_gap_px for _, y in self.label_pos):
+                continue
+            self.label_pos.append((r, float(p[1])))
+            txt, org = f"{r:g} m", (int(p[0]) + 4, int(p[1]) - 4)
+            cv2.putText(layer, txt, org, cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 4, cv2.LINE_AA)
+            cv2.putText(layer, txt, org, cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2, cv2.LINE_AA)
+        self.layer = layer
+        self.lines = layer.any(axis=2)
+        self.size = (w, h)
+
+    def apply(self, img):
+        """Draw onto img (BGR uint8, same size as built for) in place and return it."""
+        if img.shape[1::-1] != self.size:
+            raise ValueError(f"frame {img.shape[1::-1]} != overlay {self.size}")
+        if self.band is not None:
+            img[self.band] = (img[self.band] * self._keep + self._add).astype(np.uint8)
+        img[self.lines] = self.layer[self.lines]
+        return img
+
+
+def draw_rings(img, cam: Camera, radii=DEFAULT_RINGS, band_m=None, band_mask=None, **kw):
+    """One-shot convenience (rebuilds everything: use RingOverlay for video)."""
+    h, w = img.shape[:2]
+    return RingOverlay(cam, w, h, radii, band_m=band_m, band_mask=band_mask, **kw).apply(img)
 
 
 def to_camera_frame(cam: Camera, xy):
@@ -175,7 +215,7 @@ def to_camera_frame(cam: Camera, xy):
 def topdown_map(cam: Camera, radii=DEFAULT_RINGS, extent_m=None, size_px=800, band_m=None,
                 points_xy=None):
     """Top-down image: camera at bottom-centre facing up, rings, field-of-view wedge, optional
-    detectable radius and detection points given as floor (x,y) in the camera.json frame."""
+    straight-ahead detectable radius and detection points given as floor (x,y) in the camera.json frame."""
     ext = float(extent_m or (max(radii) * 1.1))
     s = size_px / (2 * ext)  # px per metre; width spans 2*ext, height covers ext forward + margin
     W, H = size_px, int(size_px * 0.6)
@@ -242,26 +282,28 @@ def main(argv=None):
     cam = Camera.load(a.camera)
 
     def band_for(c):
+        """-> (straight-ahead range m, per-pixel mask) or (None, None)."""
         if not a.flame_height_m:
-            return None
+            return None, None
         d = detectable_distance(c, a.flame_height_m, a.min_px, a.model_size, a.contact_height_m)
-        print(f"flame {a.flame_height_m} m tall: >= {a.min_px:g} px at {a.model_size}px input up to "
-              f"{'n/a' if d is None else f'{d:.2f} m'}")
-        return d
+        print(f"flame {a.flame_height_m} m tall: >= {a.min_px:g} px at {a.model_size}px input "
+              f"straight-ahead range {'n/a' if d is None else f'{d:.2f} m'} (band shaded per pixel)")
+        return d, detectability_mask(c, a.flame_height_m, a.min_px, a.model_size, a.contact_height_m)
 
     if a.video and a.video_out:
         cap = cv2.VideoCapture(a.video)
         fps = cap.get(cv2.CAP_PROP_FPS) or 30
         w, h = int(cap.get(3)), int(cap.get(4))
         c = fit_to_frame(cam, w, h)
-        band = band_for(c)
+        _, bmask = band_for(c)
+        ov = RingOverlay(c, w, h, a.rings, band_mask=bmask)
         vw = cv2.VideoWriter(a.video_out, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
         n = 0
         while True:
             ok, f = cap.read()
             if not ok or (a.max_frames and n >= a.max_frames):
                 break
-            vw.write(draw_rings(f, c, a.rings, band_m=band))
+            vw.write(ov.apply(f))
             n += 1
         vw.release()
         print(f"{n} frames -> {a.video_out}")
@@ -280,11 +322,11 @@ def main(argv=None):
         sys.exit("give --image or --video")
     h, w = img.shape[:2]
     c = fit_to_frame(cam, w, h)
-    band = band_for(c)
-    cv2.imwrite(a.out, draw_rings(img, c, a.rings, band_m=band))
+    dstraight, bmask = band_for(c)
+    cv2.imwrite(a.out, draw_rings(img, c, a.rings, band_mask=bmask))
     print(f"-> {a.out}")
     if a.map:
-        cv2.imwrite(a.map, topdown_map(c, a.rings, band_m=band))
+        cv2.imwrite(a.map, topdown_map(c, a.rings, band_m=dstraight))
         print(f"-> {a.map}")
 
 
