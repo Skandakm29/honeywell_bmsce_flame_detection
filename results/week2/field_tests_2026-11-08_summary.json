@@ -1,0 +1,102 @@
+{
+ "fire_candle_outdoor_night_hand_occlusion.mov": {
+  "frames": 731,
+  "seconds": 24.4,
+  "frames_with_box": {
+   "V10 + box": 0.584,
+   "V12": 0.564
+  },
+  "first_box_s": {
+   "V10 + box": 0.0,
+   "V12": 0.0
+  },
+  "alarm_share": {
+   "V10 + box": 0.979,
+   "V12": 0.979
+  },
+  "first_alarm_s": {
+   "V10 + box": 0.5,
+   "V12": 0.5
+  }
+ },
+ "nofire_candle_unlit_outdoor_night_streetlamp.mov": {
+  "frames": 623,
+  "seconds": 20.8,
+  "frames_with_box": {
+   "V10 + box": 0.0,
+   "V12": 0.0
+  },
+  "first_box_s": {
+   "V10 + box": null,
+   "V12": null
+  },
+  "alarm_share": {
+   "V10 + box": 0.0,
+   "V12": 0.0
+  },
+  "first_alarm_s": {
+   "V10 + box": null,
+   "V12": null
+  }
+ },
+ "fire_candle_corridor_near_to_far.mov": {
+  "frames": 766,
+  "seconds": 25.5,
+  "frames_with_box": {
+   "V10 + box": 0.892,
+   "V12": 0.962
+  },
+  "first_box_s": {
+   "V10 + box": 0.0,
+   "V12": 0.0
+  },
+  "alarm_share": {
+   "V10 + box": 0.98,
+   "V12": 0.98
+  },
+  "first_alarm_s": {
+   "V10 + box": 0.5000652741514361,
+   "V12": 0.5000652741514361
+  }
+ },
+ "fire_lighter_far_to_close.mp4": {
+  "frames": 618,
+  "seconds": 20.7,
+  "frames_with_box": {
+   "V10 + box": 0.693,
+   "V12": 0.806
+  },
+  "first_box_s": {
+   "V10 + box": 4.7220119201726,
+   "V12": 0.03348944624235887
+  },
+  "alarm_share": {
+   "V10 + box": 0.718,
+   "V12": 0.752
+  },
+  "first_alarm_s": {
+   "V10 + box": 5.827163646170442,
+   "V12": 5.123885275080906
+  }
+ },
+ "nofire_diwali_string_lights_orange.mov": {
+  "frames": 623,
+  "seconds": 20.8,
+  "frames_with_box": {
+   "V10 + box": 0.0,
+   "V12": 0.0
+  },
+  "first_box_s": {
+   "V10 + box": null,
+   "V12": null
+  },
+  "alarm_share": {
+   "V10 + box": 0.0,
+   "V12": 0.0
+  },
+  "first_alarm_s": {
+   "V10 + box": null,
+   "V12": null
+  }
+ }
+}

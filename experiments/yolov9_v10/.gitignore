@@ -1,0 +1,7 @@
+# Local inputs and outputs of the V10 workflow (never committed)
+inbox/*
+!inbox/README.txt
+own_flame/
+work/
+refs/*.csv.gz
+package_manifest.json

@@ -1,0 +1,20 @@
+{
+ "model": "V10 (FROZEN_V10/selected.pth, sha256 d046dab6...)",
+ "protocol": "TEMPORAL_PROTOCOL.md",
+ "score_threshold": 0.4,
+ "small_box": {
+  "longest_side_px_at_640_below": 16,
+  "threshold": 0.25
+ },
+ "tracker": {
+  "match_iou": 0.1,
+  "match_centre_x_longest_side": 1.5,
+  "drop_after_s": 1.0
+ },
+ "window_s": 2.0,
+ "min_hit_ratio": 0.3,
+ "min_mean_score": 0.0,
+ "alarm_on_after_s": 0.0,
+ "alarm_off_after_s": 3.0,
+ "notes": "time based; tested at 10 and 5 fps"
+}

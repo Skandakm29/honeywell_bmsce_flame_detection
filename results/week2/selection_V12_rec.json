@@ -1,0 +1,1215 @@
+{
+ "rule": "Steps 3a and 4d: selection with the rule frozen in PROTOCOL_V12.md (validation only; FASDD test never read).\n\n  python select12.py variants   candidates = epochs 1-8 of a_data, b_zoom, c_zoom_paste      -> select_v12/\n  python select12.py rec        candidates = epochs 1-4 of the recordings run + its start model -> select_v12_rec/\n\nReference = frozen V10 measured with the same code. Rule: common12.select. For the best checkpoint the size-aware\noperating rule is chosen on validation (common12.best_rule). The best checkpoint is exported to ONNX 640x640.\nstart_for_recordings (variants mode) = best eligible checkpoint, or frozen V10 if none is eligible.",
+ "protocol": "PROTOCOL_V12.md",
+ "v10_reference": {
+  "checkpoint": "D:\\Honeywell-V10-work\\FROZEN_V10\\selected.pth",
+  "epoch": 6,
+  "sha256": "d046dab613faa72ec650d37dc40d0740ff50ac09df4eb97919d10cfd532b721d",
+  "AP50": 0.7446837917869317,
+  "AP50_95": 0.4395123143315729,
+  "precision": 0.8112688456036096,
+  "recall": 0.5885358454414817,
+  "FP": 1715,
+  "small_recall": 0.4879032258064516,
+  "small_tp": 484,
+  "small_boxes": 992,
+  "nuisance": {
+   "score": 0.0038082437275985667,
+   "scenes": 1488,
+   "images": 1895,
+   "flag_020": 13,
+   "flag_040": 13,
+   "synthetic_screens": {
+    "images": 183,
+    "flag_020": 35,
+    "flag_040": 35
+   }
+  },
+  "variant": "v10"
+ },
+ "candidates": [
+  {
+   "checkpoint": "D:\\Honeywell-V10-work\\train_v12\\b_zoom\\epoch_08.pth",
+   "epoch": 8,
+   "sha256": "a20cdf83d626e1f5458fb230c04b9173010aa60c8947b3f7433adbd4bf5f4142",
+   "AP50": 0.7466013929904172,
+   "AP50_95": 0.4389364909903732,
+   "precision": 0.8069988264163022,
+   "recall": 0.6038639629570494,
+   "FP": 1809,
+   "small_recall": 0.5161290322580645,
+   "small_tp": 512,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.0044962877624167945,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 15,
+    "flag_040": 15,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 24,
+     "flag_040": 24
+    }
+   },
+   "variant": "b_zoom (start, no recordings)",
+   "eligible": true
+  },
+  {
+   "checkpoint": "D:\\Honeywell-V10-work\\train_v12\\rec\\epoch_01.pth",
+   "epoch": 1,
+   "sha256": "394278d170428080b9869f195dfdeab82152ada47364fc31628a479e08b07215",
+   "AP50": 0.7390909079518713,
+   "AP50_95": 0.43337697464791697,
+   "precision": 0.7902971752598971,
+   "recall": 0.6008302730320932,
+   "FP": 1997,
+   "small_recall": 0.501008064516129,
+   "small_tp": 497,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.005168330773169483,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 16,
+    "flag_040": 16,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 26,
+     "flag_040": 26
+    }
+   },
+   "variant": "rec",
+   "eligible": true
+  },
+  {
+   "checkpoint": "D:\\Honeywell-V10-work\\train_v12\\rec\\epoch_02.pth",
+   "epoch": 2,
+   "sha256": "cd099d21775f129fb93952b1781385c1f5ec336f950720a9157f23596f09f803",
+   "AP50": 0.7401118880507883,
+   "AP50_95": 0.43332108193798,
+   "precision": 0.7942139161651357,
+   "recall": 0.600510937250519,
+   "FP": 1949,
+   "small_recall": 0.5211693548387096,
+   "small_tp": 517,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.0038402457757296467,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 15,
+    "flag_040": 15,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 25,
+     "flag_040": 25
+    }
+   },
+   "variant": "rec",
+   "eligible": true
+  },
+  {
+   "checkpoint": "D:\\Honeywell-V10-work\\train_v12\\rec\\epoch_03.pth",
+   "epoch": 3,
+   "sha256": "e4386b7b2f4cf3b214083d546b1a4e3a8455fb2f8709284f77fa339fe9cf87d1",
+   "AP50": 0.7425694635228453,
+   "AP50_95": 0.43377726314251147,
+   "precision": 0.8001066666666666,
+   "recall": 0.5988344243972538,
+   "FP": 1874,
+   "small_recall": 0.5191532258064516,
+   "small_tp": 515,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.005200332821300563,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 18,
+    "flag_040": 18,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 24,
+     "flag_040": 24
+    }
+   },
+   "variant": "rec",
+   "eligible": true
+  },
+  {
+   "checkpoint": "D:\\Honeywell-V10-work\\train_v12\\rec\\epoch_04.pth",
+   "epoch": 4,
+   "sha256": "4395912bf62190537e78d13df0a86c4d9ce9b85725352ab3e09fe530e0a36d87",
+   "AP50": 0.7443097108968499,
+   "AP50_95": 0.4360463361439239,
+   "precision": 0.7972108629548076,
+   "recall": 0.606977486827399,
+   "FP": 1934,
+   "small_recall": 0.5211693548387096,
+   "small_tp": 517,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.005152329749103943,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 15,
+    "flag_040": 15,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 23,
+     "flag_040": 23
+    }
+   },
+   "variant": "rec",
+   "eligible": true
+  }
+ ],
+ "floors": {
+  "AP50": 0.7346837917869317,
+  "recall": 0.5785358454414817,
+  "nuisance_max": 0.00571236559139785
+ },
+ "best": {
+  "checkpoint": "D:\\Honeywell-V10-work\\train_v12\\rec\\epoch_04.pth",
+  "epoch": 4,
+  "sha256": "4395912bf62190537e78d13df0a86c4d9ce9b85725352ab3e09fe530e0a36d87",
+  "AP50": 0.7443097108968499,
+  "AP50_95": 0.4360463361439239,
+  "precision": 0.7972108629548076,
+  "recall": 0.606977486827399,
+  "FP": 1934,
+  "small_recall": 0.5211693548387096,
+  "small_tp": 517,
+  "small_boxes": 992,
+  "nuisance": {
+   "score": 0.005152329749103943,
+   "scenes": 1488,
+   "images": 1895,
+   "flag_020": 15,
+   "flag_040": 15,
+   "synthetic_screens": {
+    "images": 183,
+    "flag_020": 23,
+    "flag_040": 23
+   }
+  },
+  "variant": "rec",
+  "eligible": true
+ },
+ "best_is_eligible": true,
+ "adopted": true,
+ "reason": "adopted: best eligible checkpoint beats V10 small-flame recall by >= 1 point",
+ "operating_rule": {
+  "side": 0,
+  "threshold": 0.4,
+  "chosen": {
+   "precision": 0.7972108629548076,
+   "recall": 0.606977486827399,
+   "FP": 1934,
+   "small_recall": 0.5211693548387096,
+   "small_tp": 517,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.005152329749103943,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 15,
+    "flag_040": 15,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 23,
+     "flag_040": 23
+    }
+   }
+  },
+  "base": {
+   "precision": 0.7972108629548076,
+   "recall": 0.606977486827399,
+   "FP": 1934,
+   "small_recall": 0.5211693548387096,
+   "small_tp": 517,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.005152329749103943,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 15,
+    "flag_040": 15,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 23,
+     "flag_040": 23
+    }
+   }
+  },
+  "grid": [
+   {
+    "side": 12,
+    "threshold": 0.15,
+    "eligible": false,
+    "precision": 0.7871750077073271,
+    "recall": 0.6115280217148331,
+    "FP": 2071,
+    "small_recall": 0.5504032258064516,
+    "small_tp": 546,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 12,
+    "threshold": 0.2,
+    "eligible": false,
+    "precision": 0.7918219461697723,
+    "recall": 0.6106498483155037,
+    "FP": 2011,
+    "small_recall": 0.5463709677419355,
+    "small_tp": 542,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 12,
+    "threshold": 0.25,
+    "eligible": false,
+    "precision": 0.7947943779281624,
+    "recall": 0.6094523391346001,
+    "FP": 1971,
+    "small_recall": 0.5393145161290323,
+    "small_tp": 535,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 12,
+    "threshold": 0.3,
+    "eligible": false,
+    "precision": 0.7958842578084195,
+    "recall": 0.6082548299536963,
+    "FP": 1954,
+    "small_recall": 0.5292338709677419,
+    "small_tp": 525,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 12,
+    "threshold": 0.35,
+    "eligible": false,
+    "precision": 0.7967752067846299,
+    "recall": 0.607536324445154,
+    "FP": 1941,
+    "small_recall": 0.5241935483870968,
+    "small_tp": 520,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.15,
+    "eligible": false,
+    "precision": 0.7684055118110236,
+    "recall": 0.6232636116876896,
+    "FP": 2353,
+    "small_recall": 0.5997983870967742,
+    "small_tp": 595,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.006496415770609319,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 17,
+     "flag_040": 17,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.2,
+    "eligible": false,
+    "precision": 0.7806814755251784,
+    "recall": 0.6200702538719464,
+    "FP": 2182,
+    "small_recall": 0.5887096774193549,
+    "small_tp": 584,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.25,
+    "eligible": false,
+    "precision": 0.7891295463833266,
+    "recall": 0.6166373942200224,
+    "FP": 2064,
+    "small_recall": 0.5735887096774194,
+    "small_tp": 569,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.3,
+    "eligible": false,
+    "precision": 0.7933030177759405,
+    "recall": 0.6128053648411305,
+    "FP": 2000,
+    "small_recall": 0.5524193548387096,
+    "small_tp": 548,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.35,
+    "eligible": false,
+    "precision": 0.7958289885297185,
+    "recall": 0.6092926712438129,
+    "FP": 1958,
+    "small_recall": 0.5332661290322581,
+    "small_tp": 529,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.15,
+    "eligible": false,
+    "precision": 0.7284382284382285,
+    "recall": 0.6486508063228484,
+    "FP": 3029,
+    "small_recall": 0.6663306451612904,
+    "small_tp": 661,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.007336469534050179,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 19,
+     "flag_040": 19,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 25,
+      "flag_040": 25
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.2,
+    "eligible": false,
+    "precision": 0.7528385098995966,
+    "recall": 0.6405077438927032,
+    "FP": 2634,
+    "small_recall": 0.6471774193548387,
+    "small_tp": 642,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.006664426523297491,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 18,
+     "flag_040": 18,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.25,
+    "eligible": false,
+    "precision": 0.770533281432464,
+    "recall": 0.6321251796263772,
+    "FP": 2358,
+    "small_recall": 0.6169354838709677,
+    "small_tp": 612,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.006496415770609319,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 17,
+     "flag_040": 17,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.3,
+    "eligible": false,
+    "precision": 0.7827309236947791,
+    "recall": 0.6223854382883602,
+    "FP": 2164,
+    "small_recall": 0.5756048387096774,
+    "small_tp": 571,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.006496415770609319,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 17,
+     "flag_040": 17,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.35,
+    "eligible": false,
+    "precision": 0.7916880979323115,
+    "recall": 0.6144020437490021,
+    "FP": 2025,
+    "small_recall": 0.5473790322580645,
+    "small_tp": 543,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.15,
+    "eligible": false,
+    "precision": 0.7024349286314022,
+    "recall": 0.6678907871627016,
+    "FP": 3544,
+    "small_recall": 0.6854838709677419,
+    "small_tp": 680,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.008008512544802867,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 20,
+     "flag_040": 20,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 26,
+      "flag_040": 26
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.2,
+    "eligible": false,
+    "precision": 0.7333154889364739,
+    "recall": 0.6561551971898452,
+    "FP": 2989,
+    "small_recall": 0.6633064516129032,
+    "small_tp": 658,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.006664426523297491,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 18,
+     "flag_040": 18,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 24,
+      "flag_040": 24
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.25,
+    "eligible": false,
+    "precision": 0.7574192336589031,
+    "recall": 0.6438607695992336,
+    "FP": 2583,
+    "small_recall": 0.6300403225806451,
+    "small_tp": 625,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.006496415770609319,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 17,
+     "flag_040": 17,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 24,
+      "flag_040": 24
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.3,
+    "eligible": false,
+    "precision": 0.7742915972154133,
+    "recall": 0.630448666773112,
+    "FP": 2302,
+    "small_recall": 0.5856854838709677,
+    "small_tp": 581,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.006496415770609319,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 17,
+     "flag_040": 17,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 24,
+      "flag_040": 24
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.35,
+    "eligible": false,
+    "precision": 0.7875152501016673,
+    "recall": 0.6183937410186812,
+    "FP": 2090,
+    "small_recall": 0.5514112903225806,
+    "small_tp": 547,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.00582437275985663,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 16,
+     "flag_040": 16,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 23,
+      "flag_040": 23
+     }
+    }
+   }
+  ]
+ },
+ "operating_rule_v10": {
+  "side": 16,
+  "threshold": 0.25,
+  "chosen": {
+   "precision": 0.8049069191864845,
+   "recall": 0.5971579115439885,
+   "FP": 1813,
+   "small_recall": 0.5443548387096774,
+   "small_tp": 540,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.0038082437275985667,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 13,
+    "flag_040": 13,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 35,
+     "flag_040": 35
+    }
+   }
+  },
+  "base": {
+   "precision": 0.8112688456036096,
+   "recall": 0.5885358454414817,
+   "FP": 1715,
+   "small_recall": 0.4879032258064516,
+   "small_tp": 484,
+   "small_boxes": 992,
+   "nuisance": {
+    "score": 0.0038082437275985667,
+    "scenes": 1488,
+    "images": 1895,
+    "flag_020": 13,
+    "flag_040": 13,
+    "synthetic_screens": {
+     "images": 183,
+     "flag_020": 35,
+     "flag_040": 35
+    }
+   }
+  },
+  "grid": [
+   {
+    "side": 12,
+    "threshold": 0.15,
+    "eligible": true,
+    "precision": 0.8056609912157033,
+    "recall": 0.5930863803289158,
+    "FP": 1792,
+    "small_recall": 0.5131048387096774,
+    "small_tp": 509,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 12,
+    "threshold": 0.2,
+    "eligible": true,
+    "precision": 0.8086823734729494,
+    "recall": 0.5918888711480121,
+    "FP": 1754,
+    "small_recall": 0.5050403225806451,
+    "small_tp": 501,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 12,
+    "threshold": 0.25,
+    "eligible": true,
+    "precision": 0.8097165991902834,
+    "recall": 0.590771195912502,
+    "FP": 1739,
+    "small_recall": 0.5020161290322581,
+    "small_tp": 498,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 12,
+    "threshold": 0.3,
+    "eligible": true,
+    "precision": 0.8105320899616018,
+    "recall": 0.589813188567779,
+    "FP": 1727,
+    "small_recall": 0.49798387096774194,
+    "small_tp": 494,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 12,
+    "threshold": 0.35,
+    "eligible": true,
+    "precision": 0.8108999011097682,
+    "recall": 0.5891745170046304,
+    "FP": 1721,
+    "small_recall": 0.49294354838709675,
+    "small_tp": 489,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.15,
+    "eligible": false,
+    "precision": 0.7904572979745249,
+    "recall": 0.6044228005748044,
+    "FP": 2007,
+    "small_recall": 0.5776209677419355,
+    "small_tp": 573,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 36,
+      "flag_040": 36
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.2,
+    "eligible": false,
+    "precision": 0.7990237691001698,
+    "recall": 0.6011496088136675,
+    "FP": 1894,
+    "small_recall": 0.561491935483871,
+    "small_tp": 557,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 36,
+      "flag_040": 36
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.25,
+    "eligible": true,
+    "precision": 0.8049069191864845,
+    "recall": 0.5971579115439885,
+    "FP": 1813,
+    "small_recall": 0.5443548387096774,
+    "small_tp": 540,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.3,
+    "eligible": true,
+    "precision": 0.8078801693259524,
+    "recall": 0.594204055564426,
+    "FP": 1770,
+    "small_recall": 0.53125,
+    "small_tp": 527,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 16,
+    "threshold": 0.35,
+    "eligible": true,
+    "precision": 0.8098052090172905,
+    "recall": 0.590771195912502,
+    "FP": 1738,
+    "small_recall": 0.5060483870967742,
+    "small_tp": 502,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.15,
+    "eligible": false,
+    "precision": 0.7499054105183504,
+    "recall": 0.632923519080313,
+    "FP": 2644,
+    "small_recall": 0.6542338709677419,
+    "small_tp": 649,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.005152329749103943,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 15,
+     "flag_040": 15,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 36,
+      "flag_040": 36
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.2,
+    "eligible": false,
+    "precision": 0.7712198973549151,
+    "recall": 0.6238224493054447,
+    "FP": 2318,
+    "small_recall": 0.6270161290322581,
+    "small_tp": 622,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.005152329749103943,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 15,
+     "flag_040": 15,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 36,
+      "flag_040": 36
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.25,
+    "eligible": false,
+    "precision": 0.7864961636828645,
+    "recall": 0.6137633721858534,
+    "FP": 2087,
+    "small_recall": 0.5967741935483871,
+    "small_tp": 592,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.3,
+    "eligible": false,
+    "precision": 0.7981052631578948,
+    "recall": 0.6053009739741338,
+    "FP": 1918,
+    "small_recall": 0.5715725806451613,
+    "small_tp": 567,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 24,
+    "threshold": 0.35,
+    "eligible": true,
+    "precision": 0.8054596460940872,
+    "recall": 0.5959604023630848,
+    "FP": 1803,
+    "small_recall": 0.5252016129032258,
+    "small_tp": 521,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.15,
+    "eligible": false,
+    "precision": 0.7250220264317181,
+    "recall": 0.656953536643781,
+    "FP": 3121,
+    "small_recall": 0.6814516129032258,
+    "small_tp": 676,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.005891577060931899,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 17,
+     "flag_040": 17,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 36,
+      "flag_040": 36
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.2,
+    "eligible": false,
+    "precision": 0.753460531238309,
+    "recall": 0.6431422640906913,
+    "FP": 2636,
+    "small_recall": 0.6512096774193549,
+    "small_tp": 646,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.005891577060931899,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 17,
+     "flag_040": 17,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 36,
+      "flag_040": 36
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.25,
+    "eligible": false,
+    "precision": 0.7745715974000394,
+    "recall": 0.6278939805205174,
+    "FP": 2289,
+    "small_recall": 0.6139112903225806,
+    "small_tp": 609,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0045474910394265235,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 15,
+     "flag_040": 15,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.3,
+    "eligible": false,
+    "precision": 0.7899271720176428,
+    "recall": 0.6148012134759699,
+    "FP": 2048,
+    "small_recall": 0.5836693548387096,
+    "small_tp": 579,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.004480286738351254,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 14,
+     "flag_040": 14,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   },
+   {
+    "side": 32,
+    "threshold": 0.35,
+    "eligible": true,
+    "precision": 0.8017480281389896,
+    "recall": 0.600510937250519,
+    "FP": 1860,
+    "small_recall": 0.532258064516129,
+    "small_tp": 528,
+    "small_boxes": 992,
+    "nuisance": {
+     "score": 0.0038082437275985667,
+     "scenes": 1488,
+     "images": 1895,
+     "flag_020": 13,
+     "flag_040": 13,
+     "synthetic_screens": {
+      "images": 183,
+      "flag_020": 35,
+      "flag_040": 35
+     }
+    }
+   }
+  ]
+ },
+ "best_checkpoint": "D:\\Honeywell-V10-work\\select_v12_rec\\best.pth"
+}

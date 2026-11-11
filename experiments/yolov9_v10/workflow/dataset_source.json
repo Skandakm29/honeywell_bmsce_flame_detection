@@ -1,0 +1,10 @@
+{
+  "dataset": "yuulind/fasdd-cv-coco",
+  "supplied_archive_sha256": "a45f418ab7a46393ab33176e09046b56426c4755354fdd6e241ae0503df71b80",
+  "annotation_sha256": {
+    "train": "1cc617c1e5fafa059c9f365e48f2e32741d9752b96325e7f754803d79ba939ef",
+    "val": "ecf56942145069984825b9e52d62851f55dc185eb3a7014daefdffc54c515320",
+    "test": "9cc33e56e0fc71d019521ed6b4af7a2813a3478c61b1cfab673143772aaffb43"
+  },
+  "policy": "require these annotation files for this experiment; no silent latest-version substitution"
+}

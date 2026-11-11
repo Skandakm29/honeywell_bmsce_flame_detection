@@ -63,6 +63,26 @@ def decode(output, frame, scale, confidence, architecture='yolov9'):
     return rows
 
 
+def decode_classes(output, frame, scale, confidences):
+    """Week 4 two-class YOLOv9 export [1, N, 4 + C] (flame, obstruction): per-class threshold and NMS.
+    Returns {class index: [M, 5] array of x1, y1, x2, y2, score} in frame pixels."""
+    rows = output[0]
+    if rows.ndim != 2 or rows.shape[1] != 4 + len(confidences) or not np.isfinite(rows).all():
+        raise ValueError(f'Expected finite [1, N, {4 + len(confidences)}] output; check the model contract.')
+    return {c: decode(np.concatenate([rows[:, :4], rows[:, 4 + c:5 + c]], 1)[None], frame, scale, threshold)
+            for c, threshold in enumerate(confidences)}
+
+
+def blind_percent(boxes, frame, grid=160):
+    """Share of the frame covered by the union of the obstruction boxes, in percent."""
+    h, w = frame.shape[:2]
+    gh = max(1, round(grid * h / w))
+    mask = np.zeros((gh, grid), bool)
+    for x1, y1, x2, y2 in boxes[:, :4]:
+        mask[int(y1 / h * gh):int(np.ceil(y2 / h * gh)), int(x1 / w * grid):int(np.ceil(x2 / w * grid))] = True
+    return 100. * mask.mean()
+
+
 class Video:
     """Read every recorded frame in order; replay speed follows inference speed."""
     def __init__(self, path):
@@ -130,6 +150,8 @@ def main():
     parser.add_argument('--arch', choices=['yolov9', 'nano', 's'], default='yolov9')
     parser.add_argument('--model', type=Path, default=DEFAULT_MODEL)
     parser.add_argument('--confidence', type=float, default=0.40)
+    parser.add_argument('--obstruction-confidence', type=float, default=0.40,
+                        help='Only for a two-class (flame + obstruction) YOLOv9 export')
     parser.add_argument('--backend', choices=['auto', 'dshow', 'msmf'], default='auto')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--headless', action='store_true', help='Process a saved video without a display')
@@ -146,9 +168,21 @@ def main():
     size = 416 if args.arch == 'nano' else 640
     if session.get_inputs()[0].shape != [1, 3, size, size]:
         raise ValueError(f'{args.arch} requires our fixed {size}x{size} flame export.')
+    # Week 4: a YOLOv9 export with 6 output fields is the two-class model (flame, obstruction).
+    two_class = args.arch == 'yolov9' and session.get_outputs()[0].shape[-1] == 6
+    if two_class and not 0 < args.obstruction_confidence < 1:
+        parser.error('--obstruction-confidence must be between 0 and 1')
+    confidences = [args.confidence, args.obstruction_confidence]
+
+    def detect(raw, frame, scale):
+        if not two_class:
+            return decode(raw, frame, scale, args.confidence, args.arch), np.zeros((0, 5))
+        found = decode_classes(raw, frame, scale, confidences)
+        return found[0], found[1]
+
     tensor, scale = prepare(np.zeros((480, 640, 3), dtype=np.uint8), size, args.arch)
     warmup = session.run(None, {session.get_inputs()[0].name: tensor})[0]
-    decode(warmup, np.zeros((480, 640, 3), dtype=np.uint8), scale, args.confidence, args.arch)
+    detect(warmup, np.zeros((480, 640, 3), dtype=np.uint8), scale)
     source = int(args.source) if args.source.isdecimal() else args.source
     backend = {'auto': cv2.CAP_ANY, 'dshow': cv2.CAP_DSHOW, 'msmf': cv2.CAP_MSMF}[args.backend]
     is_video = isinstance(source, str) and Path(source).is_file()
@@ -160,6 +194,8 @@ def main():
         parser.error('Output already contains frames.csv; choose a new output folder.')
     metadata = dict(model=str(args.model.resolve()), confidence=args.confidence,
                     architecture=args.arch, model_sha256=hashlib.sha256(args.model.read_bytes()).hexdigest(),
+                    classes=['flame', 'obstruction'] if two_class else ['flame'],
+                    obstruction_confidence=args.obstruction_confidence if two_class else None,
                     source_kind='video' if is_video else 'camera',
                     source=str(source), backend=args.backend, provider='CPUExecutionProvider',
                     platform=platform.platform(), onnxruntime=ort.__version__,
@@ -180,7 +216,8 @@ def main():
     try:
         with (output / 'frames.csv').open('w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
-            writer.writerow(['time_local', 'camera_sequence', 'processing_ms', 'detections_xyxy_score', 'video_seconds'])
+            header = ['time_local', 'camera_sequence', 'processing_ms', 'detections_xyxy_score', 'video_seconds']
+            writer.writerow(header + (['obstructions_xyxy_score', 'blind_percent'] if two_class else []))
             while True:
                 item = camera.next(sequence)
                 if item is None:
@@ -189,14 +226,21 @@ def main():
                 started = time.perf_counter()
                 tensor, scale = prepare(frame, size, args.arch)
                 raw = session.run(None, {session.get_inputs()[0].name: tensor})[0]
-                boxes = decode(raw, frame, scale, args.confidence, args.arch)
+                boxes, obstructions = detect(raw, frame, scale)
                 milliseconds = (time.perf_counter() - started) * 1000
+                blind = blind_percent(obstructions, frame) if two_class else 0.
                 writer.writerow([datetime.now().isoformat(), sequence, round(milliseconds, 2),
                                  json.dumps(boxes.tolist()),
-                                 (sequence-1)/camera.fps if is_video and camera.fps > 0 else ''])
+                                 (sequence-1)/camera.fps if is_video and camera.fps > 0 else '']
+                                + ([json.dumps(obstructions.tolist()), round(blind, 2)] if two_class else []))
                 file.flush()
                 if args.headless:
                     continue
+                for x1, y1, x2, y2, score in obstructions:
+                    a, b = (int(x1), int(y1)), (int(x2), int(y2))
+                    cv2.rectangle(frame, a, b, (255, 128, 0), 2)
+                    cv2.putText(frame, f'obstruction {score:.2f}', (a[0] + 4, min(frame.shape[0] - 8, b[1] - 8)),
+                                cv2.FONT_HERSHEY_SIMPLEX, .6, (255, 128, 0), 2)
                 for x1, y1, x2, y2, score in boxes:
                     a, b = (int(x1), int(y1)), (int(x2), int(y2))
                     cv2.rectangle(frame, a, b, (0, 0, 255), 2)
@@ -213,6 +257,11 @@ def main():
                 cv2.putText(frame, status, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, .55, color, 2)
                 cv2.putText(frame, 'Frame result only - no alarm verification', (10, 73),
                             cv2.FONT_HERSHEY_SIMPLEX, .45, (0, 255, 255), 1)
+                if two_class:
+                    view = (f'VIEW BLOCKED ~{blind:.0f}% of frame | boxes {len(obstructions)}' if len(obstructions)
+                            else 'View clear (no obstruction above threshold)')
+                    cv2.putText(frame, view, (10, 96), cv2.FONT_HERSHEY_SIMPLEX, .55,
+                                (255, 128, 0) if len(obstructions) else (0, 255, 0), 2)
                 cv2.imshow(window, frame)
                 key = cv2.waitKey(1) & 0xff
                 if key in (ord('q'), 27) or cv2.getWindowProperty(window, cv2.WND_PROP_VISIBLE) < 1:

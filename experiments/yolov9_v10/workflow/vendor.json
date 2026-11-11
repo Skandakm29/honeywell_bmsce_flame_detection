@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/TexasInstruments/edgeai-tensorlab",
+  "commit": "f272548ef0fe96046f1bf2c3833e040a1ecf8e44",
+  "files": {
+    "models/utils/yolo_model_utils.py": "4c7fc3058bf7dc08c630c730e1f87cb048ffe84d2baf8c9d39fd78fdc9f12493",
+    "models/layers/yolo_layers.py": "7cf359080cb3b20b5d0c2b09851ef43190641bc8fe8a74d672ebbfd2937a7fa7",
+    "models/backbones/yolov9_backbone.py": "63e822382993352f9529ce9b2a7618258b3fb8704d761991014c6abe7bcee3c5",
+    "models/necks/yolov9_neck.py": "f1fc72aa724918b26573516c1cb2302a9ce7c9abfbb92d2d1f6b30ee2797e415",
+    "models/dense_heads/yolov9_aux_head.py": "f3ee853d1f412b53f6d03a0bc05853af3bacbf0ccb7c82baf8e808b292730ebf",
+    "models/losses/yolo_loss.py": "75ffe0114e9fd4ae168a33fb26608afa88636aea4066542c19991e440def9cf1"
+  },
+  "hash_policy": "SHA256 after CRLF-to-LF normalization"
+}

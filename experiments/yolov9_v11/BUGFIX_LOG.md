@@ -1,0 +1,1 @@
+2026-11-06 17:56 | ['workflow11/autopsy11.py'] | workflow11\autopsy11.py | UnboundLocalError: local variable iou shadowed the imported iou() in classify() | renamed local overlap array iou -> ov (no logic change)
