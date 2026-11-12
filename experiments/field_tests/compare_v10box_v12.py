@@ -19,15 +19,28 @@ import cv2
 import numpy as np
 import onnxruntime as ort
 
-ROOT = Path(r'E:\Projects\honeywell')
+REPO = Path(__file__).resolve().parents[2]
+
+
+def _opt(name, default=None):   # read before argparse: ROOT/models are needed at import time
+    return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else default
+
+
+ROOT = Path(_opt('--root', r'E:\Projects\honeywell'))
 sys.path[:0] = [str(ROOT / r'honeywell_bmsce_flame_detection\scripts'), str(ROOT / r'investigation_week2\temporal_final'),
                 str(ROOT / r'investigation_week2\v10_package\workflow')]
+sys.path.extend([str(REPO / 'scripts'), str(REPO / 'experiments' / 'temporal_final'),
+                str(REPO / 'experiments' / 'yolov9_v10' / 'workflow')])   # this repo, if ROOT lacks them
 from live_flame import decode, prepare  # noqa: E402
 import temporal_final as TF            # noqa: E402  (gate, tracker, alarm rule exactly as locked)
 
 MODELS = {'V10': (ROOT / r'Flame_Detection_Test_Pack\YOLOv9_V10\flame.onnx', '6686d04a'),
           'V12': (ROOT / r'investigation_week2\lab_backup_2026-11-07\work\select_v12_rec\export\flame.onnx', '14bee807')}
-RULE = json.loads((ROOT / r'investigation_week2\week2_final\rule.json').read_text())
+if _opt('--model-v12'):
+    MODELS['V12'] = (Path(_opt('--model-v12')), '')   # explicit file: no hash-prefix check
+MODELS = {k: v for k, v in MODELS.items() if v[0].exists()}   # missing model -> its panel is skipped
+RULE = json.loads(next(q for q in (ROOT / r'investigation_week2\week2_final\rule.json',
+                                   REPO / 'results' / 'week2' / 'rule.json') if q.exists()).read_text())
 FLOOR, CONF = .25, .40
 CLIPS = {
     'fire_candle_outdoor_night_hand_occlusion.mov': 'Lit candle outdoors at night next to a street lamp, hand passes (FIRE)',
@@ -36,7 +49,8 @@ CLIPS = {
     'fire_lighter_far_to_close.mp4': 'Lighter moving from far to close (FIRE)',
     'nofire_diwali_string_lights_orange.mov': 'Orange LED string lights on trees (NO fire)',
 }
-PANELS = ('V10 + box', 'V12')
+PANELS = tuple(q for q in ('V10 + box', 'V12') if q.split(' ')[0] in MODELS)
+MAX_SECONDS = float(_opt('--max-seconds', 0))   # 0 = whole video
 SEPARATE = False   # --separate: also write one video per model
 CAMERA, CONTACT = None, None   # --camera camera.json / --contact-height-m (spatial calibration, optional)
 COLOURS = {'V10': (0, 220, 0), 'V10 + box': (0, 200, 255), 'V12': (255, 160, 0)}
@@ -67,7 +81,7 @@ def infer(folder, out):
         index, started = 0, time.time()
         while True:
             ok, frame = cap.read()
-            if not ok:
+            if not ok or (MAX_SECONDS and index / fps >= MAX_SECONDS):
                 break
             tensor, scale = prepare(frame, 640, 'yolov9')
             for name, s in sessions.items():
@@ -121,8 +135,13 @@ def render(folder, out):
             ov = RingOverlay(gcam, int(W), int(H))
             (out / 'geo').mkdir(exist_ok=True)
         geo_files, first_geo = {}, {p: None for p in PANELS}
-        st = {'V10 + box': week2_states(logs['V10'], to640, RULE['small_box']['threshold']),
-              'V12': week2_states(logs['V12'], to640, None)}
+        st = {}
+        if 'V10' in logs:
+            st['V10 + box'] = week2_states(logs['V10'], to640, RULE['small_box']['threshold'])
+        if 'V12' in logs:
+            st['V12'] = week2_states(logs['V12'], to640, None)
+        n_logged = min(len(v) for v in logs.values())
+        last_geo = {q: None for q in PANELS}
         stats = {p: 0 for p in PANELS}
         first = {p: None for p in PANELS}
         alarm_frames = {p: 0 for p in PANELS}
@@ -130,7 +149,7 @@ def render(folder, out):
         writer, index = None, 0
         while True:
             ok, frame = cap.read()
-            if not ok:
+            if not ok or index >= n_logged:
                 break
             t = index / fps
             if ov is not None:
@@ -161,14 +180,18 @@ def render(folder, out):
                     geo_files[p].write(json.dumps(dict(frame=index, t=round(t, 3), alarm=bool(alarm[index]),
                                                        dets=[dict(box=[round(float(v), 1) for v in b[:4]], score=round(float(b[4]), 4), **g)
                                                              for b, g in zip(boxes[p], geo)])) + '\n')
+                    if geo:
+                        last_geo[p] = (geo, t)
                     if alarm[index] and first_alarm[p] is None:
-                        first_geo[p] = geo
+                        # the hit ratio can hold the alarm on a frame with no box: use the latest geo in the window
+                        g, tg = last_geo[p] if last_geo[p] and t - last_geo[p][1] <= RULE['window_s'] else ([], None)
+                        first_geo[p] = dict(dets=g, geo_age_s=None if tg is None else round(t - tg, 3))
                 if alarm[index]:
                     alarm_frames[p] += 1
                     first_alarm[p] = t if first_alarm[p] is None else first_alarm[p]
                 panels.append(np.vstack([bar, panel]))
             gap = np.full((panels[0].shape[0], 6, 3), 255, np.uint8)
-            grid = np.hstack([panels[0], gap, panels[1]])
+            grid = np.hstack([x for pn in panels for x in (pn, gap)][:-1])
             footer = np.zeros((26, grid.shape[1], 3), np.uint8)
             cv2.putText(footer, f'{caption}   |   t={t:4.1f}s   |   left: small boxes from 0.25; right: 0.40; both: same alarm rule',
                         (6, 18), 0, .45, (255, 255, 255), 1)
@@ -214,6 +237,9 @@ if __name__ == '__main__':
     p.add_argument('--separate', action='store_true')
     p.add_argument('--camera', help='camera.json: add distance_m/bearing_deg/x_m/y_m to each box and alarm, draw rings')
     p.add_argument('--contact-height-m', type=float, help='override camera.json contact_height_m')
+    p.add_argument('--root', help='base folder of the laptop layout (default E:\\Projects\\honeywell)')
+    p.add_argument('--model-v12', help='V12 ONNX path (overrides MODELS[V12]; a missing V10 panel is skipped)')
+    p.add_argument('--max-seconds', help='infer only the first N seconds of each clip')
     a = p.parse_args()
     SEPARATE = a.separate
     if a.camera:
