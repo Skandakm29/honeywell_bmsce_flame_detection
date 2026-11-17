@@ -114,3 +114,33 @@ contact-height continuity under noisy clicks, rings/band). No real-camera number
 | 3 | off-axis | | | | | |
 
 Target to agree with the mentor (open question): e.g. under 10% error at 5 m.
+
+## 9. Automatic calibration (tilt, roll, optional f; you give the height)
+`src/geometry/autocal.py`, `python scripts/calibrate.py auto --video clip.mp4 --height 0.77 --hfov-deg 66 --debug dbg.png`
+(or `--image`; K from `camera.json` if no `--hfov-deg`; `--frames N --t0 --t1` choose the median window).
+Median of ~30 frames -> gamma/CLAHE -> line segments (LSD, else Canny+Hough) -> RANSAC vertical vanishing point
+(door frames, wall corners, furniture) -> tilt/roll from `K^-1 * vp`. A second orthogonal VP gives
+`f^2 = -(v1-c).(v2-c)`, used only with `--estimate-f` and only if its bootstrap std is under 10%. The height is
+never estimated. It **refuses** (clear error, no file change) with fewer than 8 vertical inliers or a bootstrap
+std above 1 deg. Valid for |tilt| < 45 deg (above that the vertical and horizon VPs are ambiguous).
+`auto` writes `pose` and drops any floor calibration, like `pose`.
+
+**Measured: unit tests** (synthetic lines, 0.1-0.3 px noise): tilt/roll within 0.5 deg for tilt 8-40 deg, f within 2%
+with 40 receding lines; refusal on too few or too noisy lines (`tests/test_autocal.py`).
+
+**Measured: real clips** (`experiments/w3_validation/autocal_fire6.py`, median of 30 frames, nominal hfov as given):
+
+| Clip | Manual (marks fit) | Auto | Verdict |
+|---|---|---|---|
+| `fire6.mp4`, dark room, h=0.77, hfov 66 | tilt 20.75, roll 0 | **refused** (0-9 s: 7 segments, 6 vertical inliers; whole clip: 10 segments, 8 inliers, tilt std 23 deg) | not usable |
+| `tiled_floor_candle_1m_3m_4m.MOV`, h=0.23, hfov 69 | tilt 4.4 (h, f assumed), roll 0 | tilt **5.10** (bootstrap std 0.42), roll -0.03 (0.07); 92 vertical inliers, RMS residual 0.65 deg, 43 horizontal inliers | +0.7 deg vs manual; f from 2 VPs discarded (std 19%) |
+
+Caveats:
+- fire6 median frame has mean brightness 9/255; after CLAHE only a door edge and a few furniture edges are visible. Lowering
+  the minimum segment length (30/20/12 px) gave 15/33/68 segments but tilt 30/-7/24 deg with std 4-22 deg: no
+  reliable vertical VP. Dark empty rooms are outside what this method can do; use `pose` or `floor` there.
+- The tiled-floor "manual" value is itself a fit with assumed f and h, so +0.7 deg is a consistency check, not an
+  error against ground truth. One scene only. The 6-mark distance check on fire6 could not be run because
+  auto-calibration refused; no auto-calibrated distance error has been measured.
+- Focal length from two VPs is poorly conditioned at small tilt; do not rely on it without many long
+  horizontal lines.
