@@ -138,3 +138,30 @@ def test_four_points_warns_and_intrinsics_drops_stale_floor(tmp_path, capsys):
     calibrate.main(["pose", "--height", "2", "--tilt", "20", "--out", str(out)])
     d = json.loads(out.read_text())
     assert not any(k in d for k in calibrate.STALE_FLOOR)
+
+
+def test_auto_subcommand_writes_pose_and_drops_stale(tmp_path):
+    sys.path.insert(0, str(ROOT / "tests"))
+    import test_autocal as TA
+    c = TA.cam(15.0, 1.0)
+    segs = TA.scene_segments(c, n_vert=16, noise=0.0)
+    img = np.full((1080, 1920, 3), 40, np.uint8)
+    for s in segs:
+        cv2.line(img, (int(round(s[0])), int(round(s[1]))), (int(round(s[2])), int(round(s[3]))),
+                 (230, 230, 230), 3, cv2.LINE_AA)
+    ip = tmp_path / "scene.png"
+    cv2.imwrite(str(ip), img)
+    out = tmp_path / "camera.json"
+    out.write_text(json.dumps({"schema": 1, "image_size": [1920, 1080], "hfov_deg": 66,
+                               "extrinsics": {"R": np.eye(3).tolist(), "C": [0, 0, 1]},
+                               "floor_rms_m": 0.1}))
+    calibrate.main(["auto", "--image", str(ip), "--height", "1.5", "--hfov-deg", "66",
+                    "--debug", str(tmp_path / "dbg.png"), "--out", str(out)])
+    d = json.loads(out.read_text())
+    assert d["pose"]["height_m"] == 1.5
+    assert d["pose"]["tilt_deg"] == pytest.approx(15.0, abs=1.0)
+    assert "extrinsics" not in d and "floor_rms_m" not in d and (tmp_path / "dbg.png").exists()
+    assert Camera.load(out).source == "pose"
+    with pytest.raises(SystemExit):  # blank image -> refused
+        cv2.imwrite(str(ip), np.full((1080, 1920, 3), 40, np.uint8))
+        calibrate.main(["auto", "--image", str(ip), "--height", "1.5", "--hfov-deg", "66", "--out", str(out)])

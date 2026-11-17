@@ -250,6 +250,54 @@ def cmd_pose(args):
     print(f"pose height={args.height} m tilt={args.tilt} deg roll={args.roll} deg -> {args.out}")
 
 
+# ---------------------------------------------------------------------- auto
+def cmd_auto(args):
+    from geometry import autocal
+    if args.video:
+        img = autocal.median_frame(args.video, args.frames, args.t0, args.t1)
+    else:
+        img = cv2.imread(args.image)
+        if img is None:
+            sys.exit(f"cannot read {args.image}")
+    h, w = img.shape[:2]
+    d = _load(args.out)
+    if args.hfov_deg:
+        K = intrinsics_from_hfov(w, h, args.hfov_deg)
+    elif "K" in d:
+        K = np.asarray(d["K"], float)
+        w0, h0 = d.get("image_size", [w, h])
+        K = np.diag([w / w0, h / h0, 1.0]) @ K
+    else:
+        sys.exit("need --hfov-deg or a camera file with K (run `intrinsics`)")
+    try:
+        res = autocal.auto_calibrate(img, K, estimate_f=args.estimate_f)
+    except autocal.AutoCalError as e:
+        if args.debug:
+            segs = autocal.detect_segments(autocal.preprocess(img))
+            cv2.imwrite(args.debug, autocal.preprocess(img))
+        sys.exit(f"auto-calibration refused: {e}")
+    r = res.report
+    print(f"tilt {res.tilt_deg:.2f} deg (std {r['tilt_std_deg']:.2f}), roll {res.roll_deg:.2f} deg "
+          f"(std {r['roll_std_deg']:.2f}), f used {res.f_used:.0f} px")
+    print(f"segments {r['n_segments']}, vertical inliers {r['n_vertical_inliers']} "
+          f"(RMS residual {r['vertical_resid_deg_rms']:.2f} deg), horizontal inliers {r['n_horizontal_inliers']}")
+    print("f from 2 VPs: " + (f"{r['f_est_px']:.0f} px (std {r['f_est_std_px']:.0f})" if r.get("f_est_px")
+                              else "not available" + (f" ({r['f_est_note']})" if r.get("f_est_note") else "")))
+    if args.debug:
+        cv2.imwrite(args.debug, autocal.draw_debug(img, res))
+        print(f"debug image -> {args.debug}")
+    d["image_size"] = [w, h]
+    d["K"] = res.K.tolist()
+    d["pose"] = {"height_m": args.height, "tilt_deg": round(res.tilt_deg, 3), "roll_deg": round(res.roll_deg, 3)}
+    d["autocal"] = {k: v for k, v in r.items() if isinstance(v, (int, float, str)) or v is None}
+    for k in STALE_FLOOR:
+        d.pop(k, None)
+    Camera.from_dict(d)
+    _save(args.out, d)
+    print(f"pose (height {args.height} m as given) -> {args.out}")
+    return res
+
+
 def build_parser():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -285,6 +333,19 @@ def build_parser():
     p.add_argument("--hfov-deg", type=float)
     p.add_argument("--size", help="WxH if camera file has no K")
     p.set_defaults(fn=cmd_pose)
+
+    p = sub.add_parser("auto", help="tilt/roll (and f) from scene lines; you give the height")
+    common(p)
+    p.add_argument("--video")
+    p.add_argument("--image")
+    p.add_argument("--height", type=float, required=True, help="camera height above floor, m")
+    p.add_argument("--hfov-deg", type=float, help="else K from the camera file")
+    p.add_argument("--frames", type=int, default=30, help="video: median over N frames")
+    p.add_argument("--t0", type=float, default=0.0, help="video: start second")
+    p.add_argument("--t1", type=float, default=None, help="video: end second")
+    p.add_argument("--estimate-f", action="store_true", help="use f from two orthogonal VPs if reliable")
+    p.add_argument("--debug", help="write a debug PNG (inlier lines per VP)")
+    p.set_defaults(fn=cmd_auto)
     return ap
 
 
@@ -292,6 +353,8 @@ def main(argv=None):
     args = build_parser().parse_args(argv)
     if args.cmd == "intrinsics" and not (args.images or args.video):
         sys.exit("give --images or --video")
+    if args.cmd == "auto" and not (args.video or args.image):
+        sys.exit("give --video or --image")
     if args.cmd == "floor" and not (args.points or args.interactive):
         sys.exit("give --points or --interactive --image")
     return args.fn(args)
