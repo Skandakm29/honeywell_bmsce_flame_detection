@@ -11,6 +11,7 @@ Built on `feature/v10-hard-negatives`. The full narrative and every number are i
 | `experiments/edge_export/` | Raw-head ONNX export for the AM62A (`export_raw.py`), board README, final rule note, list of the 15,884 FASDD v2 val images. ONNX files are **not** committed; re-create them with the script. |
 | `experiments/field_tests/` | Scripts for our own videos: `compare_v10box_v12.py` (side-by-side grids, same alarm rule on both models), `flame_contrast.py` and `lowconf_daylight.py` (daylight analysis), `compare3.py` (V9/V10/A1, 5 Nov). Paths are hard-coded to the laptop layout; edit `ROOT` to run elsewhere. |
 | `src/geometry/` | **W3** spatial calibration (`camera.json`, pixel to floor metres, range rings); see `docs/W3_SPATIAL_CALIBRATION.md`. CLI in `scripts/calibrate.py`. |
+| `src/detection/` | **W3** zoom on weak candidate boxes (`zoom.py`) and the locked alarm rule fed frame by frame (`temporal.py`); used by `scripts/live_flame.py --zoom --alarm-rule`. See `docs/W3_SPATIAL_CALIBRATION.md` sections 10-11. |
 | `results/week2/` | Reports (V11, V12, temporal), locked `rule.json`, selections, V12 test numbers, field-test summaries. |
 
 **Not in git:** weights (`.pth`), ONNX, videos and datasets. They live on the laptop and lab PC; see section 10 of `WEEK2_SUMMARY.md`.

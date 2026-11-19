@@ -138,6 +138,17 @@ def main():
                         '(frames.csv column detections_geo) and draw range rings')
     parser.add_argument('--contact-height-m', type=float, help='override camera.json contact_height_m')
     parser.add_argument('--max-frames', type=int, default=0, help='stop after N frames (0 = no limit)')
+    parser.add_argument('--zoom', action='store_true',
+                        help='second look at weak full-frame boxes: crop around them, rerun the model, add new boxes '
+                             '(see src/detection/zoom.py); --confidence stays the full-frame threshold')
+    parser.add_argument('--zoom-confidence', type=float, default=0.20, help='threshold for boxes found in a crop')
+    parser.add_argument('--zoom-candidate-min', type=float, default=0.10,
+                        help='weak full-frame boxes from this score up to --confidence are zoom candidates')
+    parser.add_argument('--zoom-crop', type=int, default=320, help='crop size in original-frame pixels')
+    parser.add_argument('--zoom-max-crops', type=int, default=3, help='at most this many crops per frame')
+    parser.add_argument('--alarm-rule', type=Path,
+                        help='rule_v12.json: apply the locked temporal rule live (CLEAR / WARNING / ALARM); '
+                             'see src/detection/temporal.py')
     args = parser.parse_args()
     if not 0 < args.confidence < 1:
         parser.error('--confidence must be between 0 and 1')
@@ -148,6 +159,23 @@ def main():
     options.intra_op_num_threads = 4
     session = ort.InferenceSession(str(args.model), sess_options=options,
                                    providers=['CPUExecutionProvider'])
+    zoom_cfg = None
+    if args.zoom:
+        sys.path.insert(0, str(ROOT / 'src'))
+        from detection import ZoomConfig, detect_with_zoom
+        try:
+            zoom_cfg = ZoomConfig(full_confidence=args.confidence, zoom_confidence=args.zoom_confidence,
+                                  candidate_min=args.zoom_candidate_min, max_crops=args.zoom_max_crops,
+                                  crop=args.zoom_crop)
+        except ValueError as error:
+            parser.error(f'zoom settings: {error}')
+    alarm_rule = None
+    if args.alarm_rule:
+        if not args.alarm_rule.is_file():
+            parser.error(f'Alarm rule missing: {args.alarm_rule}')
+        sys.path.insert(0, str(ROOT / 'src'))
+        from detection import AlarmRule
+        alarm_rule = AlarmRule.from_json(args.alarm_rule)
     geo_cam = overlay = None
     if args.camera:
         sys.path.insert(0, str(ROOT / 'src'))
@@ -173,8 +201,13 @@ def main():
                     architecture=args.arch, model_sha256=hashlib.sha256(args.model.read_bytes()).hexdigest(),
                     source_kind='video' if is_video else 'camera',
                     source=str(source), backend=args.backend, provider='CPUExecutionProvider',
+                    zoom=(vars(zoom_cfg) if zoom_cfg else None),
+                    alarm_rule=(str(args.alarm_rule.resolve()) if alarm_rule else None),
                     platform=platform.platform(), onnxruntime=ort.__version__,
-                    note='Frame detections only; no alarm verification or ground-truth accuracy metrics. '
+                    note=('Detections plus the locked temporal alarm rule; no ground-truth accuracy metrics. '
+                          if alarm_rule else
+                          'Frame detections only; no alarm verification or ground-truth accuracy metrics. ')
+                         + 
                          'CPU processing FPS is not camera FPS or AM62A performance.')
     camera = Video(source) if is_video else Camera(source, backend)
     if is_video:
@@ -192,17 +225,31 @@ def main():
         with (output / 'frames.csv').open('w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow(['time_local', 'camera_sequence', 'processing_ms', 'detections_xyxy_score', 'video_seconds']
-                            + (['detections_geo'] if geo_cam else []))
+                            + (['detections_geo'] if geo_cam else [])
+                            + (['detections_from_zoom', 'zoom_crops_xywh'] if zoom_cfg else [])
+                            + (['alarm_state', 'best_hit_ratio'] if alarm_rule else []))
             while True:
                 item = camera.next(sequence)
                 if item is None:
                     break
                 sequence, frame = item
                 started = time.perf_counter()
-                tensor, scale = prepare(frame, size, args.arch)
-                raw = session.run(None, {session.get_inputs()[0].name: tensor})[0]
-                boxes = decode(raw, frame, scale, args.confidence, args.arch)
+                from_zoom, windows = np.zeros(0, dtype=bool), []
+                if zoom_cfg is None:
+                    tensor, scale = prepare(frame, size, args.arch)
+                    raw = session.run(None, {session.get_inputs()[0].name: tensor})[0]
+                    boxes = decode(raw, frame, scale, args.confidence, args.arch)
+                else:
+                    def infer(image):
+                        t, s = prepare(image, size, args.arch)
+                        return decode(session.run(None, {session.get_inputs()[0].name: t})[0], image, s,
+                                      zoom_cfg.candidate_min, args.arch)
+                    boxes, from_zoom, windows = detect_with_zoom(frame, infer, zoom_cfg)
                 milliseconds = (time.perf_counter() - started) * 1000
+                verdict = None
+                if alarm_rule is not None:
+                    now = (sequence - 1) / camera.fps if is_video and camera.fps > 0 else time.monotonic()
+                    verdict = alarm_rule.update(now, boxes.tolist())
                 geo = []
                 if geo_cam is not None:
                     if overlay is None:
@@ -213,7 +260,9 @@ def main():
                 writer.writerow([datetime.now().isoformat(), sequence, round(milliseconds, 2),
                                  json.dumps(boxes.tolist()),
                                  (sequence-1)/camera.fps if is_video and camera.fps > 0 else '']
-                                + ([json.dumps(geo)] if geo_cam is not None else []))
+                                + ([json.dumps(geo)] if geo_cam is not None else [])
+                                + ([json.dumps(from_zoom.tolist()), json.dumps(windows)] if zoom_cfg else [])
+                                + ([verdict['state'], round(verdict['best_hit_ratio'], 3)] if verdict else []))
                 file.flush()
                 if args.max_frames and sequence >= args.max_frames:
                     break
@@ -221,23 +270,32 @@ def main():
                     continue
                 if overlay is not None:
                     overlay.apply(frame)
+                for x0, y0, w, h in windows:
+                    cv2.rectangle(frame, (x0, y0), (x0 + w, y0 + h), (255, 255, 0), 1)
                 for i, (x1, y1, x2, y2, score) in enumerate(boxes):
                     a, b = (int(x1), int(y1)), (int(x2), int(y2))
-                    cv2.rectangle(frame, a, b, (0, 0, 255), 2)
+                    zoomed = i < len(from_zoom) and from_zoom[i]
+                    color = (0, 140, 255) if zoomed else (0, 0, 255)
+                    cv2.rectangle(frame, a, b, color, 2)
                     dist = f" {geo[i]['distance_m']:.1f} m" if geo and geo[i]['distance_m'] is not None else ''
-                    cv2.putText(frame, f'flame {score:.2f}{dist}', (a[0], max(22, a[1]-6)),
-                                cv2.FONT_HERSHEY_SIMPLEX, .65, (0, 0, 255), 2)
+                    cv2.putText(frame, f"flame {score:.2f}{' zoom' if zoomed else ''}{dist}", (a[0], max(22, a[1]-6)),
+                                cv2.FONT_HERSHEY_SIMPLEX, .65, color, 2)
                 title = f'CPU | processed {1000/max(milliseconds, .001):.1f} FPS | conf {args.confidence:.2f}'
+                if zoom_cfg:
+                    title += f' | zoom {zoom_cfg.zoom_confidence:.2f}, crops {len(windows)}'
                 cv2.putText(frame, title, (10, 25), cv2.FONT_HERSHEY_SIMPLEX, .55, (0, 255, 255), 2)
-                if len(boxes):
+                if verdict is not None:
+                    color = {'ALARM': (0, 0, 255), 'WARNING': (0, 200, 255), 'CLEAR': (0, 200, 0)}[verdict['state']]
+                    status = f"{verdict['state']} | boxes {len(boxes)} | hit ratio {verdict['best_hit_ratio']:.2f}"
+                    note = 'ALARM = flame in >= 30% of frames over 2 s, off after 3 s (rule_v12)'
+                elif len(boxes):
                     status = f'FLAME DETECTED | boxes {len(boxes)} | score {boxes[:, 4].max():.2f}'
-                    color = (0, 0, 255)
+                    color, note = (0, 0, 255), 'Frame result only - no alarm verification'
                 else:
                     status = 'NO FLAME DETECTED above threshold'
-                    color = (0, 255, 0)
+                    color, note = (0, 255, 0), 'Frame result only - no alarm verification'
                 cv2.putText(frame, status, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, .55, color, 2)
-                cv2.putText(frame, 'Frame result only - no alarm verification', (10, 73),
-                            cv2.FONT_HERSHEY_SIMPLEX, .45, (0, 255, 255), 1)
+                cv2.putText(frame, note, (10, 73), cv2.FONT_HERSHEY_SIMPLEX, .45, (0, 255, 255), 1)
                 cv2.imshow(window, frame)
                 key = cv2.waitKey(1) & 0xff
                 if key in (ord('q'), 27) or cv2.getWindowProperty(window, cv2.WND_PROP_VISIBLE) < 1:
