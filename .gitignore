@@ -55,10 +55,20 @@ models/*
 !models/README.md
 results/**/*.png
 results/**/*.jpg
+# Screenshots and other images anywhere in the repo (force-add a needed figure with: git add -f <file>)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.webp
+[Ss]creenshot*
 # Verified external artifact backup; publish only reviewed summaries, not this tree.
 /results/lab_backup_20261031/
 /results/finetune_backup_20261101/
 /results/webcam/
+/results/obstruction_live/
+/results/obstruction_eval/
 /results/camera_comparison/
 /test_clips/
 # Local verification scripts, session evidence and superseded Colab notebook.
