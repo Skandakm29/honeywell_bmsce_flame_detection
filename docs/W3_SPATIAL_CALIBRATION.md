@@ -95,25 +95,33 @@ fold-back. Labels closer than 18 px vertically are skipped.
 - Intrinsics from a phone are only valid for the same lens and mode used for the checkerboard.
 
 ## 7. Verified so far
-Only unit tests on synthetic cameras (round trips, rescale invariance, horizon handling, homography frame shift,
-contact-height continuity under noisy clicks, rings/band). No real-camera number exists yet.
+- Unit tests on synthetic cameras (round trips, rescale invariance, horizon handling, homography frame shift,
+  contact-height continuity, rings/band, autocal): 39 pass (`pytest tests/test_geometry.py tests/test_calibrate.py
+  tests/test_overlay.py tests/test_autocal.py`).
+- Real camera: `fire6.mp4` (phone fixed on a stand, 0.77 m high, tilt about 21 deg, candle moved along taped marks
+  0.5-3 m, room dark). See section 8.
 
-## 8. Validation plan (to run; fill the table)
-1. Camera on a stand at a measured height and tilt, flat floor. Run `intrinsics` once (same lens/mode).
-2. Tape marks at 1, 2, 3, 5 m along the heading plus 2-3 off-axis marks. Calibrate `floor` with 6+ marks; keep 3
-   extra marks out of the fit as a check set.
-3. Put the candle/flame on each mark (note `contact_height_m`), record, run `live_flame.py --camera` headless,
-   take the median `distance_m` over frames with detections.
+## 8. Real-camera validation: fire_6 (manual calibration)
+Setup: phone 1920x1080, HFOV 66 deg, height 0.77 m, tilt 20.75 deg, roll 0. The tape zero was 0.415 m in front of the
+camera foot (tape offset), and the candle base sits 3 cm above the floor (`contact_height_m` 0.03).
+Calibration file: `experiments/w3_validation/calibrations/camera_fire6.json`.
 
-| True distance (m) | Bearing (deg) | Median estimate (m) | Error (m) | Error (%) | Frames detected | Notes |
-|---|---|---|---|---|---|---|
-| 1 | 0 | | | | | |
-| 2 | 0 | | | | | |
-| 3 | 0 | | | | | |
-| 5 | 0 | | | | | |
-| 3 | off-axis | | | | | |
+**Geometry (leave-one-out on hand-read candle bases):** 0.499 / 1.006 / 1.490 / 2.006 / 2.498 / 3.001 m for
+0.5 / 1 / 1.5 / 2 / 2.5 / 3 m, under 1% everywhere.
 
-Target to agree with the mentor (open question): e.g. under 10% error at 5 m.
+**Detector boxes -> distance (V12 + zoom crop + temporal rule, 10 fps, calibrated at 1.5 m):**
+
+| True (m) | Frames with detection | ALARM frames | Median estimate (m) | Error |
+|---|---|---|---|---|
+| 0.5 | 139/140 | 140/140 | 0.506 | +1.2% |
+| 1.0 | 147/150 | 150/150 | 1.017 | +1.7% |
+| 1.5 | 150/150 | 150/150 | 1.515 | cal |
+| 2.0 | 130/130 | 130/130 | 2.017 | +0.9% |
+| 2.5 | 140/140 | 140/140 | 2.512 | +0.5% |
+| 3.0 | 160/160 | 160/160 | 2.991 | -0.3% |
+
+No ALARM in the 9 s before the candle appears. Mentor target: under 5% error. Raw numbers:
+`experiments/w3_validation/results/`.
 
 ## 9. Automatic calibration (tilt, roll, optional f; you give the height)
 `src/geometry/autocal.py`, `python scripts/calibrate.py auto --video clip.mp4 --height 0.77 --hfov-deg 66 --debug dbg.png`
@@ -144,3 +152,87 @@ Caveats:
   auto-calibration refused; no auto-calibrated distance error has been measured.
 - Focal length from two VPs is poorly conditioned at small tilt; do not rely on it without many long
   horizontal lines.
+
+## 10. Zoom crop (detection at small flame sizes)
+At full frame a 1920x1080 image is shrunk 3x to the 640 input, so a small candle at 1-2.5 m becomes a few pixels and
+V12 can miss it (glow and reflections also hurt). Zoom crop: blur the gray frame, take the brightest point, crop a CxC
+square around it (C = 320 px), resize to 640, run V12, then map boxes back to full-frame pixels so the calibration
+still applies. Full frame vs zoom on fire_6 (frames with a detection at score >= 0.40):
+
+| Mark | 0.5 m | 1 m | 1.5 m | 2 m | 2.5 m | 3 m |
+|---|---|---|---|---|---|---|
+| Full frame | 140/140 | 8/150 | 139/150 | 18/130 | 3/140 | 160/160 |
+| Zoom 320 | 139/140 | 147/150 | 150/150 | 130/130 | 140/140 | 160/160 |
+
+The model is unchanged (no retraining, same ONNX). Zoom is a demo stage in `experiments/w3_validation/` and is not
+yet in `live_flame.py`. Still to check: other bright sources (lamps, torch, LED, phone screen) pulling the crop,
+several flames at once, and run time on the board.
+
+## 11. Temporal alarm on the HUD
+Same locked rule as Week 2 (`W3_starter_V12/rule_v12.json`, code `experiments/temporal_final/temporal_final.py`):
+tracking by location; WARNING = any box >= 0.40 in the frame; ALARM = a track seen in >= 30% of frames over 2 s;
+ALARM off after 3 s with no qualifying track. The W3 render scripts call `TF.track`, `TF.raw_flags` and `TF.alarm`.
+
+## 12. Reproducing the W3 results
+Data is not in git. Put `W3_starter_V12/` (model + rule) and `w3_demo/drive_videos/fire6.mp4` in the folder above
+the repo, or set `W3_DATA` (that folder), `W3_VIDEO` (clip) and `W3_OUT` (where videos/JSON go).
+
+| Script (`experiments/w3_validation/`) | What it does |
+|---|---|
+| `fit_pose.py` | fits height/tilt to known-distance pixels |
+| `fire6_validate.py` | leave-one-out geometry check on fire_6 |
+| `fire6_detect_render.py` | detector distances (full frame) + ring video |
+| `zoom_test.py` | detection counts per crop size per mark |
+| `fire6_zoom_alarm_render.py` | full vs zoom, both with the temporal alarm; writes `fire6_zoom_alarm_results.json` |
+| `final_inference_render.py` | single-view presentation video (zoom + alarm + distance + rings) |
+| `autocal_fire6.py` | automatic vs manual calibration on a clip |
+
+## 13. Manual vs automatic calibration: which to use
+- **Manual (default):** measured height plus a few taped floor points (`calibrate.py floor` or `pose`). Proven on
+  real video (section 8). This is also how fixed cameras are usually commissioned.
+- **Automatic (option):** `calibrate.py auto` with the measured height; tilt and roll come from vertical edges. Works in
+  lit rooms with straight edges; refuses in dark or bare scenes. Distance accuracy not yet measured on a taped scene.
+- Recommended install flow: automatic first estimate, confirmed with 2-3 taped points.
+
+## 14. Open items
+1. No-flame clip (lamp, torch, LED, phone screen with fire) to check zoom false alarms.
+2. Lit-room clip from the fire_6 position to measure automatic-calibration distance error.
+3. Move zoom + alarm HUD into `scripts/live_flame.py` (behind a flag).
+4. Second room and the board camera; zoom latency on the board.
+5. Ring distances for the HUD: not yet given by the mentor (currently the tape marks).
+
+## 15. Prompt for an AI assistant continuing this work
+Copy the block below into a new AI session.
+
+```text
+You are continuing Week 3 (spatial calibration) of the Honeywell/BMSCE flame-detection project.
+Repo: github.com/Skandakm29/honeywell_bmsce_flame_detection, branch feature/w3-spatial-calibration
+(based on feature/week2-final). Never merge into main. Do not commit weights, ONNX, videos or datasets.
+
+Read first: docs/W3_BRIEF.md, docs/WEEK2_SUMMARY.md, docs/WEEK3_SUMMARY.md, then
+docs/W3_SPATIAL_CALIBRATION.md.
+
+Already done (do not redo):
+- The detector is V12 (YOLOv9-S-TI-Lite, v12_best.pth sha256 4395912b...), threshold 0.40, with the locked temporal
+  rule (rule_v12.json: tracking by location, 2 s window, hit ratio 0.30, alarm off after 3 s; code in
+  experiments/temporal_final/temporal_final.py). The model was NOT retrained or changed in W3.
+- src/geometry/camera.py: pinhole camera (K, distortion, pose or extrinsics or homography) stored in camera.json
+  (schema 1). pixel_to_floor / floor_to_pixel / box_to_floor: bottom-centre of a box -> ray -> plane at
+  contact_height_m -> distance and bearing from the camera foot.
+- scripts/calibrate.py: intrinsics (checkerboard), floor (taped points, PnP, leave-one-out error), pose
+  (measured height/tilt/HFOV), auto (tilt/roll from the vertical vanishing point; you give the height).
+- src/geometry/overlay.py: range rings, detectability band (flame >= 25 px at the 640 input), top-down map.
+- scripts/live_flame.py and experiments/field_tests/compare_v10box_v12.py take --camera camera.json and log
+  distance/bearing.
+- experiments/w3_validation/: fire_6 real-video validation (manual calibration, distances within about 1% from
+  0.5-3 m), a zoom crop (320 px crop around the brightest spot, resized to 640) that fixes misses at 1-2.5 m, and render
+  scripts with the WARNING/ALARM HUD. Results in experiments/w3_validation/results/.
+
+Key facts: the camera height must be measured (it cannot come from the image). In fire_6 the tape zero was 0.415 m
+in front of the camera foot. The local Python env has no scipy and no torch (onnxruntime + OpenCV only).
+Unit tests: pytest tests/test_geometry.py tests/test_calibrate.py tests/test_overlay.py tests/test_autocal.py
+
+Open work: section 14 of docs/W3_SPATIAL_CALIBRATION.md (false-alarm check for zoom, measured accuracy of
+automatic calibration, zoom in live_flame.py, board camera). Before changing anything, run the tests, keep
+changes small, and report measured numbers, not guesses.
+```
