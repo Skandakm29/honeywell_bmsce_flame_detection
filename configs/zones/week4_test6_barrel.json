@@ -1,0 +1,33 @@
+{
+  "grid": {
+    "cols": 32,
+    "rows": 24
+  },
+  "zones": [
+    {
+      "name": "barrel_fire",
+      "polygon": [
+        [
+          0.37,
+          0.3
+        ],
+        [
+          0.59,
+          0.3
+        ],
+        [
+          0.59,
+          0.82
+        ],
+        [
+          0.37,
+          0.82
+        ]
+      ],
+      "min_blocked_pct": 25,
+      "persist_s": 1.5,
+      "clear_s": 1
+    }
+  ],
+  "ignore": []
+}

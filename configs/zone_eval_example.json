@@ -1,0 +1,19 @@
+{
+  "_comment": "Example for scripts/evaluate_zone_clips.py. Paths are relative to this file; test_clips/ is git-ignored. Replace the times with what you noted. obstruction_intervals: [] = no obstruction expected; start = when the object or person stops moving in the zone. Remove 'model' to run obstruction only (no flame exclusion).",
+  "settings": {
+    "zones": "zones/short_clip_test.json",
+    "learn_s": 1,
+    "event_merge_gap_seconds": 1.0,
+    "model": "~/Downloads/yolov9.onnx",
+    "arch": "yolov9"
+  },
+  "clips": [
+    {"video": "../test_clips/gen_A_empty.mp4", "scenario": "empty", "obstruction_intervals": []},
+    {"video": "../test_clips/gen_B_walk.mp4", "scenario": "person walking past", "obstruction_intervals": []},
+    {"video": "../test_clips/gen_C_stand.mp4", "scenario": "person standing", "obstruction_intervals": [[3.0, 8.0]]},
+    {"video": "../test_clips/gen_D_box.mp4", "scenario": "box left", "obstruction_intervals": [[3.0, 8.0]]},
+    {"video": "../test_clips/gen_E_two_boxes.mp4", "scenario": "two boxes", "obstruction_intervals": [[3.5, 8.0]]},
+    {"video": "../test_clips/gen_F_candle.mp4", "scenario": "candle only", "obstruction_intervals": []},
+    {"video": "../test_clips/gen_G_candle_blocked.mp4", "scenario": "candle then blocked", "obstruction_intervals": [[3.0, 8.0]]}
+  ]
+}

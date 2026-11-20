@@ -1,0 +1,9 @@
+{
+  "_comment": "For test_clips/week_4_test_7.mp4 (AI-generated, 20 s, fixed camera). Zone = cardboard box and the floor where the fire starts beside it. Box is there from frame 1 (learned as background), worker pushes it away at the end. Short timings for a 20 s clip. Pipeline check only.",
+  "grid": {"cols": 32, "rows": 24},
+  "zones": [
+    {"name": "box_fire", "polygon": [[0.35, 0.45], [0.78, 0.45], [0.78, 0.98], [0.35, 0.98]],
+     "min_blocked_pct": 25, "persist_s": 1.5, "clear_s": 1}
+  ],
+  "ignore": []
+}

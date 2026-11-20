@@ -1,0 +1,33 @@
+{
+  "grid": {
+    "cols": 32,
+    "rows": 24
+  },
+  "zones": [
+    {
+      "name": "skip_fire",
+      "polygon": [
+        [
+          0.17,
+          0.15
+        ],
+        [
+          0.52,
+          0.15
+        ],
+        [
+          0.52,
+          0.78
+        ],
+        [
+          0.17,
+          0.78
+        ]
+      ],
+      "min_blocked_pct": 25,
+      "persist_s": 1.5,
+      "clear_s": 1
+    }
+  ],
+  "ignore": []
+}

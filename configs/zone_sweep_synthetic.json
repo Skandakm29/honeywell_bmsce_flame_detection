@@ -1,0 +1,94 @@
+{
+  "_comment": "SYNTHETIC labelled clips (experiments/week4_sweep/make_labelled_clips.py): a pipeline check of the sweep, not a basis for choosing settings.",
+  "settings": {
+    "zones": "zones/week4_test3_fire_area.json",
+    "learn_s": 2,
+    "event_merge_gap_seconds": 1.0
+  },
+  "clips": [
+    {
+      "video": "../test_clips/synth_empty.mp4",
+      "scenario": "empty",
+      "obstruction_intervals": [],
+      "split": "tune"
+    },
+    {
+      "video": "../test_clips/synth_walk_past.mp4",
+      "scenario": "walk_past",
+      "obstruction_intervals": [],
+      "split": "test"
+    },
+    {
+      "video": "../test_clips/synth_two_walkers.mp4",
+      "scenario": "two_walkers",
+      "obstruction_intervals": [],
+      "split": "tune"
+    },
+    {
+      "video": "../test_clips/synth_person_stands.mp4",
+      "scenario": "person_stands",
+      "obstruction_intervals": [
+        [
+          3.0,
+          8.0
+        ]
+      ],
+      "split": "test"
+    },
+    {
+      "video": "../test_clips/synth_box_left.mp4",
+      "scenario": "box_left",
+      "obstruction_intervals": [
+        [
+          3.0,
+          10.0
+        ]
+      ],
+      "split": "tune"
+    },
+    {
+      "video": "../test_clips/synth_pallet_partial.mp4",
+      "scenario": "pallet_partial",
+      "obstruction_intervals": [
+        [
+          4.0,
+          10.0
+        ]
+      ],
+      "split": "test"
+    },
+    {
+      "video": "../test_clips/synth_small_object.mp4",
+      "scenario": "small_object",
+      "obstruction_intervals": [],
+      "split": "tune"
+    },
+    {
+      "video": "../test_clips/synth_steam.mp4",
+      "scenario": "steam",
+      "obstruction_intervals": [],
+      "split": "test"
+    },
+    {
+      "video": "../test_clips/synth_lights_dim.mp4",
+      "scenario": "lights_dim",
+      "obstruction_intervals": [],
+      "split": "tune"
+    },
+    {
+      "video": "../test_clips/synth_person_then_box.mp4",
+      "scenario": "person_then_box",
+      "obstruction_intervals": [
+        [
+          3.0,
+          5.0
+        ],
+        [
+          6.0,
+          10.0
+        ]
+      ],
+      "split": "test"
+    }
+  ]
+}

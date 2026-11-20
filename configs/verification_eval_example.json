@@ -1,0 +1,20 @@
+{
+  "_comment": "Example for scripts/evaluate_clips.py. Clip paths are relative to this file; test_clips/ is git-ignored. Replace the flame_intervals with manually verified times. --max-saturation 100 --min-flicker 0.04 were chosen on three live sessions (results/webcam/20261103_131310_938344, _131830_965275, _132057_917250; see docs/TEMPORAL_VERIFICATION.md); not validated on held-out clips or on large flames. Report on clips that were not used for tuning.",
+  "settings": {
+    "model": "~/Downloads/yolov9.onnx",
+    "arch": "yolov9",
+    "confidence": 0.40,
+    "legacy_persistence": [4, 6],
+    "verification_args": ["--verification", "fused", "--min-hits", "4", "--window", "6",
+                          "--track-iou", "0.1", "--max-saturation", "100", "--min-flicker", "0.04"],
+    "event_merge_gap_seconds": 1.0
+  },
+  "clips": [
+    {"video": "../test_clips/flame_01.mp4", "scenario": "actual flame", "flame_intervals": [[2.0, 12.0]]},
+    {"video": "../test_clips/fabric_01.mp4", "scenario": "orange/red fabric", "flame_intervals": []},
+    {"video": "../test_clips/lamp_01.mp4", "scenario": "stationary lamp or LED", "flame_intervals": []},
+    {"video": "../test_clips/moving_light_01.mp4", "scenario": "moving light or reflection", "flame_intervals": []},
+    {"video": "../test_clips/empty_01.mp4", "scenario": "empty room", "flame_intervals": []},
+    {"video": "../test_clips/smoke_01.mp4", "scenario": "smoke without visible flame", "flame_intervals": null}
+  ]
+}
