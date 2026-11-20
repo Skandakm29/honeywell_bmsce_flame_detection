@@ -1,0 +1,9 @@
+{
+  "_comment": "Test zone for scripts/test_zone_monitor.py. Coordinates are 0..1 of the image (x right, y down). Starting values for real-camera testing, NOT tuned: edit the polygon to cover the area you want to watch.",
+  "grid": {"cols": 32, "rows": 24},
+  "zones": [
+    {"name": "centre", "polygon": [[0.30, 0.15], [0.70, 0.15], [0.70, 0.95], [0.30, 0.95]],
+     "min_blocked_pct": 30, "persist_s": 10, "clear_s": 5}
+  ],
+  "ignore": []
+}

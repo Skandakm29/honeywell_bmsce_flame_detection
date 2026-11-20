@@ -1,0 +1,9 @@
+{
+  "_comment": "For short generated clips (about 8 s): persist 2 s, clear 1 s. Pipeline and overlay checks only; not deployment settings and not evidence of accuracy. Use with --learn-s 1 (test_zone_monitor.py) or --zone-learn-s 1 (live_flame.py).",
+  "grid": {"cols": 32, "rows": 24},
+  "zones": [
+    {"name": "centre", "polygon": [[0.25, 0.20], [0.75, 0.20], [0.75, 0.95], [0.25, 0.95]],
+     "min_blocked_pct": 25, "persist_s": 2, "clear_s": 1}
+  ],
+  "ignore": []
+}

@@ -1,0 +1,9 @@
+{
+  "_comment": "For test_clips/week_4_test1.mp4 (Gemini clip, 10 s): the zone is the yellow floor rectangle. Short timings for a 10 s clip: persist 2 s, clear 1 s. Pipeline check only.",
+  "grid": {"cols": 32, "rows": 24},
+  "zones": [
+    {"name": "yellow_box", "polygon": [[0.42, 0.42], [0.625, 0.42], [0.725, 0.755], [0.285, 0.72]],
+     "min_blocked_pct": 25, "persist_s": 2, "clear_s": 1}
+  ],
+  "ignore": []
+}
